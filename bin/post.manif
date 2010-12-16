@@ -1,0 +1,24 @@
+#*****************************************************************#
+# Copyright (c) 2009  Lawrence Livermore National Security (LLNS)  #
+# All rights reserved.						  #
+#*****************************************************************#
+
+# This is a manifest, listing all the files to be posted to the
+# distribution server.
+
+#Put the name of the module here.
+[esgf-xxx]
+
+#list the files to post relative to here (bin)
+../HOWTO
+../INSTALL
+../LICENSE
+../TODO
+
+#include the primary artifact tar.gz file
+#No need to enumerate the constitunent jar or other files separately 
+#../dist/esgf-xxx-<version>.{tar.gz,jar}
+#../dist/esgf-xxx.war
+
+#Also post up this project's installation script(s)
+#./esgf-xxx
