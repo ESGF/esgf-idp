@@ -7,7 +7,7 @@
 # distribution server.
 
 #Put the name of the module here.
-[esgf-xxx]
+[esgf-idp]
 
 #list the files to post relative to here (bin)
 ../HOWTO
@@ -17,8 +17,8 @@
 
 #include the primary artifact tar.gz file
 #No need to enumerate the constitunent jar or other files separately 
-#../dist/esgf-xxx-<version>.{tar.gz,jar}
-#../dist/esgf-xxx.war
+#../dist/esgf-idp-<version>.{tar.gz,jar}
+#../dist/esgf-idp.war
 
 #Also post up this project's installation script(s)
-#./esgf-xxx
+#./esgf-idp
