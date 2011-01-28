@@ -31,11 +31,17 @@ public class OpenidPars {
 		                                                   "http://schema.openid.net/contact/email",
 		                                                   "http://axschema.org/contact/email" };
 	
-	// HTTP parameters
+	// HTTP parameters for this application
 	public final static String PARAMETER_STATUS = "status";
 	public final static String PARAMETER_STATUS_VALUE = "done";
 	public final static String PARAMETER_OPENID = "openid_identifier";
 	public final static String PARAMETER_REMEMBERME = "remember_openid";
+	
+	// HTTP parameters specified by OpenID protocol
+	public final static String OPENID_CLAIMED_ID = "openid.claimed_id";
+	public final static String OPENID_IDENTITY = "openid.identity";
+	public final static String OPENID_REALM = "openid.realm";
+	public final static String OPENID_ENDPOINT = "openid.op_endpoint";
 	
 	// HTTP cookies
 	public final static String OPENID_COOKIE_NAME = "esgf.idp.cookie";
@@ -53,26 +59,5 @@ public class OpenidPars {
 	public final static String OPENID_CHECKID_IMMEDIATE = "checkid_immediate";
 	public final static String OPENID_CHECK_AUTHENTICATION = "check_authentication";
 
-	
-	// not used
-
-	
-
-	
-	
-	
-	//public final static String PARAMETER_OPENID = "openid";
-	public final static String PARAMETER_USERNAME = "j_username";
-	public final static String PARAMETER_PASSWORD = "j_password";
-	public final static String PARAMETER_REDIRECT = "redirectUrl";
-	
-	
-	public final static String OPENID_CLAIMED_ID = "openid.claimed_id";
-	public final static String OPENID_IDENTITY = "openid.identity";
-	public final static String OPENID_REALM = "openid.realm";
-	public final static String OPENID_ENDPOINT = "openid.op_endpoint";
-		
-
-	//public final static int UNLIMITED = 1000; // TODO: set to 0 when supported by Openid4Java
 
 }
