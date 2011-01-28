@@ -19,7 +19,7 @@
 	<!-- Openid server configuration -->
   	<import resource="classpath:esg/idp/config/idp-config.xml" />
 
-	<!-- Openid client configuration -->
+	<!-- Openid client configuration (including Spring security filters) -->
   	<import resource="classpath:esg/idp/config/client-config.xml" />
 	
 

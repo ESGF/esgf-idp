@@ -51,9 +51,11 @@ public class OpenidAxUtils {
 		for (final Object obj : parameterList.getParameters()) {
 			final Parameter parameter = (Parameter)obj;
 			
-			addAttribute(attributes, parameter, OpenidPars.AX_FIRST_NAME, "firstname", user.getFirstName());
-			addAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
-			addAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
+			// try to match requested attribute to supported types
+			boolean found = false;
+			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_FIRST_NAME, "firstname", user.getFirstName());
+			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
+			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
 		
 		}
 		
@@ -72,7 +74,7 @@ public class OpenidAxUtils {
      * @param alias : an alias for the attribute, if found
      * @param value : the attribute value to set
      */
-	private static void addAttribute(final List<Attribute> attributes, final Parameter par, final String[] types, final String alias, final String value) {
+	private static boolean matchAttribute(final List<Attribute> attributes, final Parameter par, final String[] types, final String alias, final String value) {
 		
 		// loop over possible matching types
 		for (final String type : types) {
@@ -81,10 +83,12 @@ public class OpenidAxUtils {
 				// do not send empty values
 				if (StringUtils.hasText(value)) {
 			         attributes.add( new Attribute(alias, type, Arrays.asList(new String[] { value } )) );
+			         return true;
 				}
 			}
 		}
-		
+		// match not found
+		return false;
     }
 
 }

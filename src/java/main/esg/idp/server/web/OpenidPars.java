@@ -25,8 +25,12 @@ package esg.idp.server.web;
 public class OpenidPars {
 	
 	// Attributes used in openid exchange
-	public final static String[] AX_FIRST_NAME = new String[] { "http://openid.net/schema/namePerson/first" };
-	public final static String[] AX_LAST_NAME = new String[] { "http://openid.net/schema/namePerson/last" };
+	public final static String[] AX_FIRST_NAME = new String[] { "http://openid.net/schema/namePerson/first",
+		                                                        "http://axschema.org/namePerson/first" };
+	
+	public final static String[] AX_LAST_NAME = new String[] { "http://openid.net/schema/namePerson/last",
+		                                                       "http://axschema.org/namePerson/last" };
+	
 	public final static String[] AX_EMAIL = new String[] { "http://openid.net/schema/contact/internet/email",
 		                                                   "http://schema.openid.net/contact/email",
 		                                                   "http://axschema.org/contact/email" };

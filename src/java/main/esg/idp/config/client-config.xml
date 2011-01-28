@@ -29,7 +29,16 @@
 		     the OpenID Identity Provider after the client has successfully authenticated -->
     	<security:openid-login login-page="/index.jsp" user-service-ref="myUserDetailsService" 
     	                       login-processing-url="/j_spring_openid_security_check.jsp"
-    	                       default-target-url="/index.jsp" authentication-failure-url="/index.jsp?failed=true"/>
+    	                       default-target-url="/index.jsp" authentication-failure-url="/index.jsp?failed=true">
+    	                
+	    	<!-- example attributes retrieved by openid exchange - names must match the server aliases... -->
+	    	<security:attribute-exchange>
+	    		<security:openid-attribute name="email" type="http://axschema.org/contact/email" required="true"/>
+	    		<security:openid-attribute name="firstname" type="http://axschema.org/namePerson/first"/>
+	    		<security:openid-attribute name="lastname" type="http://axschema.org/namePerson/last" />
+	  		</security:attribute-exchange>
+    	                       
+    	</security:openid-login>
     	                       
     	<!-- Custom filter to remember the openid in a cookie -->
 		<security:custom-filter position="FIRST" ref="openidCookieFilter"/>

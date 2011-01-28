@@ -24,11 +24,6 @@
 			</list>
 		</property>
 	</bean>
-    
-    <!-- Configurable properties -->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:esg/idp/config/application.properties" />
-	</bean>
      	
  	<!-- URL-controller mappings -->
 	<bean id="openidMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
