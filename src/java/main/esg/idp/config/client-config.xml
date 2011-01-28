@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spring configuration for Openid client application -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- Autodetect Spring beans -->
+ 	<context:component-scan base-package="esg.idp.client"/>
+	
+	<!-- The "http" namespace element automatically creates the following filters: 
+	     HttpSessionContextIntegrationFilter, ExceptionTranslationFilter and FilterSecurityInterceptor,
+	     in the proper order. 
+	     The attribute use-expressions="true" allows use of role-based security tags in the views.
+	     -->
+	<security:http use-expressions="true">
+
+		<!-- SSL required for all HTTP requests to this application -->
+		<security:intercept-url pattern="/**" requires-channel="https" />
+		
+		<!-- The "openid-login" tag creates an OpenID login entry point and an OpenIDAuthenticationProvider, 
+		     which requires an implementation of UsersDetailsService defined in the context.
+		     Also, it creates an OpenIDAuthenticationFilter that redirects the client to the OpenID
+		     Identity Provider before authentication, and process the HTTP redirect from
+		     the OpenID Identity Provider after the client has successfully authenticated -->
+    	<security:openid-login login-page="/index.jsp" user-service-ref="myUserDetailsService" 
+    	                       login-processing-url="/j_spring_openid_security_check.jsp"
+    	                       default-target-url="/index.jsp" authentication-failure-url="/index.jsp?failed=true"/>
+    	                       
+    	<!-- Custom filter to remember the openid in a cookie -->
+		<security:custom-filter position="FIRST" ref="openidCookieFilter"/>
+    	
+	</security:http>
+	
+	
+	<!-- Provider implementation of AuthenticationManager -->
+	<security:authentication-manager alias="authenticationManager">
+	<!--
+		<security:authentication-provider ref="myOpenIDAuthenticationProvider" />-->
+    	<security:authentication-provider user-service-ref='myUserDetailsService'/>
+  	</security:authentication-manager><!--
+  	
+  	<bean id="myOpenIDAuthenticationProvider" class="org.springframework.security.openid.OpenIDAuthenticationProvider">
+		<property name="userDetailsService" ref="myUserDetailsService"></property>
+	</bean>
+  	
+  	--><!-- Sample user details service -->	
+  	<bean id="myUserDetailsService" class="esg.idp.client.UserDetailsServiceImpl" />
+
+
+</beans>

@@ -31,8 +31,8 @@
 	<logger name="org.openid4java">
 		<level value="INFO" />
 	</logger>
-	<logger name="org.springframework">
-		<level value="INFO" />
+	<logger name="org.springframework.security">
+		<level value="DEBUG" />
 	</logger>
 	<logger name="org.opensaml">
 		<level value="INFO" />

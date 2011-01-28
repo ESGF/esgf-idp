@@ -16,60 +16,25 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package esg.idp.yadis.web;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import esg.idp.yadis.api.YadisService;
+package esg.idp.server.api;
 
 /**
- * Controller for OpenID Yadis discovery:
- * this controller processes all requests sent to the Gateway Yadis servlet,
- * and returns the Gateway OpenID provider endpoint embedded within an XML document.
- *
+ * Interface representing a user's identity.
+ * 
+ * @author Luca Cinquini
  */
-@Controller
-public class YadisController {
-
+public interface Identity {
+	
 	/**
-	 * Service that generates the Yadis XML document.
+	 * The openid that uniquely identifies users throughout the federation.
+	 * @return
 	 */
-	@Autowired
-	private YadisService yadisService;
+	public String getOpenid();
 	
-	@RequestMapping(method = { RequestMethod.GET } )
-	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-				
-		// extract userName from OpenID URL
-		final String openid = request.getRequestURL().toString();
-				
-		try {
-			
-			final String xml = yadisService.discover(openid);
-			
-	        // write response to output stream
-			response.setContentType("application/xrds+xml");
-	        ServletOutputStream os = response.getOutputStream();
-	        os.write(xml.getBytes());
-	        os.close();   
-			return null;
-		
-		} catch(IllegalArgumentException e) {
-			
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid openid: "+openid);
-			return null;
-			
-		}
-	
-	}
-
+	/**
+	 * The user nickname, not guaranteed to be unique across the federation.
+	 * @return
+	 */
+	public String getUsername();
 	
 }

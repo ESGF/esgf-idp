@@ -1,17 +1,12 @@
+<!-- Spring configuration for Openid server application -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-                               
- 	<!-- Use Java Common Annotations: @Resource, @PostConstruct, @PreDestroy annotations -->
-    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
-    
-    <!-- Use Spring @Autowired, @Qualifier annotations -->
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> 
-    
+                                   
     <!-- Openid -->
- 	<context:component-scan base-package="esg.idp.openid"/>
+ 	<context:component-scan base-package="esg.idp.server"/>
     
     <!-- View resolver that maps a logical view name to a physical resource -->
 	<bean id="viewResourceResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -57,6 +52,6 @@
 				</constructor-arg>
 			</bean>
 		</property>
-	</bean>	
+	</bean>		
 
 </beans>

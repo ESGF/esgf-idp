@@ -16,60 +16,31 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package esg.idp.yadis.web;
+package esg.idp.server.web;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import esg.idp.yadis.api.YadisService;
+import org.springframework.stereotype.Service;
 
 /**
- * Controller for OpenID Yadis discovery:
- * this controller processes all requests sent to the Gateway Yadis servlet,
- * and returns the Gateway OpenID provider endpoint embedded within an XML document.
+ * Demo implementation of {@link UserService} that returns mock information based on the user's openid.
+ * 
+ * Warning: this class must not be used in production.
+ * 
+ * @author luca.cinquini
  *
  */
-@Controller
-public class YadisController {
-
-	/**
-	 * Service that generates the Yadis XML document.
-	 */
-	@Autowired
-	private YadisService yadisService;
+@Service
+public class UserServiceImpl implements UserService {
 	
-	@RequestMapping(method = { RequestMethod.GET } )
-	public ModelAndView process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-				
-		// extract userName from OpenID URL
-		final String openid = request.getRequestURL().toString();
-				
-		try {
-			
-			final String xml = yadisService.discover(openid);
-			
-	        // write response to output stream
-			response.setContentType("application/xrds+xml");
-	        ServletOutputStream os = response.getOutputStream();
-	        os.write(xml.getBytes());
-	        os.close();   
-			return null;
+	public User getUserByOpenid(String openid) {
 		
-		} catch(IllegalArgumentException e) {
-			
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid openid: "+openid);
-			return null;
-			
-		}
-	
+		final UserBean user = new UserBean();
+		final String userName = openid.substring(openid.lastIndexOf("/")+1);
+		user.setUserName(userName);
+		user.setFirstName(userName + " First Name");
+		user.setLastName(userName + " Last Name");
+		user.setEmail(userName + " Email");
+		return user;
+		
 	}
 
-	
 }
