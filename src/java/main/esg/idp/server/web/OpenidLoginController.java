@@ -52,7 +52,7 @@ public class OpenidLoginController {
 	/**
 	 * View name.
 	 */
-	private String view = "/idp/loginForm";
+	private String view = "/idp/login";
 	
 	private final static String LOGIN_COMMAND = "loginCommand";
 		

@@ -19,13 +19,13 @@
 		<level value="DEBUG" />
 	</logger>
 	<logger name="org.openid4java">
-		<level value="INFO" />
+		<level value="DEBUG" />
 	</logger>
 	<logger name="org.springframework.security">
 		<level value="DEBUG" />
 	</logger>
 	<logger name="org.opensaml">
-		<level value="INFO" />
+		<level value="DEBUG" />
 	</logger>
 
 </log4j:configuration>
