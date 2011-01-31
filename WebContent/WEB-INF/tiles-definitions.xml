@@ -3,11 +3,9 @@
 
 <tiles-definitions>
 	
-	<!-- new YUI-based layouts -->
-	
 	<definition name="empty-layout" template="/WEB-INF/views/jsp/layouts/layout-template.jsp" >
 				
-		<put-attribute name="title" value="Openid Relying Project" />
+		<put-attribute name="title" value="ESGF Identity Provider" />
 		
 		<!-- <head> -->
 		<put-attribute name="head" value="/WEB-INF/views/jsp/common/yui.jsp" />

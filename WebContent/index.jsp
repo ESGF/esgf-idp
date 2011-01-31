@@ -14,7 +14,7 @@
 		</script>
 		
 		<style type="text/css">
-			.yui-fixed-panel#login-div .bd { width: 40em; text-align: center; margin:0 auto; align: center; }
+			.yui-fixed-panel#login-div .bd { width: 45em; text-align: center; margin:0 auto; align: center; }
 			.yui-fixed-panel#login-div td { padding: 0.5em; }
 		</style>
 		
@@ -28,7 +28,7 @@
 		<c:set var="openid_cookie" value="<%= esg.idp.server.web.OpenidPars.OPENID_COOKIE_NAME %>"/>
 		<security:authentication property="principal" var="principal"/>
 		
-		
+		<p>&nbsp;</p>
 		<c:choose>
 		
 			<c:when test="${principal=='anonymousUser'}">
