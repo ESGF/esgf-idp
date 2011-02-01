@@ -28,6 +28,11 @@
 		<c:set var="openid_cookie" value="<%= esg.idp.server.web.OpenidPars.OPENID_COOKIE_NAME %>"/>
 		<security:authentication property="principal" var="principal"/>
 		
+		<!-- Errors -->
+		<c:if test="${param['failed']==true}">
+			<span class="error">Error: unable to resolve OpenID identifier.</span>
+		</c:if>		
+		
 		<p>&nbsp;</p>
 		<c:choose>
 		
