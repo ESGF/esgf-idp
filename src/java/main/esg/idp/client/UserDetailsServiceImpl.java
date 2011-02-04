@@ -35,10 +35,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * Sample implementation of Spring Security {@link UserDetailsService} that returns a user object populated with standard values obtained from the user's openid.
- * Optionally, each user object can be assigned a set of granted authorities read from a user's map.
+ * Each user, after authentication, is assigned at least the role "ROLE_USER".
+ * Additionally, each user object can be assigned a set of granted authorities read from a user's map.
  * Warning: this class is provided only as a demo example, it should not be used in production.
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
+	
+	private final static String DEFAULT_ROLE = "ROLE_USER";
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 	
@@ -54,6 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		final boolean credentialsNonExpired = true;
 		final boolean accountNonLocked = true;
 		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add( new GrantedAuthorityImpl(DEFAULT_ROLE) );
 		if (users.containsKey(userName)) {
 			for (final String authority : users.get(userName)) {
 				authorities.add( new GrantedAuthorityImpl(authority) );
