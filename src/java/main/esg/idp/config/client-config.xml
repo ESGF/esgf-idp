@@ -42,6 +42,13 @@
     	                       
     	<!-- Custom filter to remember the openid in a cookie -->
 		<security:custom-filter position="FIRST" ref="openidCookieFilter"/>
+		
+		<!-- default attribute values: 
+		     logout-url="/j_spring_security_logout"
+		     logout-success-url="/"
+		     invalidate-session="true" - this also effectively logs out the user from the Openid Server, not just the Openid Client
+		-->		
+		<security:logout />
     	
 	</security:http>
 	

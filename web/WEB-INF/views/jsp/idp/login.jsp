@@ -4,24 +4,10 @@
 	
 	<tiles:putAttribute type="string" name="title" value="ESGF OpenID Login" />
 	
-	<tiles:putAttribute name="script">
-	
-		<script type="text/javascript"> 		
-			  function init() {
-				var submitButton = new YAHOO.widget.Button("submit-button");
-			  }
-			  YAHOO.util.Event.onDOMReady(init);
-		</script>
-		
-		<style type="text/css">
-			.yui-fixed-panel#login-div .bd { width: 40em; text-align: center; margin:0 auto; align: center; }
-			.yui-fixed-panel#login-div td { padding: 0.5em; }
-		</style>
-		
-	</tiles:putAttribute>
-	
 	<tiles:putAttribute name="body">
 		<tiles:putAttribute type="string" name="pageTitle" value="OpenID Login" />
+		
+		   
 			
 			<!-- login errors -->
 		  	<p>&nbsp;</p>
@@ -29,28 +15,46 @@
 			<p>&nbsp;</p>
 
 			<!-- user openid -->
-			<c:if test="${not empty sessionScope['esgf.idp.openid']}">
-				<div align="center"><img src='<c:url value="/themes/openid_small.gif"/>'/>
-				&nbsp;
-				Your OpenID: <span class="highlight"><c:out value ="${sessionScope['esgf.idp.openid']}"/></span>
-				</div>	
-			</c:if>
+			<c:set var="openid_attribute" value="<%= esg.idp.server.web.OpenidPars.SESSION_ATTRIBUTE_OPENID %>"/>
 			
 			<!-- password submission form -->
 		    <p>&nbsp;</p>
-			<springForm:form method="post" commandName="loginCommand" name="loginForm">
-				<div class="yui-fixed-panel" id="login-div">
-					<div class="bd">
-						<table border="0" align="center">
-							<tr>
-								<td align="right" class="required">Password</td>
-								<td align="left"><springForm:password path="password"/></td>
-								<td><input type="submit" value="GO" id="submit-button"/></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</springForm:form>
+			
+			<table  border="0" align="center">
+					<tr>
+						<td>
+							<div class="panel">
+								<table>
+									<tr>
+										<td>
+											<img src='<c:url value="/themes/openid.png"/>' width="80"/>
+										</td>
+										<td>
+											<springForm:form method="post" commandName="loginCommand" name="loginForm">
+													<table border="0" align="center">
+														<c:if test="${not empty sessionScope[openid_attribute]}">
+															<tr>
+																<td align="center">
+																	 Your OpenID: <b><c:out value ="${sessionScope[openid_attribute]}"/></b>
+																</td>
+															</tr>
+														</c:if>
+														<tr>
+															<td align="center" class="required">
+															    Password:&nbsp; 
+															    <springForm:password path="password"/>
+																&nbsp;<input type="submit" value="SUBMIT" class="button" />
+														    </td>
+														</tr>
+													</table>
+											</springForm:form>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
 			
 	</tiles:putAttribute>
 
