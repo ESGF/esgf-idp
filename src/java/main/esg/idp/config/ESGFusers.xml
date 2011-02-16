@@ -6,9 +6,9 @@
         <user openid="https://localhost:8443/esgf-idp/openid/rootAdmin" password="pwd" />
         <user openid="https://localhost:8443/esgf-idp/openid/testUser" password="pwd" />
 
-        <!-- users for esg-vm.jpl.nasa.gov IdP -->
-        <user openid="https://esg-vm.jpl.nasa.gov/esgf-idp/openid/rootAdmin" password="pwd" />
-        <user openid="https://esg-vm.jpl.nasa.gov/esgf-idp/openid/testUser" password="pwd" />
+        <!-- users for esg-datanode.jpl.nasa.gov IdP -->
+        <user openid="https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/rootAdmin" password="pwd" />
+        <user openid="https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/testUser" password="pwd" />
 
         <!-- users for esg-test1.llnl.gov IdP -->
         <user openid="https://esg-test1.llnl.gov/esgf-idp/openid/rootAdmin" password="pwd" />
