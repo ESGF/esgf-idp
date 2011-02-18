@@ -9,6 +9,9 @@
         <!-- users for esg-datanode.jpl.nasa.gov IdP -->
         <user openid="https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/rootAdmin" password="pwd" />
         <user openid="https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/testUser" password="pwd" />
+        <user openid="https://test-datanode.jpl.nasa.gov/esgf-idp/openid/rootAdmin" password="pwd" />
+        <user openid="https://test-datanode.jpl.nasa.gov/esgf-idp/openid/testUser" password="pwd" />
+        
 
         <!-- users for esg-test1.llnl.gov IdP -->
         <user openid="https://esg-test1.llnl.gov/esgf-idp/openid/rootAdmin" password="pwd" />
