@@ -85,5 +85,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmlsec-1.4.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmltooling-1.2.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/XSGroupRole-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/esgf-security-1.2.0.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

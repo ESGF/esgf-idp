@@ -20,7 +20,6 @@ package esg.idp.server.impl;
 
 /**
  * Java bean implementation of Identity interface.
- * This implementation sets the username to be the ending part of the user's openid.
  */
 import esg.idp.server.api.Identity;
 
@@ -30,9 +29,23 @@ public class IdentityImpl implements Identity {
 	
 	private final String username;
 	
+	/**
+	 * Constructor that sets the username to be the ending part of the user's openid.
+	 * @param openid
+	 */
 	public IdentityImpl(final String openid) {
 		this.openid = openid;
 		this.username = openid.substring(openid.lastIndexOf("/")+1);
+	}
+	
+	/**
+	 * Constructor to set the openid and username separately.
+	 * @param openid
+	 * @param username
+	 */
+	public IdentityImpl(final String openid, final String username) {
+		this.openid = openid;
+		this.username = username;
 	}
 
 	@Override

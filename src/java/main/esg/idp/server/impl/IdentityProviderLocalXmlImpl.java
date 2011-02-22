@@ -43,7 +43,7 @@ import esg.security.utils.xml.Parser;
  * @author luca.cinquini
  *
  */
-@Service("identityProvider")
+//@Service("identityProvider")
 public class IdentityProviderLocalXmlImpl implements IdentityProvider {
 	
 	/**
