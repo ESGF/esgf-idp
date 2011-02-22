@@ -31,9 +31,8 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 
 	@Override
 	public boolean authenticate(String openid, String password) {
-		final boolean fixme = userInfoDAO.checkPassword(openid, password);
-		System.out.println("fixme="+fixme);
-		return fixme;
+		
+		return userInfoDAO.checkPassword(openid, password);
 		
 	}
 
