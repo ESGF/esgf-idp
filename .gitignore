@@ -40,3 +40,8 @@ generated/
 /eclipse
 /backup
 /web/index.html
+
+################################
+#Generated from templated files
+################################
+bin/post.manif

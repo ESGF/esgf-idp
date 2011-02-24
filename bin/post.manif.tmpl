@@ -1,5 +1,5 @@
 #*****************************************************************#
-# Copyright (c) 2009  Lawrence Livermore National Security (LLNS)  #
+# Copyright (c) 2009  Lawrence Livermore National Security (LLNS) #
 # All rights reserved.						  #
 #*****************************************************************#
 
@@ -10,15 +10,16 @@
 [esgf-idp]
 
 #list the files to post relative to here (bin)
-../HOWTO
 ../INSTALL
 ../LICENSE
 ../TODO
 
 #include the primary artifact tar.gz file
 #No need to enumerate the constitunent jar or other files separately 
-#../dist/esgf-idp-<version>.{tar.gz,jar}
-#../dist/esgf-idp.war
+../dist/@module@-@version_num@.jar
+../dist/@module@-@version_num@.tar.gz
+../dist/@module@-test-@version_num@.jar
+../dist/@module@.war
 
 #Also post up this project's installation script(s)
-#./esgf-idp
+./esgf-idp
