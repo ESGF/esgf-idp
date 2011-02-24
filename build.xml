@@ -101,6 +101,7 @@ Builds the project via ant (obviously).
   <filter token="version_num"  value="${version_num}"/>
   <property name="release_name" value="no_name"/>
   <filter token="release_name" value="${release_name}"/>
+  <filter token="module" value="${module}"/>
 
   <property name="log_dir" value="${java.io.tmpdir}/${module}/logs"/>
   <mkdir dir="${log_dir}" />
@@ -135,6 +136,7 @@ Builds the project via ant (obviously).
     <property name="lib_fetched_dir"      value="${basedir}/lib/fetched"/>
     <property name="build_dir"   	  value="${basedir}/build"/>
     <property name="dist_dir"   	  value="${basedir}/dist"/>
+    <property name="bin_dir"              value="${basedir}/bin"/>
     <property name="test_src_dir"  	  value="${basedir}/src/java/test"/>
     <property name="test_build_dir"       value="${basedir}/build/test"/>
     <property name="test_build_dir_inst"  value="${basedir}/build/test-instrumented" />
@@ -172,6 +174,7 @@ Builds the project via ant (obviously).
     <echo message="lib_fetched_dir   = ${lib_fetched_dir}"/>
     <echo message="build_dir         = ${build_dir}"/>
     <echo message="dist_dir          = ${dist_dir}"/>
+    <echo message="bin_dir           = ${bin_dir}"/>
     <echo message="test_src_dir      = ${test_src_dir}"/>
     <echo message="test_build_dir    = ${test_build_dir}"/>
     <echo message="etc_dir           = ${etc_dir}"/>
@@ -462,7 +465,9 @@ Builds the project via ant (obviously).
   
   <target name="clean_all"
 	  depends="clean,clean_dist,clean_jaxb,dep_clean_libs"
-	  description="(Cleans out generatable artifacts)"/>
+	  description="(Cleans out generatable artifacts)">
+    <delete file="${bin_dir}/post.manif" verbose="true"/>
+  </target>
   
   <!--
       ************************************************************
@@ -733,9 +738,9 @@ Builds the project via ant (obviously).
   </target>
 
   <target name="post" depends="init" description="(posts built artifacts to distribution server)">
-    <copy file="${bin_dir}/post.manif.tmpl" tofile="${bin_dir}/post.manif" filtering="true"/>
+    <copy file="${bin_dir}/post.manif.tmpl" tofile="${bin_dir}/post.manif" filtering="true" overwrite="true"/>
     <echo message="Posting Files To Distribution Server..."/>
-    <exec executable="post" dir="${basedir}/bin">
+    <exec executable="post" dir="${bin_dir}">
       <arg value="--debug"/>
     </exec>
   </target>
