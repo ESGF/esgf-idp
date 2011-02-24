@@ -177,7 +177,3 @@ write_idp_install_log() {
     dedup ${install_logfile}
     return 0
 }
-
-
-
-Place holder file for IDP installation scripting!!!
