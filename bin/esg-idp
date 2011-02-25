@@ -87,7 +87,7 @@ init() {
     idp_context_root=esgf-idp
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
 
-    idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/applications.properties
+    idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/application.properties
     idp_identity_service=https://localhost:8443/esgf-idp/idp/openidServer.htm
     idp_attribute_service=https://localhost:8443/esgf-security/saml/soap/secure/attributeService.htm
     idp_myproxy_service=${myproxy_endpoint}:${myproxy_port}
