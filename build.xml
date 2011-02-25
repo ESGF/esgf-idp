@@ -303,7 +303,7 @@ Builds the project via ant (obviously).
 
     <copy todir="${build_dir}" filtering="${filter}" overwrite="true">
       <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*.xml" />
-      <fileset dir="${src_dir}"  includes="**/*.properties,**/*.template,**/*.xml" />
+      <fileset dir="${src_dir}"  includes="**/*.properties,**/*.tmpl,**/*.template,**/*.xml" />
     </copy>
 
 
