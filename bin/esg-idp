@@ -177,13 +177,13 @@ setup_idp() {
     #----------------------------
     if [ -e "${idp_config_file}.tmpl" ]; then 
         cp ${idp_config_file}.tmpl ${idp_config_file}
-        echo -n "Editing ${idp_config_file}"
+        echo -n "Editing ${idp_config_file}  "
         eval "perl -p -i -e 's#\\@idp_identity_service\\@#${idp_identity_service}#g' ${idp_config_file}"
         echo -n "*"
         eval "perl -p -i -e 's#\\@idp_attribute_service\\@#${idp_attribute_service}#g' ${idp_config_file}"
         echo -n "*"
         eval "perl -p -i -e 's#\\@idp_myproxy_service\\@#${idp_myproxy_service}#g' ${idp_config_file}"
-        echo -n "*"
+        echo "*"
         cat ${idp_config_file}
     fi
     #----------------------------
