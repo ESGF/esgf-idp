@@ -81,11 +81,16 @@ tomcat_group=${tomcat_group:-$tomcat_user}
 tomcat_install_dir=${CATALINA_HOME:-${install_prefix}/tomcat}
 
 init() {
-    [ -n "${envfile}" ] && [ -e "${envfile}" ] && source ${envfile} && ((VERBOSE)) && printf "idp services: sourcing environment from: ${envfile} \n"
 
     idp_dist_url=${esg_dist_url}/esgf-idp/esgf-idp.war
+
     idp_context_root=esgf-idp
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
+
+    idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/applications.properties
+    idp_identity_service=https://localhost:8443/esgf-idp/idp/openidServer.htm
+    idp_attribute_service=https://localhost:8443/esgf-security/saml/soap/secure/attributeService.htm
+    idp_myproxy_service=${myproxy_endpoint}:${myproxy_port}
     
 }
 
@@ -164,6 +169,23 @@ setup_idp() {
     chown -R ${tomcat_user} ${idp_app_home}
     chgrp -R ${tomcat_group} ${idp_app_home}
     popd >& /dev/null
+    #----------------------------
+
+    
+    #----------------------------
+    #Editing configuration file
+    #----------------------------
+    if [ -e "${idp_config_file}.tmpl" ]; then 
+        cp ${idp_config_file}.tmpl ${idp_config_file}
+        echo -n "Editing ${idp_config_file}"
+        eval "perl -p -i -e 's#\\@idp_identity_service\\@#${idp_identity_service}#g' ${idp_config_file}"
+        echo -n "*"
+        eval "perl -p -i -e 's#\\@idp_attribute_service\\@#${idp_attribute_service}#g' ${idp_config_file}"
+        echo -n "*"
+        eval "perl -p -i -e 's#\\@idp_myproxy_service\\@#${idp_myproxy_service}#g' ${idp_config_file}"
+        echo -n "*"
+        cat ${idp_config_file}
+    fi
     #----------------------------
     
     popd >& /dev/null
