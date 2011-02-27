@@ -80,6 +80,11 @@ tomcat_user=${tomcat_user:-tomcat}
 tomcat_group=${tomcat_group:-$tomcat_user}
 tomcat_install_dir=${CATALINA_HOME:-${install_prefix}/tomcat}
 
+idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
+idp_identity_service_port=${idp_identity_service_host:-"80"}
+idp_attribute_service_host=${idp_attribute_service_host:-${idp_identity_service_host}}
+idp_attribute_service_port=${idp_attribute_service_host:-${idp_identity_service_port}}
+
 init() {
 
     idp_dist_url=${esg_dist_url}/esgf-idp/esgf-idp.war
@@ -88,10 +93,9 @@ init() {
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
 
     idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/application.properties
-    idp_identity_service=https://localhost:8443/esgf-idp/idp/openidServer.htm
-    idp_attribute_service=https://localhost:8443/esgf-security/saml/soap/secure/attributeService.htm
+    idp_identity_service=https://${idp_identity_service_host}:${idp_identity_service_port}/esgf-idp/idp/openidServer.htm
+    idp_attribute_service=https://${idp_attribute_service_host}:${idp_attribute_service_port}/esgf-security/saml/soap/secure/attributeService.htm
     idp_myproxy_service=${myproxy_endpoint}:${myproxy_port}
-    
 }
 
 
