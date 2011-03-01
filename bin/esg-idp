@@ -81,7 +81,7 @@ tomcat_group=${tomcat_group:-$tomcat_user}
 tomcat_install_dir=${CATALINA_HOME:-${install_prefix}/tomcat}
 
 idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
-idp_identity_service_port=${idp_identity_service_port:-"80"}
+idp_identity_service_port=${idp_identity_service_port:-"443"}
 idp_attribute_service_host=${idp_attribute_service_host:-${idp_identity_service_host}}
 idp_attribute_service_port=${idp_attribute_service_post:-${idp_identity_service_port}}
 
