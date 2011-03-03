@@ -203,3 +203,24 @@ write_idp_install_log() {
     dedup ${install_logfile}
     return 0
 }
+
+#--------------------------------------
+# Clean / Uninstall this module...
+#--------------------------------------
+
+clean_idp_webapp_subsystem() {
+    init
+    local doit="N"
+    if [ -e ${idp_app_home} ]; then
+        read -p "remove ESGF IDP web service? (${idp_app_home}) [y/N]: " doit
+        if [ "doit" = "Y" ] || [ "$doit" = "y" ]; then
+            echo "removing ${idp_app_home}"
+            if [ -n ${idp_app_home} ]; then
+                rm -rf ${idp_app_home}
+                [ $? != 0 ] && echo "ERROR: Unable to remove ${idp_app_home}" && return 1
+                perl -n -i -e'print unless m!webapp:esgf-idp!' ${install_logfile}
+            fi
+        fi
+    fi 
+    return 0
+}
