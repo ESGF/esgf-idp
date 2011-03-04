@@ -45,4 +45,3 @@ generated/
 #Generated from templated files
 ################################
 bin/post.manif
-src/java/main/esg/idp/config/application.properties
