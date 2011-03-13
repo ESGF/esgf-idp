@@ -1,9 +1,5 @@
 package esg.idp.server.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -32,21 +28,10 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 	
-	//@Autowired
-	public IdentityProviderDAOImpl(final @Qualifier("dbProperties") Properties props) {
+	@Autowired
+	public IdentityProviderDAOImpl(final @Qualifier("esgfProperties") Properties props) {
 		this.userInfoDAO = new UserInfoDAO(props);
 	}
-	
-	public IdentityProviderDAOImpl() throws IOException, FileNotFoundException {
-	    
-	    final Properties props = new Properties();
-	    File propertyFile = new File( System.getenv().get("ESGF_HOME")+"/config/esgf.properties" );
-	    if (!propertyFile.exists()) propertyFile = new File("/esg/config/esgf.properties");
-	    props.load( new FileInputStream(propertyFile) );
-	    if (LOG.isInfoEnabled()) LOG.info("Loading properties from file: "+propertyFile.getAbsolutePath());
-        this.userInfoDAO = new UserInfoDAO(props);
-        
-    }
 
 	@Override
 	public boolean authenticate(String openid, String password) {

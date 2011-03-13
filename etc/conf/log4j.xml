@@ -1,34 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration threshold="all" xmlns:log4j="http://jakarta.apache.org/log4j/">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER" "log4j.dtd">
 
-	<!--  Appenders  -->
-	<appender name="idplog" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="conversionPattern" value="[%p] %C: %m%n" />
-		</layout>
-	</appender>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- Loggers -->
-	<root>
-		<priority value="INFO" />
-		<appender-ref ref="idplog" />
-	</root>
-	<!--  some specific loggers -->
-	<logger name="esg">
-		<level value="DEBUG" />
-		<appender-ref ref="idplog" />
-	</logger>
-	<logger name="org.openid4java">
-		<level value="DEBUG" /><appender-ref ref="idplog" />
-	</logger>
-	<logger name="org.springframework.security">
-		<level value="DEBUG" />
-		<appender-ref ref="idplog" />
-	</logger>
-	<logger name="org.opensaml">
-		<level value="DEBUG" />
-		<appender-ref ref="idplog" />
-	</logger>
 
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%-5p: %c{3} - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- specific loggers -->
+  <logger name="org.esgf">
+        <level value="debug" />
+  </logger>
+    
+  <logger name="esg">
+        <level value="debug" />
+  </logger>
+        
+  <!-- Root Logger -->
+  <root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+  </root>
+	
 </log4j:configuration>
