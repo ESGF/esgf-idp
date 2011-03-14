@@ -27,6 +27,6 @@
   	<!-- Database connection properties -->
 	<!-- <util:properties id="dbProperties" location="classpath:esg/idp/config/application.properties"/> -->
 	<!-- <util:properties id="esgfProperties" location="file:///esg/config/esgf-db.properties"/> -->
-	<bean id="esgfProperties" class="esg.node.security.ESGFProperties" />
+	<bean id="esgfProperties" class="esg.common.util.ESGFProperties" />
 
 </beans>
