@@ -86,7 +86,6 @@ init() {
 
     idp_context_root=esgf-idp
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
-    #idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/application.properties
 
     idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
     idp_identity_service_port=${idp_identity_service_port:-"443"}
@@ -170,23 +169,6 @@ setup_idp() {
     popd >& /dev/null
     #----------------------------
 
-    
-    ##----------------------------
-    ##Editing configuration file
-    ##----------------------------
-    #if [ -e "${idp_config_file}.tmpl" ]; then 
-    #    cp ${idp_config_file}.tmpl ${idp_config_file}
-    #    echo -n "Editing ${idp_config_file}  "
-    #    eval "perl -p -i -e 's#\\@idp_identity_service\\@#${idp_identity_service}#g' ${idp_config_file}"
-    #    echo -n "*"
-    #    eval "perl -p -i -e 's#\\@idp_attribute_service\\@#${idp_attribute_service}#g' ${idp_config_file}"
-    #    echo -n "*"
-    #    eval "perl -p -i -e 's#\\@idp_myproxy_service\\@#${idp_myproxy_service}#g' ${idp_config_file}"
-    #    echo "*"
-    #    cat ${idp_config_file}
-    #fi
-    ##----------------------------
-    
     popd >& /dev/null
     write_idp_install_log 
     checked_done 0
