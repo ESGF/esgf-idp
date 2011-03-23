@@ -80,22 +80,17 @@ tomcat_user=${tomcat_user:-tomcat}
 tomcat_group=${tomcat_group:-$tomcat_user}
 tomcat_install_dir=${CATALINA_HOME:-${install_prefix}/tomcat}
 
-idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
-idp_identity_service_port=${idp_identity_service_port:-"443"}
-idp_attribute_service_host=${idp_attribute_service_host:-${idp_identity_service_host}}
-idp_attribute_service_port=${idp_attribute_service_post:-${idp_identity_service_port}}
-
 init() {
 
     idp_dist_url=${esg_dist_url}/esgf-idp/esgf-idp.war
 
     idp_context_root=esgf-idp
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
+    #idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/application.properties
 
-    idp_config_file=${idp_app_home}/WEB-INF/classes/esg/idp/config/application.properties
-    idp_identity_service=https://${idp_identity_service_host}:${idp_identity_service_port}/esgf-idp/idp/openidServer.htm
-    idp_attribute_service=https://${idp_attribute_service_host}:${idp_attribute_service_port}/esgf-security/saml/soap/secure/attributeService.htm
-    idp_myproxy_service=${myproxy_endpoint}:${myproxy_port}
+    idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
+    idp_identity_service_port=${idp_identity_service_port:-"443"}
+    idp_identity_service_endpoint=$(echo  "https://${idp_identity_service_host}$( if  ((idp_identity_service_port != 443)); then echo ":${idp_identity_service_port}"; fi)/esgf-idp/idp/openidServer.htm")
 }
 
 
@@ -176,24 +171,24 @@ setup_idp() {
     #----------------------------
 
     
-    #----------------------------
-    #Editing configuration file
-    #----------------------------
-    if [ -e "${idp_config_file}.tmpl" ]; then 
-        cp ${idp_config_file}.tmpl ${idp_config_file}
-        echo -n "Editing ${idp_config_file}  "
-        eval "perl -p -i -e 's#\\@idp_identity_service\\@#${idp_identity_service}#g' ${idp_config_file}"
-        echo -n "*"
-        eval "perl -p -i -e 's#\\@idp_attribute_service\\@#${idp_attribute_service}#g' ${idp_config_file}"
-        echo -n "*"
-        eval "perl -p -i -e 's#\\@idp_myproxy_service\\@#${idp_myproxy_service}#g' ${idp_config_file}"
-        echo "*"
-        cat ${idp_config_file}
-    fi
-    #----------------------------
+    ##----------------------------
+    ##Editing configuration file
+    ##----------------------------
+    #if [ -e "${idp_config_file}.tmpl" ]; then 
+    #    cp ${idp_config_file}.tmpl ${idp_config_file}
+    #    echo -n "Editing ${idp_config_file}  "
+    #    eval "perl -p -i -e 's#\\@idp_identity_service\\@#${idp_identity_service}#g' ${idp_config_file}"
+    #    echo -n "*"
+    #    eval "perl -p -i -e 's#\\@idp_attribute_service\\@#${idp_attribute_service}#g' ${idp_config_file}"
+    #    echo -n "*"
+    #    eval "perl -p -i -e 's#\\@idp_myproxy_service\\@#${idp_myproxy_service}#g' ${idp_config_file}"
+    #    echo "*"
+    #    cat ${idp_config_file}
+    #fi
+    ##----------------------------
     
     popd >& /dev/null
-    write_idp_install_log
+    write_idp_install_log 
     checked_done 0
 
 }
@@ -201,6 +196,8 @@ setup_idp() {
 write_idp_install_log() {
     echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_logfile}
     dedup ${install_logfile}
+    write_as_property idp_app_home
+    write_as_property idp_service_endpoint
     return 0
 }
 
