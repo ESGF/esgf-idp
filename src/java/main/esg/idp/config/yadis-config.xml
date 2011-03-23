@@ -8,7 +8,8 @@
     
     <!-- Configurable properties -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:esg/idp/config/application.properties" />
+		<!-- <property name="location" value="classpath:esg/idp/config/application.properties" /> -->
+		<property name="location" value="file:///esg/config/esgf.properties" />
 	</bean>
     
     <!-- Yadis -->
@@ -28,8 +29,8 @@
 	<bean name="yadisEndpoints" class="java.util.LinkedHashMap">
 		<constructor-arg>
 			<map>
-				<entry key="esg:attribute-service"  value="${idp.attribute_service}"/>
-				<entry key="esg:myproxy-service"  value="${idp.myproxy_service}"/>
+				<entry key="esg:attribute-service"  value="${security.attribute.service.endpoint}"/>
+				<entry key="esg:myproxy-service"  value="${security.myproxy.service.endpoint}"/>
 			</map>
 		</constructor-arg>
 	</bean>

@@ -67,7 +67,7 @@ public class YadisServiceImpl implements YadisService {
 	}
 	
 	@Autowired
-	public YadisServiceImpl(final @Value("${idp.identity_service}") URL idpProviderUrl, final IdentityProvider idp) {
+	public YadisServiceImpl(final @Value("${idp.service.endpoint}") URL idpProviderUrl, final IdentityProvider idp) {
 		this.idpProviderUrl = idpProviderUrl;
 		this.idp = idp;
 	}

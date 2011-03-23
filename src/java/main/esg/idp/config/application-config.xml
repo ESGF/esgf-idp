@@ -15,7 +15,8 @@
         
     <!-- Configurable properties -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:esg/idp/config/application.properties" />
+		<!-- <property name="location" value="classpath:esg/idp/config/application.properties" /> -->
+		<property name="location" value="file:///esg/config/esgf.properties" />
 	</bean>
      		
 	<!-- Openid server configuration -->

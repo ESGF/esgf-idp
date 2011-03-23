@@ -72,7 +72,7 @@ public class OpenidServer {
 	}
 	
 	@Autowired
-	public void setOpenidServerUrl(final @Value("${idp.identity_service}") String openidServerUrl) {
+	public void setOpenidServerUrl(final @Value("${idp.service.endpoint}") String openidServerUrl) {
 		this.openidServerUrl = openidServerUrl;
 	}
 	

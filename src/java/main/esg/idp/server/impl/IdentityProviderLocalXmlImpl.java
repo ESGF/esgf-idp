@@ -26,10 +26,8 @@ import java.util.Map;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
 
 import esg.idp.server.api.Identity;
 import esg.idp.server.api.IdentityProvider;
@@ -51,7 +49,7 @@ public class IdentityProviderLocalXmlImpl implements IdentityProvider {
 	 */
 	final Map<String,String> users = new HashMap<String, String>();
 		
-	@Autowired
+	//@Autowired
 	public IdentityProviderLocalXmlImpl(final @Value("${idp.xmlfilepath}") String xmlfilepath) throws Exception {
 		
 		final File file = new ClassPathResource(xmlfilepath).getFile();
