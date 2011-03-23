@@ -30,7 +30,7 @@
 		<constructor-arg>
 			<map>
 				<entry key="esg:attribute-service"  value="${security.attribute.service.endpoint}"/>
-				<entry key="esg:myproxy-service"  value="${security.myproxy.service.endpoint}"/>
+				<entry key="esg:myproxy-service"  value="${myproxy.endpoint}"/>
 			</map>
 		</constructor-arg>
 	</bean>
