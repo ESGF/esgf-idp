@@ -179,7 +179,7 @@ write_idp_install_log() {
     echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_logfile}
     dedup ${install_logfile}
     write_as_property idp_app_home
-    write_as_property idp_service_endpoint
+    write_as_property idp_service_endpoint "http://${esgf_host}/$(echo ${idp_app_home} | sed 's#.*webapps/\(.*$\)#\1#')"
     return 0
 }
 
