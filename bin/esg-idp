@@ -87,9 +87,9 @@ init() {
     idp_context_root=esgf-idp
     idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
 
-    idp_identity_service_host=${idp_identity_service_host:-$(hostname --fqdn)}
-    idp_identity_service_port=${idp_identity_service_port:-"443"}
-    idp_identity_service_endpoint=$(echo  "https://${idp_identity_service_host}$( if  ((idp_identity_service_port != 443)); then echo ":${idp_identity_service_port}"; fi)/esgf-idp/idp/openidServer.htm")
+    idp_service_host=${idp_service_host:-${esgf_host:-$(hostname --fqdn)}}
+    idp_service_port=${idp_service_port:-"443"}
+    idp_service_endpoint=$(echo  "https://${idp_service_host}$( if  ((idp_service_port != 443)); then echo ":${idp_service_port}"; fi)/esgf-idp/idp/openidServer.htm")
 }
 
 
@@ -179,7 +179,7 @@ write_idp_install_log() {
     echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_logfile}
     dedup ${install_logfile}
     write_as_property idp_app_home
-    write_as_property idp_service_endpoint "http://${esgf_host}/$(echo ${idp_app_home} | sed 's#.*webapps/\(.*$\)#\1#')"
+    write_as_property idp_service_endpoint
     return 0
 }
 
