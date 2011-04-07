@@ -7,3 +7,5 @@ CHANGES
 1.1.2 Switched to loading database properties from esgf.properties via general purpose utility class.
 
 1.1.3 Switched to loading service endpoints from esgf.properties file, and using new property names.
+
+1.1.4 Minimal changes to CSS to make it look more like the rest of the ESGF site.

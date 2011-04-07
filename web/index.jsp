@@ -7,6 +7,7 @@
 	<tiles:putAttribute name="body">
 		
 		<tiles:putAttribute type="string" name="pageTitle" value="ESGF Identity Provider" />
+		saas
 		
 		<!-- page scope variables -->
 		<c:set var="openid_cookie" value="<%= esg.idp.server.web.OpenidPars.OPENID_COOKIE_NAME %>"/>
