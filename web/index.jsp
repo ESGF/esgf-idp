@@ -6,20 +6,20 @@
 		
 	<tiles:putAttribute name="body">
 		
-		<tiles:putAttribute type="string" name="pageTitle" value="ESGF Identity Provider" />
-		saas
 		
 		<!-- page scope variables -->
 		<c:set var="openid_cookie" value="<%= esg.idp.server.web.OpenidPars.OPENID_COOKIE_NAME %>"/>
 		<security:authentication property="principal" var="principal"/>
 		
+		<h1>ESGF Identity Provider</h1>
+		
 		<!-- Errors -->
 		<c:if test="${param['failed']==true}">
-			<span class="error">Error: unable to resolve OpenID identifier.</span>
-		</c:if>
+			<div align="center">
+				<span class="error">Error: unable to resolve OpenID identifier.</span>
+			</div>
+		</c:if>	
 		
-		
-		<p>&nbsp;</p>
 		<c:choose>
 		
 			<c:when test="${principal=='anonymousUser'}">
