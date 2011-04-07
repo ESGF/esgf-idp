@@ -5,21 +5,19 @@
 	<tiles:putAttribute type="string" name="title" value="ESGF OpenID Login" />
 	
 	<tiles:putAttribute name="body">
-		<tiles:putAttribute type="string" name="pageTitle" value="OpenID Login" />
+		<tiles:putAttribute type="string" name="pageTitle" value="" />
 		
-		   
+		    <h1>ESGF OpenID Login</h1>
 			
 			<!-- login errors -->
-		  	<p>&nbsp;</p>
-			<springForm:errors path="loginCommand.*" cssClass="error"/>
-			<p>&nbsp;</p>
+			<div align="center">
+				<springForm:errors path="loginCommand.*" cssClass="error"/>
+			</div>
 
 			<!-- user openid -->
 			<c:set var="openid_attribute" value="<%= esg.idp.server.web.OpenidPars.SESSION_ATTRIBUTE_OPENID %>"/>
 			
 			<!-- password submission form -->
-		    <p>&nbsp;</p>
-			
 			<table  border="0" align="center">
 					<tr>
 						<td>

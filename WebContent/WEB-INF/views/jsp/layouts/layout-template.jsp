@@ -19,23 +19,11 @@
 		    
 	</head>
 	
-	<body class="yui-skin-sam">
+	<body>
 		
 		<!-- common header -->
 		<p><tiles:insertAttribute name="header" /></p>
-		
-		<!-- page title -->
-		<div style="padding: 1em; text-align: center; margin:0 auto; align: center;">
-		 	<table align="center" width="974px" >
-		 		<tr>
-		 			<td nowrap="nowrap" class="page-title"><tiles:getAsString name="pageTitle" /></td>
-				</tr>
-				<tr>
-					<td align="center"><hr class="line" /></td>
-				</tr>
-			</table>
-		</div>
-		
+				
 		<!-- page-specific body -->
 		<p><tiles:insertAttribute name="body" /></p>
 		
