@@ -72,9 +72,10 @@ esgf_idp_version=${esgf_idp_version:-"1.1.4"}
 #--------------
 #User Defined / Setable (public)
 #--------------
+esg_root_dir=${esg_root_dir:-${ESGF_HOME:-"/esg"}}
 install_prefix=${install_prefix:-"/usr/local"}
 workdir=${workdir:-~/workbench/esg}
-install_logfile=${install_logfile:-"/etc/esg.install_log"}
+install_manifest=${install_manifest:-"${esg_root_dir}/esgf-install-manifest"}
 #--------------
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
@@ -180,8 +181,8 @@ setup_idp() {
 }
 
 write_idp_install_log() {
-    echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_logfile}
-    dedup ${install_logfile}
+    echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_manifest}
+    dedup ${install_manifest}
     write_as_property idp_app_home
     write_as_property idp_service_endpoint
     return 0
@@ -201,7 +202,7 @@ clean_idp_webapp_subsystem() {
             if [ -n ${idp_app_home} ]; then
                 rm -rf ${idp_app_home}
                 [ $? != 0 ] && echo "ERROR: Unable to remove ${idp_app_home}" && return 1
-                perl -n -i -e'print unless m!webapp:esgf-idp!' ${install_logfile}
+                perl -n -i -e'print unless m!webapp:esgf-idp!' ${install_manifest}
             fi
         fi
     fi 
