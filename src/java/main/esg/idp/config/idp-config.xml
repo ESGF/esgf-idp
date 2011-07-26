@@ -38,6 +38,7 @@
 	
 	<!-- ESGF version of ServerManager configured with one or more AttributeProviders -->
 	<bean id="openidServerManager" class="org.openid4java.server.ServerManager">
+		<!--
 		<property name="attributeProviders">
 			<bean id="openidAttributeProviders" class="java.util.Vector">
 				<constructor-arg>
@@ -46,7 +47,7 @@
 					</list>
 				</constructor-arg>
 			</bean>
-		</property>
+		</property> -->
 	</bean>		
 
 </beans>
