@@ -9,3 +9,7 @@ CHANGES
 1.1.3 Switched to loading service endpoints from esgf.properties file, and using new property names.
 
 1.1.4 Minimal changes to CSS to make it look more like the rest of the ESGF site.
+
+1.1.5 
+Changes to log level to avoid tracing Spring errors while different constructors are evaluated.
+Upgrade dependencies to Spring 3.0.5
