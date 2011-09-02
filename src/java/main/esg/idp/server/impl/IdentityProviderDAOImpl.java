@@ -1,17 +1,16 @@
 package esg.idp.server.impl;
 
-import java.util.Properties;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import esg.common.util.ESGFProperties;
 import esg.idp.server.api.Identity;
 import esg.idp.server.api.IdentityProvider;
 import esg.node.security.UserInfo;
-import esg.node.security.UserInfoDAO;
+import esg.node.security.UserInfoCredentialedDAO;
 
 /**
  * Implementation of {@link IdentityProvider} that is backed up by a relational database.
@@ -24,13 +23,13 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 	/**
 	 * Database access class
 	 */
-	private UserInfoDAO userInfoDAO = null;
+	private UserInfoCredentialedDAO userInfoDAO = null;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 	
 	@Autowired
-	public IdentityProviderDAOImpl(final @Qualifier("esgfProperties") Properties props) {
-		this.userInfoDAO = new UserInfoDAO(props);
+	public IdentityProviderDAOImpl(final @Qualifier("esgfProperties") ESGFProperties props) {
+	    userInfoDAO = new UserInfoCredentialedDAO("rootAdmin", props.getAdminPassword(), props);
 	}
 
 	@Override
