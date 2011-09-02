@@ -39,7 +39,7 @@
 											<form name="loginForm" action='<c:url value="/j_spring_openid_security_check.jsp"/>' >					
 												<table border="0" cellpadding="10px" cellspacing="10px" align="center">
 													<tr>
-														<td align="right" class="required">Openid:</td>
+														<td align="right" class="required">OpenID:</td>
 														<td align="left"><input type="text" name="openid_identifier" size="80" value="${cookie[openid_cookie].value}"/></td>
 														<td><input type="submit" value="LOGIN" class="button" /></td>
 													</tr>

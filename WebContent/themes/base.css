@@ -34,6 +34,18 @@ td, th {
     text-align:center; 
 }
 
+.errorbox {
+	/*background: #e5ecf9;*/
+    /* background: #f4f379; */
+    background: #f4f379;
+    /*padding: 5px;*/
+    /*margin: 5px;*/
+    border: 1px solid #417690;
+	color: #FF0000;
+    float: center;
+    text-align:center; 
+}
+
 caption {
     margin: 0;
     padding: 2px 5px 3px 5px;
