@@ -23,6 +23,7 @@
 						<td>
 							<div class="panel">
 								<table>
+									<caption>Status: not logged-in</caption>
 									<tr>
 										<td>
 											<img src='<c:url value="/themes/openid.png"/>' width="80"/>

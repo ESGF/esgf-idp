@@ -30,6 +30,7 @@
 						<td>
 							<div class="panel">
 								<table>
+									<caption>Status: not logged-in</caption>
 									<tr>
 										<td>
 											<img src='<c:url value="/themes/openid.png"/>' width="80" />
@@ -65,7 +66,9 @@
 					<tr>
 						<td align="center">
 							<div class="panel">
+								
 								<table>
+									<caption>Status: logged-in</caption>
 									<tr>
 										<td>
 											<img src='<c:url value="/themes/openid.png"/>' width="80" hspace="10px"/>
