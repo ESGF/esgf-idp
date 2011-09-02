@@ -21,14 +21,14 @@
 	
 	<body>
 		
-		<!-- common header -->
-		<p><tiles:insertAttribute name="header" /></p>
-				
-		<!-- page-specific body -->
-		<p><tiles:insertAttribute name="body" /></p>
+		<table align="center" width="900px">
 		
-		<!-- common footer -->
-		<p><tiles:insertAttribute name="footer" /></p>
+			<tr><td><tiles:insertAttribute name="header" /></td></tr>
+			<tr><td><hr class="line"/></td></tr>
+			<tr><td><tiles:insertAttribute name="body" /></td></tr>
+			<tr><td><tiles:insertAttribute name="footer" /></td></tr>
+		
+		</table>
 		
 	</body>
 	

@@ -29,5 +29,12 @@
 	<!-- <util:properties id="dbProperties" location="classpath:esg/idp/config/application.properties"/> -->
 	<!-- <util:properties id="esgfProperties" location="file:///esg/config/esgf-db.properties"/> -->
 	<bean id="esgfProperties" class="esg.common.util.ESGFProperties" />
+	
+	<!-- Message resources -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>
+		</property>
+	</bean>
 
 </beans>
