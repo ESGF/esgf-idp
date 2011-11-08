@@ -116,11 +116,13 @@ public class YadisServiceImpl implements YadisService {
 		  .append("<LocalID>").append(openid).append("</LocalID>")
 		  .append("</Service>");
 		
-		// insert optional other service endpoints
+		// optional attribute service endpoint
+		int p = 1;
 		for (final String type : endpoints.keySet()) {
-			sb.append("<Service priority=\"0\">")
+			sb.append("<Service priority=\""+ (p++) +"\">")
 			  .append("<Type>").append(type).append("</Type>")
 			  .append("<URI>").append(endpoints.get(type)).append("</URI>")
+			  .append("<LocalID>").append(openid).append("</LocalID>")
 			  .append("</Service>");
 		}
 		

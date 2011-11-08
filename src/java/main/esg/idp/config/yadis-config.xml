@@ -29,8 +29,8 @@
 	
 	<!-- additional endpoints discovered by Yadis service -->
 	<util:map id="yadisEndpoints">
-    	<entry key="esg:attribute-service" value="${security.attribute.service.endpoint}"/>
-    	<entry key="esg:myproxy-service" value="${myproxy.endpoint}"/>
+    	<entry key="urn:esg:security:myproxy-service" value="socket://${myproxy.endpoint}:${myproxy.port}"/>
+    	<entry key="urn:esg:security:attribute-service" value="${security.attribute.service.endpoint}"/>
 	</util:map>
 
 </beans>

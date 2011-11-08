@@ -16,3 +16,9 @@ Upgrade dependencies to Spring 3.0.5
 
 1.1.6
 Changing the style of the application
+
+1.1.7
+Changing the namespace of the Openid Attribute Exchange attributes to make it compatible with BADC.
+
+1.1.8
+Fixing XRDS support in Yadis discovery service to follow ESGF ICD.
