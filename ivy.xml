@@ -136,7 +136,7 @@ Note: Check Maven for propery dependency parameter values @
     
     <dependency org="edu.ucar.unidata" name="tds" rev="4.1"/>
     <dependency org="org.esgf" name="esgf-node-manager" rev="0.5.9"/>
-    <dependency org="org.esgf" name="esgf-security" rev="1.5.1" transitive="false"/>
+    <dependency org="org.esgf" name="esgf-security" rev="1.5.2" transitive="false"/>
 
   </dependencies>
 
