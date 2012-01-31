@@ -22,3 +22,6 @@ Changing the namespace of the Openid Attribute Exchange attributes to make it co
 
 1.1.8
 Fixing XRDS support in Yadis discovery service to follow ESGF ICD.
+
+1.1.9
+Updated dependency on esgf-security
