@@ -51,21 +51,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/servlet-api-2.3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-log4j12-1.6.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-aop-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-asm-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-beans-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-context-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-context-support-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-core-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-expression-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-security-config-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-security-core-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-security-openid-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-security-taglibs-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-security-web-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-tx-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-web-3.0.1.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-webmvc-3.0.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tds-4.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tiles-api-2.1.4.jar"/>
@@ -83,6 +68,22 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmltooling-1.2.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/XSGroupRole-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-common-0.5.9.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-1.5.4.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-1.5.7.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-aop-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-asm-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-beans-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-support-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-core-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-expression-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-config-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-core-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-openid-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-taglibs-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-web-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-tx-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-web-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/standard-1.1.2.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

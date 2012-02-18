@@ -40,6 +40,7 @@ generated/
 /eclipse
 /backup
 /web/index.html
+/WebContent
 
 ################################
 #Generated from templated files

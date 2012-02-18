@@ -25,6 +25,9 @@
 	<!-- Openid client configuration (including Spring security filters) -->
   	<import resource="classpath:esg/idp/config/client-config.xml" />
   	
+  	<!-- Attribute Service configuration -->
+  	<import resource="classpath:esg/idp/config/ats-config.xml" />
+  	
   	<!-- Database connection properties -->
 	<!-- <util:properties id="dbProperties" location="classpath:esg/idp/config/application.properties"/> -->
 	<!-- <util:properties id="esgfProperties" location="file:///esg/config/esgf-db.properties"/> -->
