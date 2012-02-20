@@ -68,7 +68,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmltooling-1.2.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/XSGroupRole-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-common-0.5.9.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-1.5.7.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-aop-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-asm-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-beans-3.0.5.RELEASE.jar"/>
@@ -85,5 +84,6 @@
 	<classpathentry kind="lib" path="lib/fetched/spring-web-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/standard-1.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.0.0.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
