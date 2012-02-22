@@ -28,3 +28,6 @@ Updated dependency on esgf-security
 
 2.0.0
 Upgraded configuration to expose attribute and registration services.
+
+2.0.1
+Updated dependency on esgf-security.
