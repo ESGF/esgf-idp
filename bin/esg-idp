@@ -90,11 +90,29 @@ init() {
     idp_dist_url=${esg_dist_url}/esgf-idp/esgf-idp.war
 
     idp_context_root=esgf-idp
-    idp_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
+    idp_service_app_home=${tomcat_install_dir}/webapps/${idp_context_root}
 
     idp_service_host=${idp_service_host:-${esgf_host:-$(hostname --fqdn)}}
     idp_service_port=${idp_service_port:-"443"}
     idp_service_endpoint=$(echo  "https://${idp_service_host}$( if  ((idp_service_port != 443)); then echo ":${idp_service_port}"; fi)/esgf-idp/idp/openidServer.htm")
+
+    #------------------------------------------
+    #Security services associated with IDP
+    #------------------------------------------
+    idp_security_attribute_service_app_home=${idp_service_app_home}
+    idp_security_attribute_service_host=${idp_security_attribute_service_host:-${esgf_host:-$(hostname --fqdn)}}
+    idp_security_attribute_service_port=${idp_security_attribute_service_port:-"443"}
+    idp_security_attribute_service_endpoint=$(echo "https://${idp_security_attribute_service_host}$( if ((idp_security_attribute_service_port != 443)); then echo ":${idp_security_attribute_service_port}"; fi)/esgf-idp/saml/soap/secure/attributeService.htm")
+    #------------------------------------------
+
+    #------------------------------------------
+    idp_security_registration_service_app_home=${idp_service_app_home}
+    idp_security_registration_service_host=${idp_security_registration_service_host:-${esgf_host:-$(hostname --fqdn)}}
+    idp_security_registration_service_port=${idp_security_registration_service_port:-"443"}
+    idp_security_registration_service_endpoint=$(echo "https://${idp_security_registration_service_host}$( if ((idp_security_registration_service_port != 443)); then echo ":${idp_security_registration_service_port}"; fi)/esgf-idp/secure/registrationService.htm")
+    #------------------------------------------
+
+
 }
 
 
@@ -126,7 +144,7 @@ setup_idp() {
     local default="Y"
     ((force_install)) && default="N"
     local dosetup
-    if [ -d ${idp_app_home} ]; then 
+    if [ -d ${idp_service_app_home} ]; then 
         echo "Detected an existing idp services installation..."
         read -p "Do you want to continue with idp services installation and setup? $([ "$default" = "N" ] && echo "[y/N]" || echo "[Y/n]") " dosetup
         [ -z "${dosetup}" ] && dosetup=${default}
@@ -139,8 +157,8 @@ setup_idp() {
         read -p "Do you want to make a back up of the existing distribution?? [Y/n] " dobackup
         [ -z "${dobackup}" ] && dobackup=${default}
         if [ "${dobackup}" = "Y" ] || [ "${dobackup}" = "y" ]; then
-            echo "Creating a backup archive of this web application $idp_app_home"
-            backup ${idp_app_home}
+            echo "Creating a backup archive of this web application $idp_service_app_home"
+            backup ${idp_service_app_home}
         fi
 
         echo
@@ -159,18 +177,18 @@ setup_idp() {
     #make room for new install
     if (( force_install )) ; then
         echo "Removing Previous Installation of the ESGF Idp Services..."
-        [ -d "${idp_app_home}" ] && rm -rf ${idp_app_home} || echo "WARNING: Strange, can't locate previous install @ ${idp_app_home}"
+        [ -d "${idp_service_app_home}" ] && rm -rf ${idp_service_app_home} || echo "WARNING: Strange, can't locate previous install @ ${idp_service_app_home}"
     fi
     
     #----------------------------
-    mkdir -p ${idp_app_home}
-    [ $? != 0 ] && echo "Could not create dir ${idp_app_home}" && popd >& /dev/null && checked_done 1
-    cd ${idp_app_home}
+    mkdir -p ${idp_service_app_home}
+    [ $? != 0 ] && echo "Could not create dir ${idp_service_app_home}" && popd >& /dev/null && checked_done 1
+    cd ${idp_service_app_home}
     echo "Expanding war ${idp_dist_file} in $(pwd)"
     $JAVA_HOME/bin/jar xf ${idp_dist_file}
     
-    chown -R ${tomcat_user} ${idp_app_home}
-    chgrp -R ${tomcat_group} ${idp_app_home}
+    chown -R ${tomcat_user} ${idp_service_app_home}
+    chgrp -R ${tomcat_group} ${idp_service_app_home}
     popd >& /dev/null
     #----------------------------
 
@@ -181,10 +199,14 @@ setup_idp() {
 }
 
 write_idp_install_log() {
-    echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_app_home}" >> ${install_manifest}
+    echo "$(date ${date_format}) webapp:${idp_context_root}=${esgf_idp_version} ${idp_service_app_home}" >> ${install_manifest}
     dedup ${install_manifest}
-    write_as_property idp_app_home
+    write_as_property idp_service_app_home
     write_as_property idp_service_endpoint
+    write_as_property idp_security_attribute_service_app_home
+    write_as_property idp_security_attribute_service_endpoint
+    write_as_property idp_security_registration_service_app_home
+    write_as_property idp_security_registration_service_endpoint
     return 0
 }
 
@@ -195,14 +217,21 @@ write_idp_install_log() {
 clean_idp_webapp_subsystem() {
     init
     local doit="N"
-    if [ -e ${idp_app_home} ]; then
-        read -p "remove ESGF IDP web service? (${idp_app_home}) [y/N]: " doit
+    if [ -e ${idp_service_app_home} ]; then
+        read -p "remove ESGF IDP web service? (${idp_service_app_home}) [y/N]: " doit
         if [ "doit" = "Y" ] || [ "$doit" = "y" ]; then
-            echo "removing ${idp_app_home}"
-            if [ -n ${idp_app_home} ]; then
-                rm -rf ${idp_app_home}
-                [ $? != 0 ] && echo "ERROR: Unable to remove ${idp_app_home}" && return 1
+            echo "removing ${idp_service_app_home}"
+            if [ -n ${idp_service_app_home} ]; then
+                rm -rf ${idp_service_app_home}
+                [ $? != 0 ] && echo "ERROR: Unable to remove ${idp_service_app_home}" && return 1
                 perl -n -i -e'print unless m!webapp:esgf-idp!' ${install_manifest}
+                remove_property idp_service_app_home
+                remove_property idp_service_endpoint
+                remove_property idp_security_attribute_service_app_home
+                remove_property idp_security_attribute_service_endpoint
+                remove_property idp_security_registration_service_app_home
+                remove_property idp_security_registration_service_endpoint
+
             fi
         fi
     fi 
