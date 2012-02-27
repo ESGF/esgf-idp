@@ -174,18 +174,16 @@ setup_idp() {
     
     stop_tomcat
 
+    #----------------------------
     #make room for new install
-    if (( force_install )) ; then
-        echo "Removing Previous Installation of the ESGF Idp Services..."
-        [ -d "${idp_service_app_home}" ] && rm -rf ${idp_service_app_home} || echo "WARNING: Strange, can't locate previous install @ ${idp_service_app_home}"
-    fi
-    
+    set_aside_web_app ${idp_service_app_home}
     #----------------------------
     mkdir -p ${idp_service_app_home}
     [ $? != 0 ] && echo "Could not create dir ${idp_service_app_home}" && popd >& /dev/null && checked_done 1
     cd ${idp_service_app_home}
     echo "Expanding war ${idp_dist_file} in $(pwd)"
     $JAVA_HOME/bin/jar xf ${idp_dist_file}
+    set_aside_web_app_cleanup ${idp_service_app_home} $?
     
     chown -R ${tomcat_user} ${idp_service_app_home}
     chgrp -R ${tomcat_group} ${idp_service_app_home}
