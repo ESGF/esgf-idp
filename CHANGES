@@ -37,3 +37,6 @@ Updated dependency on esgf-security.
 
 2.1.1
 Updated dependency on esgf-security.
+
+2.1.2
+Chaned Yadis configuration to use property: "idp.security.attribute.service.endpoint"
