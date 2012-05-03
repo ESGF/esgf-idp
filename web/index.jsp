@@ -36,12 +36,21 @@
 											<img src='<c:url value="/themes/openid.png"/>' width="80" />
 										</td>
 										<td>
-											<form name="loginForm" action='<c:url value="/j_spring_openid_security_check.jsp"/>' >					
+											<form name="loginForm" action='<c:url value="/j_spring_openid_security_check.jsp"/>' >	
+												<script language="javascript">
+													function sanitize() {
+														openidElement = document.getElementById("openid_identifier");
+														openid = openidElement.value;
+														openid = openid.replace("http:","https:")
+														               .replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+														openidElement.value = openid;
+													}
+												</script>															    				
 												<table border="0" cellpadding="10px" cellspacing="10px" align="center">
 													<tr>
 														<td align="right" class="required">OpenID:</td>
-														<td align="left"><input type="text" name="openid_identifier" size="80" value="${cookie[openid_cookie].value}"/></td>
-														<td><input type="submit" value="LOGIN" class="button" /></td>
+														<td align="left"><input type="text" name="openid_identifier" size="80" value="${cookie[openid_cookie].value}" id="openid_identifier" /></td>
+														<td><input type="submit" value="LOGIN" class="button" onclick="javascript:sanitize()" /></td>
 													</tr>
 													<tr>
 														<td align="center" colspan="3">

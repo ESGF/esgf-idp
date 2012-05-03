@@ -39,4 +39,7 @@ Updated dependency on esgf-security.
 Updated dependency on esgf-security.
 
 2.1.2
-Chaned Yadis configuration to use property: "idp.security.attribute.service.endpoint"
+Changed Yadis configuration to use property: "idp.security.attribute.service.endpoint"
+
+2.1.3
+-- Sanitization of openid string at form submission.
