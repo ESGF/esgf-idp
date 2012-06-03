@@ -213,6 +213,8 @@ write_idp_install_log() {
 #(this should ideally only exist in one place i.e. a source "functions" file)
 write_security_lib_install_log() {
     [ -z "${esgf_security_version}" ] && echo "WARNING: [orp] Could not write install log entry for security library" && return 1
+    local last_recorded_version=$(sed -n 's/.*esgf-security=\(.[^ ]*\).*/\1/p' ${install_manifest})
+    [ -n "${last_recorded_version}" ] && [ "${last_recorded_version}" = "${esgf_security_version}" ] && return 0
     echo "$(date ${date_format}) esgf->library:esgf-security=${esgf_security_version} " >> ${install_manifest}
     dedup ${install_manifest}
     return 0
