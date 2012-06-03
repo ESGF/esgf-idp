@@ -192,6 +192,7 @@ setup_idp() {
 
     popd >& /dev/null
     write_idp_install_log 
+    write_security_lib_install_log
     checked_done 0
 
 }
@@ -205,6 +206,15 @@ write_idp_install_log() {
     write_as_property idp_security_attribute_service_endpoint
     write_as_property idp_security_registration_service_app_home
     write_as_property idp_security_registration_service_endpoint
+    return 0
+}
+
+#NOTE: an identical implementation exists in the ORP installer...
+#(this should ideally only exist in one place i.e. a source "functions" file)
+write_security_lib_install_log() {
+    [ -z "${esgf_security_version}" ] && echo "WARNING: [orp] Could not write install log entry for security library" && return 1
+    echo "$(date ${date_format}) esgf->library:esgf-security=${esgf_security_version} " >> ${install_manifest}
+    dedup ${install_manifest}
     return 0
 }
 
