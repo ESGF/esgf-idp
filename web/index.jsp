@@ -91,6 +91,9 @@
 													<tr>
 														<td align="center">Your Openid:&nbsp;<b><c:out value="${principal.username}"/></b></td>
 													</tr>
+													<tr>    
+														<td align="center">View your <a href='<c:url value="/idp/account.htm"/>'>User Account</a></td>
+													</tr>
 													<tr>
 														<td>&nbsp;<input type="submit" value="LOGOUT" class="button" /></td>
 													</tr>

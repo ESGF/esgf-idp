@@ -8,7 +8,30 @@
 		<tiles:putAttribute type="string" name="pageTitle" value="" />
 		
 		    <h1>ESGF User Account</h1>
-			
+		    
+		    <div align="center">
+				<div style="width:400px;">
+					<div class="panel">
+						<table border="0" align="center" width="100%">
+						    <caption>Group Membership</caption>
+						    <tr>
+						        <th>Group</th>
+						        <th>Roles</th>
+						    </tr>
+						  <c:forEach var="entry" items="${attributes}">
+						    <tr>
+						         <th>${entry.key}</th>
+						         <td>
+						             <c:forEach var="role" items="${entry.value}">
+						               ${role}
+						             </c:forEach>
+						         <td>
+						    </tr>
+						  </c:forEach>
+						</table>
+					</div>
+				</div>
+			</div>	
 			
 	</tiles:putAttribute>
 
