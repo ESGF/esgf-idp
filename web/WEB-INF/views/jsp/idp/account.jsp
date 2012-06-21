@@ -10,8 +10,9 @@
 		    <h1>ESGF User Account</h1>
 		    
 		    <div align="center">
-		       <security:authentication property="principal" var="principal"/>
-               User Openid:&nbsp;<b><c:out value="${principal.username}"/></b> 
+		        <security:authentication property="principal" var="principal"/>
+                User Openid:&nbsp;<b><c:out value="${principal.username}"/></b> 
+                <p/>
 				<div style="width:400px;">
 					<div class="panel">
 						<table border="0" align="center" width="100%">
