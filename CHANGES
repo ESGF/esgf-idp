@@ -46,3 +46,6 @@ Changed Yadis configuration to use property: "idp.security.attribute.service.end
 
 2.1.5
 -- Inserted sample UI to show federated user attributes.
+
+2.2.0
+-- Fixed problem for Chrome users related to mixing secure and unsecure content.
