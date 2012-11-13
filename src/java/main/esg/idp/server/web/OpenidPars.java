@@ -24,16 +24,16 @@ package esg.idp.server.web;
  */
 public class OpenidPars {
 	
-	// Attributes used in openid exchange
-	public final static String[] AX_FIRST_NAME = new String[] { "http://openid.net/schema/namePerson/first",
-		                                                        "http://axschema.org/namePerson/first" };
+	// Attributes used in openid exchange (in the order they are supported)
+	public final static String[] AX_FIRST_NAME = new String[] { "http://axschema.org/namePerson/first",
+	                                                            "http://openid.net/schema/namePerson/first" };
 	
-	public final static String[] AX_LAST_NAME = new String[] { "http://openid.net/schema/namePerson/last",
-		                                                       "http://axschema.org/namePerson/last" };
+	public final static String[] AX_LAST_NAME = new String[] { "http://axschema.org/namePerson/last",
+	                                                           "http://openid.net/schema/namePerson/last" };
 	
-	public final static String[] AX_EMAIL = new String[] { "http://openid.net/schema/contact/internet/email",
-		                                                   "http://schema.openid.net/contact/email",
-		                                                   "http://axschema.org/contact/email" };
+	public final static String[] AX_EMAIL = new String[] { "http://axschema.org/contact/email",
+	                                                       "http://openid.net/schema/contact/internet/email",
+		                                                   "http://schema.openid.net/contact/email" };
 	
 	// HTTP parameters for this application
 	public final static String PARAMETER_STATUS = "status";

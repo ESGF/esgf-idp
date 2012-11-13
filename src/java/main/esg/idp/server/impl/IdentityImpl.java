@@ -29,6 +29,12 @@ public class IdentityImpl implements Identity {
 	
 	private final String username;
 	
+	private String firstName;
+	
+	private String lastName;
+	
+	private String email;
+	
 	/**
 	 * Constructor that sets the username to be the ending part of the user's openid.
 	 * @param openid
@@ -57,6 +63,30 @@ public class IdentityImpl implements Identity {
 	public String getUsername() {
 		return username;
 	}
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 
 

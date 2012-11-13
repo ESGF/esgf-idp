@@ -44,7 +44,13 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 		
 		final UserInfo user = userInfoDAO.getUserById(openid);
 		if (user.isValid()) {
-			return new IdentityImpl(openid, user.getUserName());
+		    
+			IdentityImpl identity = new IdentityImpl(openid, user.getUserName());
+			identity.setFirstName(user.getFirstName());
+			identity.setLastName(user.getLastName());
+			identity.setEmail(user.getEmail());
+			return identity;
+			
 		} else {
 			return null;
 		}

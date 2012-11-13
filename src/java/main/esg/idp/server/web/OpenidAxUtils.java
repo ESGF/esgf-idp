@@ -18,8 +18,8 @@
  ******************************************************************************/
 package esg.idp.server.web;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openid4java.message.Parameter;
 import org.openid4java.message.ParameterList;
@@ -45,22 +45,21 @@ public class OpenidAxUtils {
     public static Attribute[] getAttributes(final User user, final ParameterList parameterList) {
 			
     	// list of attributes to be returned
-		final List<Attribute> attributes = new ArrayList<Attribute>();
+		final Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		
 		// loop over attributes in parameters list
 		for (final Object obj : parameterList.getParameters()) {
 			final Parameter parameter = (Parameter)obj;
 			
 			// try to match requested attribute to supported types
-			boolean found = false;
-			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_FIRST_NAME, "firstname", user.getFirstName());
-			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
-			if (!found) found = matchAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
+			if (!attributes.containsKey("firstname")) matchAttribute(attributes, parameter, OpenidPars.AX_FIRST_NAME, "firstname", user.getFirstName());
+			if (!attributes.containsKey("lastname")) matchAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
+			if (!attributes.containsKey("email")) matchAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
 		
 		}
 		
 		// cast list into typed array
-		return attributes.toArray(new Attribute[0]);
+		return attributes.values().toArray(new Attribute[0]);
 		
 	}
 
@@ -68,13 +67,13 @@ public class OpenidAxUtils {
     /**
      * Method to add an attribute to the list.
      * 
-     * @param attributes : the list of attributes to add to
+     * @param attributes : the map of attributes to add to (keyed by 'alias')
      * @param par : the requested parameter
      * @param types : the possible matching types
      * @param alias : an alias for the attribute, if found
      * @param value : the attribute value to set
      */
-	private static boolean matchAttribute(final List<Attribute> attributes, final Parameter par, final String[] types, final String alias, final String value) {
+	private static void matchAttribute(final Map<String, Attribute> attributes, final Parameter par, final String[] types, final String alias, final String value) {
 		
 		// loop over possible matching types
 		for (final String type : types) {
@@ -82,13 +81,12 @@ public class OpenidAxUtils {
 			if (par.getValue().equals(type)) {
 				// do not send empty values
 				if (StringUtils.hasText(value)) {
-			         attributes.add( new Attribute(alias, type, Arrays.asList(new String[] { value } )) );
-			         return true;
+			         attributes.put(alias, new Attribute(alias, type, Arrays.asList(new String[] { value } )) );
+			         return; // match found
 				}
 			}
 		}
-		// match not found
-		return false;
+		
     }
 
 }

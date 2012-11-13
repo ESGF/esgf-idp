@@ -18,27 +18,38 @@
  ******************************************************************************/
 package esg.idp.server.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import esg.idp.server.api.Identity;
+import esg.idp.server.api.IdentityProvider;
+
 /**
- * Demo implementation of {@link UserService} that returns mock information based on the user's openid.
- * 
- * Warning: this class must not be used in production.
+ * Implementation of {@link UserService} that retrieves information from an {@link IdentityProvider}.
  * 
  * @author luca.cinquini
  *
  */
 @Service
 public class UserServiceImpl implements UserService {
+    
+    @Autowired
+    IdentityProvider identityProvider;
 	
 	public User getUserByOpenid(String openid) {
 		
 		final UserBean user = new UserBean();
-		final String userName = openid.substring(openid.lastIndexOf("/")+1);
-		user.setUserName(userName);
-		user.setFirstName(userName + " First Name");
-		user.setLastName(userName + " Last Name");
-		user.setEmail(userName + " Email");
+		
+		Identity identity = identityProvider.getIdentity(openid);
+		if (identity!=null) {
+		    
+		    user.setOpenid( identity.getOpenid() );
+    		user.setUserName( identity.getUsername() );
+    		user.setFirstName( identity.getFirstName() );
+    		user.setLastName( identity.getLastName() );
+    		user.setEmail( identity.getEmail() );
+
+		}
 		return user;
 		
 	}

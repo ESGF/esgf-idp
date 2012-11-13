@@ -16,43 +16,30 @@
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package esg.idp.server.api;
+package esg.idp.server.web;
+
 
 /**
- * Interface representing a user's identity.
+ * Demo implementation of {@link UserService} that returns mock information based on the user's openid.
  * 
- * @author Luca Cinquini
+ * Warning: this class must not be used in production.
+ * 
+ * @author luca.cinquini
+ *
  */
-public interface Identity {
+//@Service
+public class DemoUserServiceImpl implements UserService {
 	
-	/**
-	 * The openid that uniquely identifies users throughout the federation.
-	 * @return
-	 */
-	public String getOpenid();
-	
-	/**
-	 * The user nickname, not guaranteed to be unique across the federation.
-	 * @return
-	 */
-	public String getUsername();
-	
-	/**
-	 * The user first name, if available.
-	 * @return
-	 */
-	public String getFirstName();
-	
-	/**
-     * The user last name, if available.
-     * @return
-     */
-    public String getLastName();
-    
-    /**
-     * The user email, if available.
-     * @return
-     */
-    public String getEmail();
-	
+	public User getUserByOpenid(String openid) {
+		
+		final UserBean user = new UserBean();
+		final String userName = openid.substring(openid.lastIndexOf("/")+1);
+		user.setUserName(userName);
+		user.setFirstName(userName + " First Name");
+		user.setLastName(userName + " Last Name");
+		user.setEmail(userName + " Email");
+		return user;
+		
+	}
+
 }
