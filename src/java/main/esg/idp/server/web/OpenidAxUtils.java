@@ -21,6 +21,8 @@ package esg.idp.server.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openid4java.message.Parameter;
 import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.Attribute;
@@ -35,6 +37,8 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  *
  */
 public class OpenidAxUtils {
+    
+    private final static Log LOG = LogFactory.getLog( OpenidAxUtils.class );
 	
 	/**
 	 * Method to encode the user information as openid exchange attributes.
@@ -56,6 +60,16 @@ public class OpenidAxUtils {
 			if (!attributes.containsKey("lastname")) matchAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
 			if (!attributes.containsKey("email")) matchAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
 		
+		}
+		
+		// debug
+		if (LOG.isDebugEnabled()){
+		    for (Attribute att : attributes.values()) {
+		        LOG.debug("Sending attribute="+att.getAlias()+" ("+att.getType()+")");
+		        for (Object value : att.getValues()) {
+		            LOG.debug("\tvalue="+value);
+		        }
+		    }
 		}
 		
 		// cast list into typed array
