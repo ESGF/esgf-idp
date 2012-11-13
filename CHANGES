@@ -49,3 +49,6 @@ Changed Yadis configuration to use property: "idp.security.attribute.service.end
 
 2.2.0
 -- Fixed problem for Chrome users related to mixing secure and unsecure content.
+
+2.3.0
+-- Implemented real support for Openid Attribute Exchange (replacing demo implementation)
