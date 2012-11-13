@@ -59,6 +59,7 @@ public class OpenidAxUtils {
 			if (!attributes.containsKey("firstname")) matchAttribute(attributes, parameter, OpenidPars.AX_FIRST_NAME, "firstname", user.getFirstName());
 			if (!attributes.containsKey("lastname")) matchAttribute(attributes, parameter, OpenidPars.AX_LAST_NAME, "lastname", user.getLastName());
 			if (!attributes.containsKey("email")) matchAttribute(attributes, parameter, OpenidPars.AX_EMAIL, "email", user.getEmail());
+	        if (!attributes.containsKey("nickname")) matchAttribute(attributes, parameter, OpenidPars.AX_NICK_NAME, "nickname", user.getUserName());
 		
 		}
 		

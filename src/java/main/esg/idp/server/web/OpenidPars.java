@@ -35,6 +35,9 @@ public class OpenidPars {
 	                                                       "http://openid.net/schema/contact/internet/email",
 		                                                   "http://schema.openid.net/contact/email" };
 	
+	public final static String[] AX_NICK_NAME = new String[] { "http://axschema.org/namePerson/friendly",
+                                                               "http://schema.openid.net/namePerson/friendly"};
+	
 	// HTTP parameters for this application
 	public final static String PARAMETER_STATUS = "status";
 	public final static String PARAMETER_STATUS_VALUE = "done";
