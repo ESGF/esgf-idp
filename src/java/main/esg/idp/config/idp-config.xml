@@ -33,6 +33,7 @@
 				<prop key="/idp/openidServer.htm">openidServer</prop>
 				<prop key="/idp/login.htm">openidLoginController</prop>
 				<prop key="/idp/account.htm">accountController</prop>
+				<prop key="/idp/getcert.htm">certController</prop>
 			</props>
 		</property>
 	</bean>
@@ -49,6 +50,11 @@
 			</bean>
 		</property>
 	</bean>		
+	
+	<!--  Certificate retrieval controller -->
+	<bean id="certController" class="esg.idp.server.web.CertController">
+		<constructor-arg index="0"><value>/esg/myproxy/myproxy-logon.py</value></constructor-arg>
+	</bean>
 	
 	<!-- Federation-wide Attribute Service -->
 	<bean id="registryService" class="esg.security.registry.service.impl.RegistryServiceLocalXmlImpl">
