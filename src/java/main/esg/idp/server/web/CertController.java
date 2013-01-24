@@ -74,7 +74,7 @@ public class CertController {
         String username = parts[0]+":"+parts[1];
         String password = parts[2];
         // FIXME
-        String outputfile = "/Users/cinquini/.esg/credentials.pem";
+        String outputfile = "/home/cinquini/.esg/credentials.pem";
         
         // execute myproxy script
         String command = this.scriptpath + " " + username + " " + password + " " + outputfile;
