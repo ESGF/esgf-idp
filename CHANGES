@@ -52,3 +52,6 @@ Changed Yadis configuration to use property: "idp.security.attribute.service.end
 
 2.3.0
 -- Implemented real support for Openid Attribute Exchange (replacing demo implementation)
+
+2.4.0
+-- Added RESTful controller for requesting MyProxy certificate
