@@ -73,8 +73,8 @@ public class CertController {
         String[] parts = basicAuthAsString.split(":");
         String username = parts[0]+":"+parts[1];
         String password = parts[2];
-        // FIXME
-        String outputfile = "/home/cinquini/.esg/credentials.pem";
+        // choose unique temporary filename
+        String outputfile = "/tmp/"+System.currentTimeMillis()+".pem";
         
         // execute myproxy script
         String command = this.scriptpath + " " + username + " " + password + " " + outputfile;
