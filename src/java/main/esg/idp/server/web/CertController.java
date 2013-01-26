@@ -74,49 +74,63 @@ public class CertController {
         String username = "'"+parts[0]+":"+parts[1]+"'";
         String password = parts[2];
         // choose unique temporary filename
-        String outputfile = "'/tmp/"+System.currentTimeMillis()+".pem'";
+        String outputfile = "/tmp/"+System.currentTimeMillis()+".pem";
         
         // execute myproxy script
-        String command = this.scriptpath + " " + username + " " + password + " " + outputfile;
+        System.out.println("current dir=" + System.getProperty("user.dir") );
+        String currentDir = System.getProperty("user.dir");
+        String command = currentDir+"/myproxy-logon.py" + " lucacinquini " + password + " " + outputfile;
+        command = "ls -l "+currentDir;
         try {
-            execute(command);
+            
+            String output = execute(command);
+            
+            // return certificate
+            //String cert = FileUtils.readFileToString(new File(outputfile));
+            //response.setContentType("text/plain");
+            //response.setCharacterEncoding("UTF-8");
+            //return cert;  
+            return output;
+            
         } catch(Exception e) {
             LOG.warn(e.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-        
-        // return certificate
-        String cert = FileUtils.readFileToString(new File(outputfile));
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        return cert;        
+            return e.getMessage();
+        }    
 
     }
     
     private String execute(String command) throws Exception {
         
         // execute the command
-        Runtime r = Runtime.getRuntime();
-        Process p = r.exec(command);
         if (LOG.isInfoEnabled()) LOG.info("Executing command: "+command);
         
-        InputStream in = p.getInputStream();
+        ProcessBuilder builder = new ProcessBuilder("/esg/myproxy/myproxy-logon.py", "lucacinquini", "Luca123", "/tmp/user.pem");
+        LOG.info("built the process");
+        builder.redirectErrorStream(true);
+        Process process = builder.start();
+        LOG.info("started the process");
+        
+        String line;
+        InputStream in = process.getInputStream();
         BufferedInputStream buf = new BufferedInputStream(in);
         InputStreamReader inread = new InputStreamReader(buf);
         BufferedReader bufferedreader = new BufferedReader(inread);
         StringBuffer sb = new StringBuffer();
-         
-        // read the command output
-        String line;
-        while ((line = bufferedreader.readLine()) != null) {
-                sb.append(line);
+        while ((line = bufferedreader.readLine ()) != null) {
+            System.out.println(line);
+            sb.append(line);
         }
+        
         // check for error
         try {
-            if (p.waitFor() != 0) {
+            if (process.waitFor() != 0) {
+                System.out.println("error code="+sb.toString());
                 throw new Exception("Error: "+sb.toString());
             }
         } catch (InterruptedException e) {
+            System.out.println("interrupted=");
+            e.printStackTrace();
             LOG.warn(e.getMessage());
         } finally {
             bufferedreader.close();
@@ -125,6 +139,7 @@ public class CertController {
             in.close();
         }
         
+        System.out.println("sb="+sb.toString());
         return sb.toString();
         
     }
