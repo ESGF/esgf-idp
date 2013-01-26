@@ -71,10 +71,10 @@ public class CertController {
         String basicAuthAsString = new String(new Base64().decode(basicAuthEncoded.getBytes()));
         // https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/<username>:<password>
         String[] parts = basicAuthAsString.split(":");
-        String username = parts[0]+":"+parts[1];
+        String username = "'"+parts[0]+":"+parts[1]+"'";
         String password = parts[2];
         // choose unique temporary filename
-        String outputfile = "/tmp/"+System.currentTimeMillis()+".pem";
+        String outputfile = "'/tmp/"+System.currentTimeMillis()+".pem'";
         
         // execute myproxy script
         String command = this.scriptpath + " " + username + " " + password + " " + outputfile;
