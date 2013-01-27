@@ -108,7 +108,7 @@ public class CertController {
     private String execute(String command) throws Exception {
         
         // execute the command
-        if (LOG.isInfoEnabled()) LOG.info("Executing command: "+command);
+        //if (LOG.isInfoEnabled()) LOG.info("Executing command: "+command);
         String[] args = command.split("\\s+");
         
         ProcessBuilder builder = new ProcessBuilder(args);
