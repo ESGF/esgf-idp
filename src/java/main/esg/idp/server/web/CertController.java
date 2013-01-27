@@ -51,7 +51,14 @@ public class CertController {
             LOG.warn("Insecure request, redirecting to: "+url);
             response.sendRedirect(url);
             response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            return "";
+            return "URL must be invoked via 'https' protocol.";
+        }
+        
+        // verify script exists
+        if (!(new File(scriptpath).exists())) {
+            LOG.warn("Script : "+scriptpath+" does NOT exist, aborting.");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return("MyProxy script NOT found, please contact the site administrator.");
         }
         
         // extract Basic authentication information
@@ -62,7 +69,7 @@ public class CertController {
         if (!StringUtils.hasText(header)) {
             response.setHeader("WWW-Authenticate", "BASIC realm=\"ESGF\"");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return "";
+            return "Basic authentication header not found.";
         }
         assert header.substring(0, 6).equals("Basic ");
         // will contain "QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
@@ -99,7 +106,7 @@ public class CertController {
             
         } catch(Exception e) {
             LOG.warn(e.getMessage());
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return e.getMessage();
         }    
 
@@ -134,7 +141,6 @@ public class CertController {
         } catch (InterruptedException e) {
             e.printStackTrace();
             LOG.warn("An error occurred: "+sb.toString());
-            LOG.warn(e.getMessage());
         } finally {
             bufferedreader.close();
             inread.close();
