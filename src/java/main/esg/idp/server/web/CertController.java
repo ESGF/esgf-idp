@@ -70,27 +70,32 @@ public class CertController {
         // will contain "username:password"
         String basicAuthAsString = new String(new Base64().decode(basicAuthEncoded.getBytes()));
         // https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/<username>:<password>
+        // or:
+        // <username>:<password>
         String[] parts = basicAuthAsString.split(":");
-        String username = "'"+parts[0]+":"+parts[1]+"'";
-        String password = parts[2];
+        String username = null;
+        String password = null;
+        if (basicAuthAsString.startsWith("https:")) {
+            username = parts[0]+":"+parts[1];
+            password = parts[2];
+        } else {
+           username = parts[0];
+           password = parts[1];
+        } 
         // choose unique temporary filename
         String outputfile = "/tmp/"+System.currentTimeMillis()+".pem";
         
         // execute myproxy script
-        System.out.println("current dir=" + System.getProperty("user.dir") );
-        String currentDir = System.getProperty("user.dir");
-        String command = currentDir+"/myproxy-logon.py" + " lucacinquini " + password + " " + outputfile;
-        command = "ls -l "+currentDir;
+        String command = this.scriptpath + " " + username + " " + password + " " + outputfile;
         try {
             
-            String output = execute(command);
+            execute(command);
             
             // return certificate
-            //String cert = FileUtils.readFileToString(new File(outputfile));
-            //response.setContentType("text/plain");
-            //response.setCharacterEncoding("UTF-8");
-            //return cert;  
-            return output;
+            String cert = FileUtils.readFileToString(new File(outputfile));
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            return cert;  
             
         } catch(Exception e) {
             LOG.warn(e.getMessage());
@@ -104,12 +109,11 @@ public class CertController {
         
         // execute the command
         if (LOG.isInfoEnabled()) LOG.info("Executing command: "+command);
+        String[] args = command.split("\\s+");
         
-        ProcessBuilder builder = new ProcessBuilder("/esg/myproxy/myproxy-logon.py", "lucacinquini", "Luca123", "/tmp/user.pem");
-        LOG.info("built the process");
-        builder.redirectErrorStream(true);
+        ProcessBuilder builder = new ProcessBuilder(args);
+        builder.redirectErrorStream(true); // redirect standard error to standard output
         Process process = builder.start();
-        LOG.info("started the process");
         
         String line;
         InputStream in = process.getInputStream();
@@ -118,19 +122,18 @@ public class CertController {
         BufferedReader bufferedreader = new BufferedReader(inread);
         StringBuffer sb = new StringBuffer();
         while ((line = bufferedreader.readLine ()) != null) {
-            System.out.println(line);
             sb.append(line);
         }
         
         // check for error
         try {
             if (process.waitFor() != 0) {
-                System.out.println("error code="+sb.toString());
+                LOG.warn("Error : "+sb.toString());
                 throw new Exception("Error: "+sb.toString());
             }
         } catch (InterruptedException e) {
-            System.out.println("interrupted=");
             e.printStackTrace();
+            LOG.warn("An error occurred: "+sb.toString());
             LOG.warn(e.getMessage());
         } finally {
             bufferedreader.close();
@@ -139,7 +142,6 @@ public class CertController {
             in.close();
         }
         
-        System.out.println("sb="+sb.toString());
         return sb.toString();
         
     }
