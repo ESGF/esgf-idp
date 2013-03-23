@@ -84,6 +84,6 @@
 	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-common-0.6.14.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.3.7.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
