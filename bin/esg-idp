@@ -252,8 +252,8 @@ clean_idp_webapp_subsystem() {
 # Misc utility functions
 #--------------------------------------
 fetch_static_idp_file() {
-    local project=${1}
-    [[ ! $project ]] && echo "Please specify project. Ex: cmip5, test, cssef" && return 1
+    local project_name=${1}
+    [[ ! $project_name ]] && echo "Please specify project. Ex: cmip5, test, cssef" && return 1
 
     local fetch_file=esgf_idp_static.xml
     local force=1
