@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: Sualeh Fatehi
+Build-Jdk: 1.6.0_26
+Main-Class: schemacrawler.tools.postgresql.Main
+Author: Sualeh Fatehi, sualeh@hotmail.com
+Project: SchemaCrawler for PostgreSQL, 8.9
+Class-Path: schemacrawler-integrations-8.9.jar schemacrawler-commandli
+ ne-8.9.jar schemacrawler-tools-8.9.jar schemacrawler-api-8.9.jar post
+ gresql-9.1-901.jdbc4.jar
+
