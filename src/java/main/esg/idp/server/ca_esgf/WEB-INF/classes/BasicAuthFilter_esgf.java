@@ -1,7 +1,7 @@
 /*
  * 
  * kltsa 24/02/2014 no issue :
- * Changes in the original contrail filter so that is it can used with
+ * Changes in the original contrail filter so that it can be used with
  * the esgf user table.
  * Note: jpa is used in order to access the database.
  * 
@@ -34,7 +34,7 @@ import eu.contrail.security.SecurityCommons;
 /*********************************************************************/
 
 /*
- * Class that implements the filter,
+ * Class implements the filter,
  * that checks the validity of user requests.
  */
 public class BasicAuthFilter_esgf  implements Filter 
@@ -43,7 +43,7 @@ public class BasicAuthFilter_esgf  implements Filter
   private EntityManagerFactory emf;
   private EntityManager em = null;
 
-  /* Attributes for storing security, log, context data.*/
+  
   /* private String message; */
   private static final boolean debug = true;
   private static ServletContext ctx;
@@ -392,11 +392,11 @@ public class BasicAuthFilter_esgf  implements Filter
 	  */
   }
   
- /* Test function used creating the connection to the database. 
+ /* Function used for creating a connection to the database. 
   * Input:
   * Output:
   */
-  public void init_old() throws ServletException
+  public void init_database() throws ServletException
   {
     /*
      * Do required initialization
@@ -532,8 +532,7 @@ public class BasicAuthFilter_esgf  implements Filter
   } 
 
 
-  /* Function for initializing data structures 
-   * containing database connection.
+  /* Function for initializing the filter. 
    * Input:
    * Output:
    */
@@ -553,7 +552,7 @@ public class BasicAuthFilter_esgf  implements Filter
 	  }
 	
 	  /* ok lets read from database. */
-	  init_old();
+	  init_database();
 	 
 	  /*    
 	  pu = PersistenceUtils.getInstance();
@@ -574,7 +573,7 @@ public class BasicAuthFilter_esgf  implements Filter
 	}
   }
 
-  /* Returns the configuration of this filter.
+  /* Returns the configuration of the filter.
    * Input:
    * Output:
    */

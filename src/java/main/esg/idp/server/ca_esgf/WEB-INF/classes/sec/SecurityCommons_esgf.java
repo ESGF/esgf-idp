@@ -669,7 +669,7 @@ public class SecurityCommons_esgf{
     InvalidKeyException,
     OperatorCreationException {
 
-	/* kltsa 28/02/2014, no issue : Remove the check so that any string can be used. */
+	/* kltsa 28/02/2014, no issue : Removal of check so that any string can be used. */
 	/*   
     if (!isUUID(uuid)) {
 

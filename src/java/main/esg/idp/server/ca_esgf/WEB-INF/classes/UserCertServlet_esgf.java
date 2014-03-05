@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bouncycastle.operator.OperatorCreationException;
-/* kltsa 26/02/2014 no issue: Lets use new entity ...
+/* kltsa 26/02/2014 no issue: Use new entity ...
 import org.ow2.contrail.federation.federationdb.jpa.entities.User;
 */
 import test1.User;
