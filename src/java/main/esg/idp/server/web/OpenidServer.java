@@ -60,6 +60,9 @@ public class OpenidServer {
 	
 	/** URL of OpenID provider login view */
 	private String loginUrl = "/idp/login.htm";
+	/* kltsa 01/06/2014 issue 23061 aka astatos: handle identifier select as well */
+	private String loginUrl_ids = "/idp/login_ids.htm";
+	
 	
 	/** Openid back-end service. */
 	private ServerManager manager;
@@ -171,35 +174,62 @@ public class OpenidServer {
 	private ModelAndView handleCheckId(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		
 		final ParameterList parameterList = getParameterList(request);
-        final String openid = parameterList.getParameterValue(OpenidPars.OPENID_IDENTITY);
-        final String userClaimedId = parameterList.getParameterValue(OpenidPars.OPENID_CLAIMED_ID);
+        /*final*/ String openid = parameterList.getParameterValue(OpenidPars.OPENID_IDENTITY);
+        /*final*/ String userClaimedId = parameterList.getParameterValue(OpenidPars.OPENID_CLAIMED_ID);
+        Boolean is_ClaimedId_ids = false;
         HttpSession session = request.getSession();
 
+        if(userClaimedId.endsWith(OpenidPars.DEFAULT_IDENTIFIER_SELECT_CLAIMED_ID))
+    	 is_ClaimedId_ids = true;
+    	    	
+        
 		// user is authenticated
         final boolean loggedin = isUserLoggedIn(session, openid);
         if (LOG.isDebugEnabled()) LOG.debug("User authenticated status="+loggedin);
-		if (loggedin) {
-						                        
-            // process the authentication request
-            final Message message = manager.authResponse(parameterList, openid, userClaimedId, true);
+		if (loggedin)
+		{
+		  /* kltsa 03/06/2014 change for issue 23061: if in identifier_select mode use stored openid.
+		   */
+		  if(is_ClaimedId_ids)
+		  {	
+			openid = (String)request.getSession().getAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID);
+			userClaimedId = openid;
+		  }  
+			                                    
+		  // process the authentication request
+          final Message message = manager.authResponse(parameterList, openid, userClaimedId, true);
             
-            // purge parameter list from session so user can log in with another browser/openid
-            session.removeAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST);
+          // purge parameter list from session so user can log in with another browser/openid
+          session.removeAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST);
             
-            // send external redirect response
-            return new ModelAndView( new RedirectView(((AuthSuccess)message).getDestinationUrl(true), false) );
+          // send external redirect response
+          return new ModelAndView( new RedirectView(((AuthSuccess)message).getDestinationUrl(true), false) );
 			
 		// user is not authenticated
-		} else {
-						
-            session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST, parameterList);
-            session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_OPENID, openid);
+		} 
+		else 
+		{
+		  session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST, parameterList);
+          session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_OPENID, openid);
                 		
-    		// send internal redirect response to login controller
-    		return new ModelAndView( new RedirectView(loginUrl,true) );
-			
+    	  // send internal redirect response to login controller
+            
+          /* kltsa 01/06/2014 changes for issue 23061: If identifier_select is used as claimed id then 
+           *                                           return a form where both username and password is 
+           *                                           requested else use the default form.
+           */
+        	
+          ModelAndView mav;
+          if(is_ClaimedId_ids)
+          {		
+            mav = new ModelAndView( new RedirectView(loginUrl_ids,true));
+          }
+          else
+          {
+           	mav = new ModelAndView( new RedirectView(loginUrl,true));	
+          }
+          return mav;
 		}
-		
 	}
 	
 	/**

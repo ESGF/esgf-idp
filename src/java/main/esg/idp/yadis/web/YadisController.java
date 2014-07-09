@@ -18,6 +18,9 @@
  ******************************************************************************/
 package esg.idp.yadis.web;
 
+import java.util.Enumeration;
+import java.util.Map;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,9 +57,10 @@ public class YadisController {
 		try {
 			
 			final String xml = yadisService.discover(openid);
-			
+						
 	        // write response to output stream
 			response.setContentType("application/xrds+xml");
+						
 	        ServletOutputStream os = response.getOutputStream();
 	        os.write(xml.getBytes());
 	        os.close();   
@@ -70,6 +74,5 @@ public class YadisController {
 		}
 	
 	}
-
 	
 }

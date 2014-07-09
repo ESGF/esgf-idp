@@ -42,5 +42,13 @@ public interface IdentityProvider {
 	 * @return
 	 */
 	public Identity getIdentity(final String openid);
+	
+	/**
+	 * Method to authenticate a user.
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public boolean authenticate_user(final String username, final String password, StringBuilder openid);
 
 }

@@ -63,6 +63,13 @@ public class IdentityProviderLocalXmlImpl implements IdentityProvider {
 		else return false;
 		
 	}
+	
+	@Override
+	public boolean authenticate_user(String username, String password, StringBuilder openid) {
+		return true;
+	}
+	
+	
 
 	@Override
 	public Identity getIdentity(String openid) {
