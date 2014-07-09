@@ -1,0 +1,25 @@
+#*****************************************************************#
+# Copyright (c) 2009  Lawrence Livermore National Security (LLNS) #
+# All rights reserved.						  #
+#*****************************************************************#
+
+# This is a manifest, listing all the files to be posted to the
+# distribution server.
+
+#Put the name of the module here.
+[@module@]
+
+#list the files to post relative to here (bin)
+../INSTALL
+../LICENSE
+../TODO
+
+#include the primary artifact tar.gz file
+#No need to enumerate the constitunent jar or other files separately 
+../dist/@module@-@version_num@.jar
+../dist/@module@-@version_num@.tar.gz
+../dist/@module@-test-@version_num@.jar
+../dist/@module@.war
+
+#Also post up this project's installation script(s)
+./esg-idp

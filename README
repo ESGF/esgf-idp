@@ -1,0 +1,18 @@
+#*****************************************************************
+#
+#   Description: Basic description of the project(s) and layout of the
+#   		project.
+#
+#*****************************************************************
+
+README:
+
+The Yadis discovery service is a simple web application that returns XML documents containing URLs for user services. 
+It has no significant library dependencies.
+
+The Openid Server functionality is based on the openid4java library, currently the version modified by ESGF to support attribute providers. 
+It uses Spring for managing the application configuration through dependency injection, but it does not use any Spring Security 
+(except for enforcing HTTPS connections), since Spring Security does not support the server-side functionality of the openid exchange.
+
+The Openid Client package is a small application provided as a facility to test the Openid Server. 
+It relies on Spring Security support for the client-side openid, which is in turn based on the openid4java library also.

@@ -1,0 +1,70 @@
+<!-- Spring configuration for Openid server application -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+                                   
+    <!-- Openid -->
+ 	<context:component-scan base-package="esg.idp.server"/>
+    
+    <!-- View resolver that maps a logical view name to a physical resource -->
+	<bean id="viewResourceResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="1000" />
+		<property name="prefix" value="/WEB-INF/views/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- Tiles configuration -->
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="useMutableTilesContainer" value="true" />
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles-definitions.xml</value>
+			</list>
+		</property>
+	</bean>
+     	
+ 	<!-- URL-controller mappings -->
+	<bean id="openidMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order" value="1" />
+		<property name="mappings">
+			<props>				
+				<prop key="/idp/openidServer.htm">openidServer</prop>
+				<prop key="/idp/login.htm">openidLoginController</prop>
+				<prop key="/idp/login_ids.htm">openidLoginController_ids</prop><!-- kltsa 01/06/2014 issue 23061 aka astatos: handle identifier select as well -->
+				<prop key="/idp/account.htm">accountController</prop>
+				<prop key="/idp/getcert.htm">certController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- ESGF version of ServerManager configured with one or more AttributeProviders -->
+	<bean id="openidServerManager" class="org.openid4java.server.ServerManager">
+		<property name="attributeProviders">
+			<bean id="openidAttributeProviders" class="java.util.Vector">
+				<constructor-arg>
+					<list>
+						<ref bean="openidAttributeProvider"/>
+					</list>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>		
+	
+	<!--  Certificate retrieval controller -->
+	<bean id="certController" class="esg.idp.server.web.CertController">
+		<constructor-arg index="0"><value>/esg/myproxy/myproxy-logon.py</value></constructor-arg>
+	</bean>
+	
+	<!-- Federation-wide Attribute Service -->
+	<bean id="registryService" class="esg.security.registry.service.impl.RegistryServiceLocalXmlImpl">
+  		<constructor-arg index="0"><value>/esg/config/esgf_ats.xml, /esg/config/esgf_ats_static.xml</value></constructor-arg>
+  	</bean> 	
+  	<bean id="federatedAttributeService" class="esg.security.attr.service.impl.FederatedAttributeServiceImpl">
+  		<constructor-arg index="0"><value>ESGF Attribute Service</value></constructor-arg>
+  		<constructor-arg index="1" ref="registryService"/>
+  	</bean> 
+  	<bean id="esgfProperties" class="esg.common.util.ESGFProperties" />	
+
+</beans>

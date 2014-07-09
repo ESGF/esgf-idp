@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER" "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%-5p: %c{3} - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- specific loggers -->
+  <logger name="org.esgf">
+        <level value="info" />
+  </logger>
+    
+  <logger name="esg">
+        <level value="info" />
+  </logger>
+        
+  <!-- Root Logger -->
+  <root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+  </root>
+	
+</log4j:configuration>
