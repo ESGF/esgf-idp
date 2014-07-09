@@ -79,7 +79,7 @@ public class OpenidLoginController_ids {
 		
 		if (idp.authenticate_user(username, password, openid)) 
 		{
-		  /* kltsa 03/06/2014 changes for issue 23061 : Store the openid found in database for this user. */
+		  /* kltsa 03/06/2014 changes for issue 23061 : Stores the openid found in database for this user. */
 		  request.getSession().setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid.toString());
 						
 			
