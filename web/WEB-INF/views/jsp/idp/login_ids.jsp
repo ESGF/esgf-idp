@@ -35,15 +35,20 @@
 															<tr>
 																<td align="left">
 																<!-- Your OpenID: <b><c:out value ="${sessionScope[openid_attribute]}"/></b>-->
-																Username:&nbsp;
+																Username:&nbsp;&nbsp;
+																</td>
+																<td align="left">
 																<!--<label for="login_form_username">&nbsp;Username</label>:-->
-                                                                <input id="login_form_username" name="login_form_username" type="text"/>
+                                                                <input id="login_form_username" name="login_form_username" type="text" /><!-- size=27 -->
+																&nbsp;&nbsp;
 																</td>
 															</tr>
 														<!-- </c:if>  --> 
 														<tr>
-															<td align="center" class="required">
-															    Password:&nbsp; 
+															<td align="left" class="required">
+															    Password:&nbsp;&nbsp; 
+															</td>
+															<td align="left" class="required">    
 															    <springForm:password path="password"/>
 																&nbsp;<input type="submit" value="SUBMIT" class="button" /><!---->
 														    </td>
