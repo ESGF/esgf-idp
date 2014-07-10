@@ -35,7 +35,7 @@ public class OpenidLoginController_ids {
 	
 	private final static String LOGIN_COMMAND = "loginCommand";
 		
-	private static final Log LOG = LogFactory.getLog(OpenidLoginController.class);
+	private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
 	/**
 	 * GET method is invoked as redirect from the {@link OpenidServer}.
