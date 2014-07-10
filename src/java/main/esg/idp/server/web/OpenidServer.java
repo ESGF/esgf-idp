@@ -88,7 +88,7 @@ public class OpenidServer {
 		if (LOG.isDebugEnabled()) LOG.debug("Configuring ServerManager with OpenID Server URL: "+openidServerUrl);
 		
 		// fields signed by the Openid Server
-		manager.setSignFields("return_to,assoc_handle,claimed_id,identity" + ",ns." + AxMessage.OPENID_NS_AX); // OpenID 1.x
+		manager.setSignFields("return_to,assoc_handle,claimed_id,identity,ns.ext1"); // OpenID 1.x
 		manager.setSignExtensions(new String[]{AxMessage.OPENID_NS_AX});
 		
 	}
