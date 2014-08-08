@@ -192,7 +192,7 @@ public class OpenidServer {
 		   */
 		  if(is_ClaimedId_ids)
 		  {	
-			openid = (String)request.getSession().getAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID);
+			openid = (String)session.getAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID);
 			userClaimedId = openid;
 		  }  
 			                                    
@@ -222,7 +222,7 @@ public class OpenidServer {
           ModelAndView mav;
           if(is_ClaimedId_ids)
           {		
-            mav = new ModelAndView( new RedirectView(loginUrl_ids,true));
+            mav = new ModelAndView( new RedirectView(loginUrl_ids,true));           
           }
           else
           {

@@ -1,6 +1,7 @@
 package esg.idp.server.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.apache.commons.codec.binary.Base64;
 
 import esg.idp.server.api.IdentityProvider;
 
@@ -24,7 +26,7 @@ public class OpenidLoginController_ids {
 	private IdentityProvider idp;
 	
 	/**
-	 * URL of OpenidServer for redirection after successfull authentication.
+	 * URL of OpenidServer for redirection after successful authentication.
 	 */
 	private String serverUrl = "/idp/openidServer.htm";
 	
@@ -42,7 +44,7 @@ public class OpenidLoginController_ids {
 	 * It simply returns the view since the openid information is kept in the HTTP session.
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView doGet(final HttpServletRequest request) throws Exception {
+	public ModelAndView doGet(final HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		// instantiate new form backing object
 		final OpenidLoginFormBean_ids command = new OpenidLoginFormBean_ids();
@@ -50,6 +52,23 @@ public class OpenidLoginController_ids {
 		// return to view
 		final ModelAndView mav = new ModelAndView(view);
 		mav.getModel().put(LOGIN_COMMAND, command);
+		
+		
+		/* kltsa 08/08/2014 change for issue 23089 :Check origin of the request, if from command line 
+		 *                                          then return basic http auth. 
+		 */
+		
+		String agent_type = null;
+		agent_type = request.getHeader("Agent-type");
+		if(agent_type != null) 		
+		{	
+		  if(agent_type.contains("cl"))
+		  {	 
+		    response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
+		    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		  }
+		}
+		
 		return mav;
 		
 	}
@@ -67,20 +86,54 @@ public class OpenidLoginController_ids {
 	public ModelAndView doPost(@ModelAttribute(LOGIN_COMMAND) OpenidLoginFormBean_ids data, BindingResult errors, HttpServletRequest request) {
 		
 		final HttpSession session = request.getSession();
+		final String username; 
+		final String password; 
+		String http_basic_auth_username = null; 
+		String http_basic_auth_password = null;
+		String http_basic_auth = null;
 		StringBuilder openid = new StringBuilder();
 		
-		// user openid is retrieved from form 
-		/*request.getParameter(OpenidPars.IDENTIFIER_SELECT_LOGIN_FORM_USERNAME_TEXTFIELD_ID); */
-		final String username =  data.getLogin_form_username(); /* a dict could be more useful ? */
+		
+
+		/* kltsa 08/08/2014 change for issue 23089 :Check if request contains http basic  auth header
+		 *                                          and use this ,if exists, instead of the data 
+		 *                                          login form. 
+		 */
+		http_basic_auth = request.getHeader("Authorization");
+		if(http_basic_auth != null)
+		{	
+		  byte[] byteArray = null; 
+		  http_basic_auth = http_basic_auth.replaceAll("Basic ", "");
+		  		  
+		  byteArray = Base64.decodeBase64(http_basic_auth.getBytes());
+		    
+		  String http_basic_auth_dec =  new String(byteArray);
 			
-		// user password is bound to the form backing object
-		final String password = data.getPassword();		
+		  String[] parts = http_basic_auth_dec.split(":");
+		  http_basic_auth_username = parts[0]; 
+		  http_basic_auth_password = parts[1]; 
+			
+		}		
+		
+		if(http_basic_auth_username == null && http_basic_auth_password == null)
+		{
+		  // user openid is retrieved from form 
+		  username =  data.getLogin_form_username(); /* a dict could be more useful ? */
+		  password = data.getPassword();	         /* user password is bound to the form backing object */	
+		}
+		else
+		{
+		  username =  http_basic_auth_username; /* a dict could be more useful ? */
+		  password = http_basic_auth_password;  /* user password is bound to the form backing object */
+		}
+		
+				
 		if (LOG.isDebugEnabled()) LOG.debug("Attempting authentication with user="+username+" password="+password);
 		
 		if (idp.authenticate_user(username, password, openid)) 
 		{
 		  /* kltsa 03/06/2014 changes for issue 23061 : Stores the openid found in database for this user. */
-		  request.getSession().setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid.toString());
+		  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid.toString());
 						
 			
 		  // set session-scope authentication flag to TRUE
