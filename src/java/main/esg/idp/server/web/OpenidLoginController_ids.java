@@ -141,7 +141,7 @@ public class OpenidLoginController_ids {
 		  session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_AUTHENTICATED, Boolean.TRUE);
 		  if (LOG.isDebugEnabled()) LOG.debug("Authentication succeded");
 			
-	      // redirect to openid server fir further processing
+	      // redirect to openid server for further processing
 	      final String redirect = serverUrl + "?" + OpenidPars.PARAMETER_STATUS+"="+OpenidPars.PARAMETER_STATUS_VALUE; 
 	      return new ModelAndView( new RedirectView(redirect, true) );
         
