@@ -18,9 +18,6 @@
  ******************************************************************************/
 package esg.idp.yadis.web;
 
-import java.util.Enumeration;
-import java.util.Map;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import esg.idp.yadis.api.YadisService;
-
 /**
  * Controller for OpenID Yadis discovery:
  * this controller processes all requests sent to the Gateway Yadis servlet,
