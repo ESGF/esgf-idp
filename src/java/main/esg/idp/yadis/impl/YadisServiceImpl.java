@@ -63,7 +63,7 @@ public class YadisServiceImpl implements YadisService {
 	private String xml;
 	
 	/* kltsa 18/06/2014, change for issue 23061 : xml document without Claimed Identifier. */
-	private String xml_no_cl_id;
+	private String xml_wcid;
 	
 	@Resource(name="yadisEndpoints")	
 	public void setEndpoints(final Map<String,String> endpoints) {
@@ -84,7 +84,7 @@ public class YadisServiceImpl implements YadisService {
 	@PostConstruct
 	public void init() throws IOException, JDOMException {
 		xml = buildXml(IDENTITY);
-		xml_no_cl_id = buildXml();
+		xml_wcid = buildXml();
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class YadisServiceImpl implements YadisService {
 	   */
       if(openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL))
       {
-       	return xml_no_cl_id;  
+       	return xml_wcid;  
       }
       else
       {	  
