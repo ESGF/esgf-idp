@@ -11,7 +11,7 @@
 			
 			<!-- login errors -->
 			<div align="center">
-				<springForm:errors path="loginCommand.*" cssClass="error"/>
+				<springForm:errors path="loginCommand_ids.*" cssClass="error"/>
 			</div>
 
 			<!-- user openid -->
@@ -29,7 +29,7 @@
 											<img src='<c:url value="/themes/openid.png"/>' width="80"/>
 										</td>
 										<td>
-											<springForm:form method="post" commandName="loginCommand" name="loginForm">
+											<springForm:form method="post" commandName="loginCommand_ids" name="loginForm">
 													<table border="0" align="center" class="required">
 														<!--  <c:if test="${not empty sessionScope[openid_attribute]}">-->
 															<tr>

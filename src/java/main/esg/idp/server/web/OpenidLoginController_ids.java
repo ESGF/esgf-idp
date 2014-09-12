@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import org.apache.commons.codec.binary.Base64;
 
 import esg.idp.server.api.IdentityProvider;
 
@@ -35,7 +34,7 @@ public class OpenidLoginController_ids {
 	 */
 	private String view = "/idp/login_ids";
 	
-	private final static String LOGIN_COMMAND = "loginCommand";
+	private final static String LOGIN_COMMAND = "loginCommand_ids";
 		
 	private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
