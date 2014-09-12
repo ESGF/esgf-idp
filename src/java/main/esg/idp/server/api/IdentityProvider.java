@@ -50,6 +50,6 @@ public interface IdentityProvider {
 	 * @param password
 	 * @return
 	 */
-	public boolean authenticate_user(final String username, final String password, StringBuilder openid);
+	public boolean authenticate_ids(final String username, final String password, StringBuilder openid);
 
 }

@@ -39,7 +39,7 @@
 																</td>
 																<td align="left">
 																<!--<label for="login_form_username">&nbsp;Username</label>:-->
-                                                                <input id="login_form_username" name="login_form_username" type="text" /><!-- size=27 -->
+                                                                <input id="username" name="username" type="text" /><!-- size=27 -->
 																&nbsp;&nbsp;
 																</td>
 															</tr>

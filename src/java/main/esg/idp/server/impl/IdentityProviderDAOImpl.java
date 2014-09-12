@@ -42,8 +42,8 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 	
 	/*kltsa 04/06/2014  change for issue 23061 : Authenticates user based on username and password. */
 	@Override
-	public boolean authenticate_user(String username, String password, StringBuilder openid) {
-	 return userInfoDAO.check_user_Password(username, password, openid);
+	public boolean authenticate_ids(String username, String password, StringBuilder openid) {
+	 return userInfoDAO.checkPassword_ids(username, password, openid);
 		
 	}
 

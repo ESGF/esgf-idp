@@ -119,7 +119,7 @@ public class OpenidLoginController_ids {
 		if(http_basic_auth_username == null && http_basic_auth_password == null)
 		{
 		  // user openid is retrieved from form 
-		  username =  data.getLogin_form_username(); /* a dict could be more useful ? */
+		  username =  data.getUsername(); /* a dict could be more useful ? */
 		  password = data.getPassword();	         /* user password is bound to the form backing object */	
 		}
 		else
@@ -131,7 +131,7 @@ public class OpenidLoginController_ids {
 				
 		if (LOG.isDebugEnabled()) LOG.debug("Attempting authentication with user="+username+" password="+password);
 		
-		if (idp.authenticate_user(username, password, openid)) 
+		if (idp.authenticate_ids(username, password, openid)) 
 		{
 		  /* kltsa 03/06/2014 changes for issue 23061 : Stores the openid found in database for this user. */
 		  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid.toString());

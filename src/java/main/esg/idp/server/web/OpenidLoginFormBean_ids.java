@@ -16,11 +16,11 @@ public class OpenidLoginFormBean_ids {
 	/** Flag to remember user's openid in cookie */
 	private boolean rememberOpenid = false;
 
-	public String getLogin_form_username() {
+	public String getUsername() {
 		return username;
 	}
 
-	public void setLogin_form_username(String login_form_username) {
+	public void setUsername(String login_form_username) {
 		this.username = login_form_username;
 	}
 
