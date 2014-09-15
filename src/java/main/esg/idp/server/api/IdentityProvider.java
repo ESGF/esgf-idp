@@ -43,13 +43,17 @@ public interface IdentityProvider {
 	 */
 	public Identity getIdentity(final String openid);
 	
-	/* kltsa 01/06/2014 change for issue 23061 : Authenticates user based on username and password. */
+	/* kltsa 01/06/2014 : Authenticates user based on username and password. */
 	/**
 	 * Method to authenticate a user.
 	 * @param username
 	 * @param password
 	 * @return
 	 */
-	public boolean authenticate_ids(final String username, final String password, StringBuilder openid);
+	public boolean authenticate_ids(final String username, final String password);
+	
+	
+	/* kltsa 01/06/2014 : Returns openid of given user. */
+	public String getOpenid(final String username);
 
 }

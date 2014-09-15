@@ -40,12 +40,18 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 		
 	}
 	
-	/*kltsa 04/06/2014  change for issue 23061 : Authenticates user based on username and password. */
+	/*kltsa 04/06/2014 : Authenticates user based on username and password. */
 	@Override
-	public boolean authenticate_ids(String username, String password, StringBuilder openid) {
-	 return userInfoDAO.checkPassword_ids(username, password, openid);
-		
+	public boolean authenticate_ids(String username, String password) {
+	 return userInfoDAO.checkPassword_ids(username, password);
 	}
+	
+	
+	@Override
+	public String getOpenid(String username) {
+	 return userInfoDAO.getOpenid(username);		
+	}
+	
 
 	@Override
 	public Identity getIdentity(String openid) {

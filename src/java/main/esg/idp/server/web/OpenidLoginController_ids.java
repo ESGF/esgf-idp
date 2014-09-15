@@ -50,11 +50,9 @@ public class OpenidLoginController_ids {
 		
 		// return to view
 		final ModelAndView mav = new ModelAndView(view);
-		mav.getModel().put(LOGIN_COMMAND, command);
-		
+		mav.getModel().put(LOGIN_COMMAND, command);		
 				
-		return mav;
-		
+		return mav;		
 	}
 
 
@@ -72,21 +70,26 @@ public class OpenidLoginController_ids {
 		final HttpSession session = request.getSession();
 		final String username; 
 		final String password; 
-		StringBuilder openid = new StringBuilder();
+		String openid = null;
+		Boolean user_authenticated = false;
 		
 		
 
 		// user openid is retrieved from form 
 		username =  data.getUsername(); /* a dict could be more useful ? */
-		password = data.getPassword();	         /* user password is bound to the form backing object */	
+		password =  data.getPassword();	/* user password is bound to the form backing object */	
 		
 				
 		if (LOG.isDebugEnabled()) LOG.debug("Attempting authentication with user="+username+" password="+password);
 		
-		if (idp.authenticate_ids(username, password, openid)) 
+		user_authenticated  = idp.authenticate_ids(username, password);
+		openid = idp.getOpenid(username);		
+		
+		if (user_authenticated && openid != null) 
 		{
-		  /* kltsa 03/06/2014 changes for issue 23061 : Stores the openid found in database for this user. */
-		  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid.toString());
+		  			
+		  /* kltsa 03/06/2014 : Stores the openid found in database for this user. */
+		  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
 						
 			
 		  // set session-scope authentication flag to TRUE

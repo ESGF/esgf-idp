@@ -60,7 +60,7 @@ public class OpenidServer {
 	
 	/** URL of OpenID provider login view */
 	private String loginUrl = "/idp/login.htm";
-	/* kltsa 01/06/2014 change for issue 23061. */
+	/* kltsa 01/06/2014 */
 	private String loginUrl_ids = "/idp/login_ids.htm";
 	
 	
@@ -188,7 +188,7 @@ public class OpenidServer {
         if (LOG.isDebugEnabled()) LOG.debug("User authenticated status="+loggedin);
 		if (loggedin)
 		{
-		  /* kltsa 03/06/2014 change for issue 23061 : If in identifier_select mode use stored openid.
+		  /* kltsa 03/06/2014 : If in identifier_select mode use stored openid.
 		   */
 		  if(is_ClaimedId_ids)
 		  {	
@@ -214,9 +214,9 @@ public class OpenidServer {
                 		
     	  // send internal redirect response to login controller
             
-          /* kltsa 01/06/2014 changes for issue 23061: If identifier_select is used as claimed id then 
-           *                                           return a form where both username and password are 
-           *                                           requested else use the default form.
+          /* kltsa 01/06/2014 : If identifier_select is used as claimed id then 
+           *                    return a form where both username and password are 
+           *                    requested else use the default form.
            */
         	
           ModelAndView mav;

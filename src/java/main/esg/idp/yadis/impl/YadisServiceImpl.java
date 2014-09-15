@@ -62,7 +62,7 @@ public class YadisServiceImpl implements YadisService {
 	// XML document template with place-holder for the user's identity.
 	private String xml;
 	
-	/* kltsa 18/06/2014, change for issue 23061 : xml document without Claimed Identifier. */
+	/* kltsa 18/06/2014 : xml document without Claimed Identifier. */
 	private String xml_wcid;
 	
 	@Resource(name="yadisEndpoints")	
@@ -92,8 +92,8 @@ public class YadisServiceImpl implements YadisService {
 	 */
 	public String discover(final String openid) throws IllegalArgumentException 
 	{
-	  /* kltsa 18/06/2014, change for issue 23061 : If an OP identifier is supplied then the xrds documents should not 
-	   *                                            contain claimed id. 
+	  /* kltsa 18/06/2014: If an OP identifier is supplied then the xrds documents should not 
+	   *                   contain claimed id. 
 	   */
       if(openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL))
       {
@@ -148,8 +148,8 @@ public class YadisServiceImpl implements YadisService {
 	}
 	
 	
-	/*  kltsa 18/06/2014, change for issue 23061: New method for creating Yardis document without 
-	 *                                            claimed id or local id. 
+	/*  kltsa 18/06/2014 : New method for creating Yardis document without 
+	 *                     claimed id or local id. 
 	 */
 	String buildXml() throws IOException, JDOMException 
 	{

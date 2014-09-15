@@ -66,9 +66,9 @@ public class OpenidPars {
 	public final static String OPENID_CHECKID_IMMEDIATE = "checkid_immediate";
 	public final static String OPENID_CHECK_AUTHENTICATION = "check_authentication";
 	
-	/* kltsa 03/06/2014 changes for issue 23061 : General form of OP identifier, claimed id for user in identifier_select mode
-	 *                                            and name of session attribute containing the openid of user found in  
-	 *                                            database.
+	/* kltsa 03/06/2014  : General form of OP identifier, claimed id for user in identifier_select mode
+	 *                     and name of session attribute containing the openid of user found in  
+	 *                     database.
 	 */
 	public final static String ESGF_OP_DEFAULT_IDENTIFIER_URL = "esgf-idp/openid/";
 	public final static String DEFAULT_IDENTIFIER_SELECT_CLAIMED_ID = "identifier_select";
