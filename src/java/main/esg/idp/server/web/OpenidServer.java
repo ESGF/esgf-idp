@@ -213,16 +213,10 @@ public class OpenidServer {
           session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_OPENID, openid);
                 		
     	  // send internal redirect response to login controller
-            
-          /* kltsa 01/06/2014 : If identifier_select is used as claimed id then 
-           *                    return a form where both username and password are 
-           *                    requested else use the default form.
-           */
-        	
           ModelAndView mav;
           if(is_ClaimedId_ids)
           {		
-            mav = new ModelAndView( new RedirectView(loginUrl_ids,true));           
+            mav = new ModelAndView( new RedirectView(loginUrl_ids,true)); /*kltsa 01/06/2014. */           
           }
           else
           {
