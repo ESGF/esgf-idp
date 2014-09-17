@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import esg.idp.server.api.IdentityProvider;
+import esg.idp.server.web.OpenidPars;
 import esg.idp.yadis.api.YadisService;
 
 /**
@@ -45,7 +46,7 @@ import esg.idp.yadis.api.YadisService;
 @Service("yadisService")
 public class YadisServiceImpl implements YadisService {
 	
-	public final static String IDENTITY = "__IDENTITY__";
+	public final static String IDENTITY = "__IDENTITY__";	
 	
 	//private final static Logger LOG = Logger.getLogger(YadisServiceImpl.class);
 	
@@ -60,6 +61,9 @@ public class YadisServiceImpl implements YadisService {
 	
 	// XML document template with place-holder for the user's identity.
 	private String xml;
+	
+	/* kltsa 18/06/2014 : xml document without Claimed Identifier. */
+	private String xml_wcid;
 	
 	@Resource(name="yadisEndpoints")	
 	public void setEndpoints(final Map<String,String> endpoints) {
@@ -80,19 +84,28 @@ public class YadisServiceImpl implements YadisService {
 	@PostConstruct
 	public void init() throws IOException, JDOMException {
 		xml = buildXml(IDENTITY);
+		xml_wcid = buildXml();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String discover(final String openid) throws IllegalArgumentException {
-				
+	public String discover(final String openid) throws IllegalArgumentException 
+	{
+	  /* kltsa 18/06/2014: If an OP identifier is supplied then the xrds documents should not 
+	   *                   contain claimed id. 
+	   */
+      if(openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL))
+      {
+       	return xml_wcid;  
+      }
+      else
+      {	  
 		// check user with given openid does exist
 		if (idp.getIdentity(openid)==null) throw new IllegalArgumentException("Invalid openID: "+openid);
-		
 		// return Yadis document for existing user
 		else return xml.replace(IDENTITY, openid);
-		
+      } 	
 	}
 	
 	/**
@@ -132,6 +145,48 @@ public class YadisServiceImpl implements YadisService {
 		// pretty-format the XML document
 		return format(sb.toString());
 		
+	}
+	
+	
+	/*  kltsa 18/06/2014 : New method for creating Yardis document without 
+	 *                     claimed id or local id. 
+	 */
+	String buildXml() throws IOException, JDOMException 
+	{
+	  final StringBuilder sb = new StringBuilder();
+	  	   
+	  
+	  sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+	  sb.append("<xrds:XRDS xmlns:xrds=\"xri://$xrds\" xmlns=\"xri://$xrd*($v*2.0)\">");
+	  sb.append("<XRD>");
+	  	
+	  // insert mandatory IdP endpoint
+	  
+	  sb.append("<Service priority=\"0\">")
+	    .append("<Type>http://specs.openid.net/auth/2.0/server</Type>") /*http://specs.openid.net/auth/2.0/signon*/
+		.append("<Type>http://specs.openid.net/auth/2.0</Type>")        /*http://openid.net/signon/1.0*/
+		/*.append("<Type>http://openid.net/srv/ax/1.0</Type>")*/
+		.append("<URI>").append(idpProviderUrl.toString()).append("</URI>")
+		/*.append("<LocalID>").append(openid).append("</LocalID>")*/ /* kltsa 18/06/2014: Skip the local id tag.*/
+	    .append("</Service>");
+		
+		// optional attribute service endpoint
+	    
+	  int p = 1;
+	  for (final String type : endpoints.keySet()) 
+	  {
+	   	sb.append("<Service priority=\""+ (p++) +"\">")
+		  .append("<Type>").append(type).append("</Type>")
+		  .append("<URI>").append(endpoints.get(type)).append("</URI>")
+	      /*.append("<LocalID>").append(openid).append("</LocalID>")*/
+	  	  .append("</Service>");
+	  }
+	  	
+	  sb.append("</XRD>");
+	  sb.append("</xrds:XRDS>");
+	  	  
+	  // pretty-format the XML document
+	  return format(sb.toString());
 	}
 	
 	/**

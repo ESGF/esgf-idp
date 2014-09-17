@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import esg.idp.yadis.api.YadisService;
-
 /**
  * Controller for OpenID Yadis discovery:
  * this controller processes all requests sent to the Gateway Yadis servlet,
@@ -54,9 +53,10 @@ public class YadisController {
 		try {
 			
 			final String xml = yadisService.discover(openid);
-			
+						
 	        // write response to output stream
 			response.setContentType("application/xrds+xml");
+						
 	        ServletOutputStream os = response.getOutputStream();
 	        os.write(xml.getBytes());
 	        os.close();   
@@ -70,6 +70,5 @@ public class YadisController {
 		}
 	
 	}
-
 	
 }

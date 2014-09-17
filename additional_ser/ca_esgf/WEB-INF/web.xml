@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  version="3.1"
+  metadata-complete="true">
+<!--
+  <filter>
+    <description>Test that AuthorizationHeader is present and contains a valid (username, password) pair</description>
+    <filter-name>BasicAuthFilter</filter-name>
+    <filter-class>BasicAuthFilter</filter-class>
+  </filter>
+--> 
+
+
+
+  <!-- kltsa 14/01/2014 just a small servlet example... -->
+ <servlet>
+    <servlet-name>simple_filtrer_user</servlet-name>
+    <servlet-class>simple_filtrer_user</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>simple_filtrer_user</servlet-name>
+    <url-pattern>/simple_filtrer_user</url-pattern>
+  </servlet-mapping>
+<!-- end of example... -->
+
+
+<servlet>
+    <servlet-name>UserCertServlet</servlet-name>
+    <servlet-class>UserCertServlet</servlet-class>
+    <!--
+    TODO: Move most of these parameters to a properties files which will not 
+    be overwritten when the CA Server WAR is deployed.
+    -->
+
+    <init-param>
+      <description>Enable debugging output</description>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <description>Location of CA keypair</description>
+      <param-name>issuerKeyPairFilename</param-name>
+      <param-value>/home/solg9/kleanthis/Dev/temp_data/rootca-key.pem</param-value>
+      <!-- kltsa 31/01/2014 old directory 
+           /var/lib/contrail/ca-server/rootca-key.pem
+      -->
+    </init-param>
+    <init-param>
+      <description>Password for CA keypair</description>
+      <param-name>issuerKeyPairPassword</param-name>
+      <param-value>changeme</param-value>
+    </init-param>
+    <init-param>
+      <description>Location of CA certificate</description>
+      <param-name>issuerCertificateFilename</param-name>
+      <param-value>/home/solg9/kleanthis/Dev/temp_data/rootca-cert.pem</param-value>
+      <!-- kltsa 31/01/2014 old directory 
+           /var/lib/contrail/ca-server/rootca-cert.pem
+      -->
+    </init-param>
+    <init-param>
+      <description>Certificate lifetime in hours. -1 to not use</description>
+      <param-name>certLifetimeHours</param-name>
+      <param-value>6</param-value>
+    </init-param>
+    <init-param>
+      <description>Certificate lifeime in days. -1 to not use</description>
+      <param-name>certLifetimeDays</param-name>
+      <param-value>-1</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UserCertServlet</servlet-name>
+    <url-pattern>/user</url-pattern>
+  </servlet-mapping> 
+
+
+<!-- kltsa 26/02/2014 the basic auth filter equivalent.-->
+ <filter>
+  <filter-name>BasicAuthFilter_esgf</filter-name>
+  <filter-class>BasicAuthFilter_esgf</filter-class>
+ </filter>
+<!-- and the servlet mapping of this filter. -->
+<filter-mapping>
+    <filter-name>BasicAuthFilter_esgf</filter-name>
+    <servlet-name>UserCertServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+
+
+<!--
+ <filter>
+    <description>Test that AuthorizationHeader is present and contains a valid (username, password) pair</description>
+    <filter-name>BasicAuthFilter_esgf</filter-name>
+    <filter-class>BasicAuthFilter_esgf</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>BasicAuthFilter</filter-name>
+    <servlet-name>simple_filtrer_user</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+ -->   
+
+</web-app>

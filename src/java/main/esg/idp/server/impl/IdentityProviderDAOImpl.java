@@ -11,6 +11,7 @@ import esg.idp.server.api.Identity;
 import esg.idp.server.api.IdentityProvider;
 import esg.node.security.UserInfo;
 import esg.node.security.UserInfoCredentialedDAO;
+import esg.node.security.UserInfoDAO;
 
 /**
  * Implementation of {@link IdentityProvider} that is backed up by a relational database.
@@ -38,6 +39,19 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 		return userInfoDAO.checkPassword(openid, password);
 		
 	}
+	
+	/*kltsa 04/06/2014 : Authenticates user based on username and password. */
+	@Override
+	public boolean authenticate_ids(String username, String password) {
+	 return userInfoDAO.checkPassword_ids(username, password);
+	}
+	
+	
+	@Override
+	public String getOpenid(String username) {
+	 return userInfoDAO.getOpenid(username);		
+	}
+	
 
 	@Override
 	public Identity getIdentity(String openid) {
