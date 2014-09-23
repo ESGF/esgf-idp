@@ -91,7 +91,7 @@ public class OpenidServer {
 		if (LOG.isDebugEnabled()) LOG.debug("Configuring ServerManager with OpenID Server URL: "+openidServerUrl);
 		
 		// fields signed by the Openid Server
-		manager.setSignFields("return_to,assoc_handle,claimed_id,identity"); // OpenID 1.x
+		manager.setSignFields("return_to,assoc_handle,claimed_id,identity,ns.ext1"); // OpenID 1.x
 		manager.setSignExtensions(new String[]{AxMessage.OPENID_NS_AX});
 		
 	}
@@ -198,6 +198,7 @@ public class OpenidServer {
 			                                    
 		  // process the authentication request
           final Message message = manager.authResponse(parameterList, openid, userClaimedId, true);
+	  manager.setSignFields(manager.getSignFields().concat(",ns."+ message.getExtensionAlias(message.getExtensions().iterator().next().toString()))); 
             
           // purge parameter list from session so user can log in with another browser/openid
           session.removeAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST);

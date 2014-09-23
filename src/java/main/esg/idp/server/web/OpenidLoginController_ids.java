@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.apache.commons.codec.binary.Base64;
 
 import esg.idp.server.api.IdentityProvider;
 
@@ -35,6 +36,9 @@ public class OpenidLoginController_ids {
 	private String view = "/idp/login_ids";
 	
 	private final static String LOGIN_COMMAND = "loginCommand_ids";
+	
+	private final static String CUSTOM_BASIC_HTTP_AUTH_HEADER = "Agent-type";
+	private final static String BASIC_HTTP_AUTH_HEADER_VALUE = "cl";
 		
 	private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
@@ -50,7 +54,21 @@ public class OpenidLoginController_ids {
 		
 		// return to view
 		final ModelAndView mav = new ModelAndView(view);
-		mav.getModel().put(LOGIN_COMMAND, command);		
+		mav.getModel().put(LOGIN_COMMAND, command);
+		
+		/* kltsa 08/08/2014 change for issue 23089 :Check origin of the request, if from command line
+		* then return basic http auth.
+		*/
+		String agent_type = null;
+		agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
+		if(agent_type != null)
+		{	
+		  if(agent_type.contains(BASIC_HTTP_AUTH_HEADER_VALUE))
+		  {	
+		    response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
+		    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		  }
+		}
 				
 		return mav;		
 	}
@@ -73,13 +91,43 @@ public class OpenidLoginController_ids {
 		String openid = null;
 		Boolean user_authenticated = false;
 		
+		String http_basic_auth_username = null;
+		String http_basic_auth_password = null;
+		String http_basic_auth = null;
 		
+		
+		
+		/* kltsa 08/08/2014 change for issue 23089 :Check if request contains http basic auth header
+		* and use this ,if exists, instead of the data from
+		* login form.
+		*/
+		http_basic_auth = request.getHeader("Authorization");
+		if(http_basic_auth != null)
+		{	
+		  byte[] byteArray = null;
+		  String http_basic_auth_enc = http_basic_auth.replaceAll("Basic ", "");
+		  byteArray = Base64.decodeBase64(http_basic_auth_enc.getBytes());
+		  String http_basic_auth_dec = new String(byteArray);
+		  String[] parts = http_basic_auth_dec.split(":");
+		  http_basic_auth_username = parts[0];
+		  http_basic_auth_password = parts[1];
+		}
 
-		// user openid is retrieved from form 
-		username =  data.getUsername(); /* a dict could be more useful ? */
-		password =  data.getPassword();	/* user password is bound to the form backing object */	
 		
-				
+		
+		if(http_basic_auth_username == null && http_basic_auth_password == null)
+		{
+		  // user openid is retrieved from form 
+		  username =  data.getUsername(); /* a dict could be more useful ? */
+		  password =  data.getPassword();	/* user password is bound to the form backing object */	
+		}
+		else
+		{
+		  username = http_basic_auth_username;
+		  password = http_basic_auth_password;
+		}
+		
+						
 		if (LOG.isDebugEnabled()) LOG.debug("Attempting authentication with user="+username+" password="+password);
 		
 		user_authenticated  = idp.authenticate_ids(username, password);
