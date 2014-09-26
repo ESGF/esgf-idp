@@ -164,7 +164,7 @@ public class YadisServiceImpl implements YadisService {
 	  
 	  sb.append("<Service priority=\"0\">")
 	    .append("<Type>http://specs.openid.net/auth/2.0/server</Type>") /*http://specs.openid.net/auth/2.0/signon*/
-		.append("<Type>http://specs.openid.net/auth/2.0</Type>")        /*http://openid.net/signon/1.0*/
+		/*.append("<Type>http://specs.openid.net/auth/2.0</Type>") */   /*http://openid.net/signon/1.0*/
 		/*.append("<Type>http://openid.net/srv/ax/1.0</Type>")*/
 		.append("<URI>").append(idpProviderUrl.toString()).append("</URI>")
 		/*.append("<LocalID>").append(openid).append("</LocalID>")*/ /* kltsa 18/06/2014: Skip the local id tag.*/
