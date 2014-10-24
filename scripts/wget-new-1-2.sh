@@ -485,7 +485,7 @@ download_using_cookies()
      rm res
 
      #ok lets contact the idp as well...
-     if echo "$http_resp" | grep -q " 302 "; # [[ $http_resp == "302" ]]
+     if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"; # [[ $http_resp == "302" ]]
       then
           #extract the location of the idp service
           urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
