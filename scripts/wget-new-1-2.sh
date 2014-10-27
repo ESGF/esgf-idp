@@ -29,16 +29,16 @@ search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pm
 #EOF--dataset.file.url.chksum_type.chksum
 #)"
 
-#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/#Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/#r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#EOF--dataset.file.url.chksum_type.chksum
-#)"
-
 download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
 EOF--dataset.file.url.chksum_type.chksum
 )"
+
+#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#EOF--dataset.file.url.chksum_type.chksum
+#)"
 
 
 
@@ -442,38 +442,46 @@ remove_from_cache() {
     unset cached
 }
 
+debug_duc=1
 download_using_cookies()
 {
-  #data
+  #The data to be downloaded.
   data=" $url"
   filename="$file"  
 
-  #Wget args
-  wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies wcookies.txt --load-cookies wcookies.txt -o res "
+  #Wget args.
+  wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies wcookies.txt --load-cookies wcookies.txt -o res " # additional arguments
    
-  echo -e "****executing:\n"
-  echo -e "wget  $data $wget_args\n"
+  if [ $debug_duc -eq 1 ]
+  then
+   echo -e "****executing:\n"
+   echo -e "wget  $data $wget_args\n"
+  fi
 
-  #get some data 
+  #Try to download the data. 
   command="wget $wget_args --header="Agent-type:cl" $data"
   eval $command 
 
-  echo -e "\nresult is"
   http_resp=$(cat res)
-  echo $http_resp  
-  rm res
+  rm res  
 
-  #Sent some data to the orp service
+  if [ $debug_duc -eq 1 ]
+  then
+   echo -e "\nresult is"
+   echo $http_resp  
+  fi 
+    
+  #If redirected to orp service sent the openid provider. 
   if echo "$http_resp" | grep -q " 302 "; #[[ $http_resp == " 401 " ]] 
    then
      urls=$(echo $http_resp | egrep -o 'https?://[^ ]+'| cut -d'/' -f 3)
      orp_service=$(echo $urls | cut -d' ' -f 3)
  
-     #location of orp
+     #Location of orp.
      echo "*******orp service*********"
      echo $orp_service
 
-     command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+     command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
      echo -e "****executing:\n"
      echo -e "$command\n"
@@ -481,23 +489,27 @@ download_using_cookies()
      eval $command #|| { failed=1; break; }
 
      http_resp=$(cat res)
-     echo $http_resp
      rm res
 
-     #ok lets contact the idp as well...
+     if [ $debug_duc -eq 1 ]
+      then
+       echo $http_resp
+     fi
+
+     #If redirected to idp service sent the credentials.
      if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"; # [[ $http_resp == "302" ]]
       then
-          #extract the location of the idp service
+          #extract the location of the idp service.
           urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
 
           idp_service=$(echo $urls | cut -d' ' -f 2) 
           
-          #location of orp
+          #location of orp.
           echo "***********idp service***********"
           echo $urls 
           echo $idp_service
 
-          #identify to the idp service
+          #Dependign on the responce body or headers.
           if echo "$http_resp" | grep -q "login.htm ";
            then 
             command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c --auth-no-challenge $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
@@ -513,9 +525,15 @@ download_using_cookies()
            
           http_resp=$(cat res)
           rm res
-          #echo $http_resp  
-     fi #if redirected to idp
-  fi #if redirected to orp
+          
+          if [ $debug_duc -eq 1 ]
+           then
+            echo $http_resp
+          fi  
+      else
+       echo "***********did not send a idp request***********"
+     fi #if redirected to idp.
+  fi #if redirected to orp.
 }
 
 
