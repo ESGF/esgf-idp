@@ -55,6 +55,9 @@ COOKIE_JAR=$ESG_HOME/cookies
 MYPROXY_GETCERT=$ESG_HOME/getcert.jar
 CERT_EXPIRATION_WARNING=$((60 * 60 * 8))   #Eight hour (in seconds)
 
+WGET_TRUSTSTORE=$ESG_HOME/esg_trusted_certificates
+
+
 # Configure checking of server SSL certificates.
 #   Disabling server certificate checking can resolve problems with myproxy
 #   servers being out of sync with datanodes.
@@ -141,7 +144,7 @@ clean_work=1
 
 #parse flags
 echo -e "**************getting options*****************"
-while getopts ':c:pfF:o:w:isuUndvqhC' OPT; do
+while getopts ':c:pfF:o:w:isuUndvqhCN' OPT; do
     case $OPT in
         c) ESG_CREDENTIALS="$OPTARG";;  #<cert> : use this certificate for authentication.
         p) clean_work=0;;               #       : preserve data that failed checksum
@@ -157,7 +160,8 @@ while getopts ':c:pfF:o:w:isuUndvqhC' OPT; do
         d) verbose=1;debug=1;;          #       : display debug information
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
-        C) skip_security=1 && use_cks=1;; #     : Do not use certificates for security but use cookies.
+        C) skip_security=1 && use_cks=1;; #      : Do not use certificates for security but use cookies
+        N) wnc_certificate=1;;          #       : Use the no-check-certificate in wget 
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
         \:) echo "Missing parameter for flag '$OPTARG'" >&2 && usage && exit 1;;
@@ -442,24 +446,40 @@ remove_from_cache() {
     unset cached
 }
 
-debug_duc=1
+debug_duc=0
+download_cert=1
 download_using_cookies()
 {
+  #Download the certificates for trusted nodes
+  if [ $download_cert -eq 1 ]
+   then   
+    get_certificates
+    download_cert=0 
+    COOKIES_FOLDER="$ESG_HOME/cookies"
+    mkdir $COOKIES_FOLDER
+  fi
+
   #The data to be downloaded.
   data=" $url"
   filename="$file"  
 
   #Wget args.
-  wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies wcookies.txt --load-cookies wcookies.txt -o res " # additional arguments
+  if [ $wnc_certificate -eq 1 ]
+   then
+    wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
+   else
+    wget_args=" --ca-directory=$WGET_TRUSTSTORE --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
+  fi 
    
+  
   if [ $debug_duc -eq 1 ]
   then
-   echo -e "****executing:\n"
-   echo -e "wget  $data $wget_args\n"
+   echo -e "executing:\n"
+   echo -e "wget $wget_args --header="Agent-type:cl" $data\n"
   fi
 
   #Try to download the data. 
-  command="wget $wget_args --header="Agent-type:cl" $data"
+  command="wget $wget_args $data"
   eval $command 
 
   http_resp=$(cat res)
@@ -467,7 +487,7 @@ download_using_cookies()
 
   if [ $debug_duc -eq 1 ]
   then
-   echo -e "\nresult is"
+   echo -e "\nResult is:\n"
    echo $http_resp  
   fi 
     
@@ -478,12 +498,13 @@ download_using_cookies()
      orp_service=$(echo $urls | cut -d' ' -f 3)
  
      #Location of orp.
-     echo "*******orp service*********"
+     echo -e "orp service:\n"
      echo $orp_service
+     
+     #-O $filename
+     command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
-     command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
-
-     echo -e "****executing:\n"
+     echo -e "executing:\n"
      echo -e "$command\n"
 
      eval $command #|| { failed=1; break; }
@@ -505,19 +526,19 @@ download_using_cookies()
           idp_service=$(echo $urls | cut -d' ' -f 2) 
           
           #location of orp.
-          echo "***********idp service***********"
+          echo "idp service:\n"
           echo $urls 
           echo $idp_service
 
           #Dependign on the responce body or headers.
-          if echo "$http_resp" | grep -q "login.htm ";
+          if echo "$http_resp" | grep -q "login.htm";
            then 
             command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c --auth-no-challenge $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
           else
            command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c --auth-no-challenge $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
           fi
 
-          echo -e "****executing:\n"
+          echo -e "executing:\n"
           echo -e "$command\n"
 
           
@@ -531,7 +552,7 @@ download_using_cookies()
             echo $http_resp
           fi  
       else
-       echo "***********did not send a idp request***********"
+       echo "idp request did not send."
      fi #if redirected to idp.
   fi #if redirected to orp.
 }
@@ -693,7 +714,7 @@ then
      find_credentials
 else
  if [[ $skip_security -eq 1 ]] && [[ $use_cks -eq 1 ]]
- then
+ then    
     read -p    "Enter your openid : " openid_c
     read -p    "Enter username    : " username_c
     read -s -p "Enter password    : " password_c
