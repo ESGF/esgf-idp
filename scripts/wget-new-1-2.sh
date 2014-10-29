@@ -29,16 +29,16 @@ search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pm
 #EOF--dataset.file.url.chksum_type.chksum
 #)"
 
-download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-EOF--dataset.file.url.chksum_type.chksum
-)"
-
 #download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/#Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/#r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
 #EOF--dataset.file.url.chksum_type.chksum
 #)"
+
+download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+EOF--dataset.file.url.chksum_type.chksum
+)"
 
 
 
@@ -143,7 +143,6 @@ debug=0
 clean_work=1
 
 #parse flags
-echo -e "**************getting options*****************"
 while getopts ':c:pfF:o:w:isuUndvqhCN' OPT; do
     case $OPT in
         c) ESG_CREDENTIALS="$OPTARG";;  #<cert> : use this certificate for authentication.
@@ -161,7 +160,6 @@ while getopts ':c:pfF:o:w:isuUndvqhCN' OPT; do
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
         C) skip_security=1 && use_cks=1;; #      : Do not use certificates for security but use cookies
-        N) wnc_certificate=1;;          #       : Use the no-check-certificate in wget 
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
         \:) echo "Missing parameter for flag '$OPTARG'" >&2 && usage && exit 1;;
@@ -446,121 +444,147 @@ remove_from_cache() {
     unset cached
 }
 
-debug_duc=0
-download_cert=1
+debug_duc=1
+debug_duc_1=1
 download_using_cookies()
 {
-  #Download the certificates for trusted nodes
-  if [ $download_cert -eq 1 ]
-   then   
+  #Download the certificates for trusted nodes if needed
+  if [ $insecure -ne 1 ]
+   then 
     get_certificates
-    download_cert=0 
-    COOKIES_FOLDER="$ESG_HOME/cookies"
-    mkdir $COOKIES_FOLDER
   fi
+  
+  #Create cookies folder.
+  COOKIES_FOLDER="$ESG_HOME/cookies"
+  if [ ! -d $COOKIES_FOLDER ] 
+   then
+    mkdir $COOKIES_FOLDER
+  fi 
 
   #The data to be downloaded.
   data=" $url"
   filename="$file"  
 
   #Wget args.
-  if [ $wnc_certificate -eq 1 ]
+  if [ $insecure -eq 1 ]
    then
     wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
    else
     wget_args=" --ca-directory=$WGET_TRUSTSTORE --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
   fi 
    
-  
-  if [ $debug_duc -eq 1 ]
-  then
-   echo -e "executing:\n"
-   echo -e "wget $wget_args --header="Agent-type:cl" $data\n"
+  #Debug message.
+  if [ $debug_duc_1 -eq 1 ]
+   then
+    echo -e "executing:\n"
+    echo -e "wget $wget_args $data\n"
   fi
 
   #Try to download the data. 
   command="wget $wget_args $data"
   eval $command 
 
+  #Get the result
   http_resp=$(cat res)
   rm res  
 
+  #Debug message.
   if [ $debug_duc -eq 1 ]
-  then
-   echo -e "\nResult is:\n"
-   echo $http_resp  
+   then
+    echo -e "\nResult is:\n"
+    echo $http_resp  
   fi 
     
+  
   #If redirected to orp service sent the openid provider. 
   if echo "$http_resp" | grep -q " 302 "; #[[ $http_resp == " 401 " ]] 
    then
-     urls=$(echo $http_resp | egrep -o 'https?://[^ ]+'| cut -d'/' -f 3)
-     orp_service=$(echo $urls | cut -d' ' -f 3)
+    urls=$(echo $http_resp | egrep -o 'https?://[^ ]+'| cut -d'/' -f 3)
+    orp_service=$(echo $urls | cut -d' ' -f 3)
  
-     #Location of orp.
-     echo -e "orp service:\n"
-     echo $orp_service
-     
-     #-O $filename
-     command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+    #Location of orp.
+    if [ $debug_duc_1 -eq 1 ]
+     then
+      echo -e "orp service:\n"
+      echo $orp_service
+    fi
 
-     echo -e "executing:\n"
-     echo -e "$command\n"
 
-     eval $command #|| { failed=1; break; }
+    #-O $filename
+    #Http request for senting openid to the orp web service.
+    command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
-     http_resp=$(cat res)
-     rm res
+    #Debug message.
+    if [ $debug_duc_1 -eq 1 ]
+     then
+      echo -e "executing:\n"
+      echo -e "$command\n"
+    fi
 
-     if [ $debug_duc -eq 1 ]
-      then
-       echo $http_resp
-     fi
+    #Execution of command.
+    eval $command #|| { failed=1; break; }
 
-     #If redirected to idp service sent the credentials.
-     if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"; # [[ $http_resp == "302" ]]
-      then
-          #extract the location of the idp service.
-          urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+    http_resp=$(cat res)
+    rm res
 
-          idp_service=$(echo $urls | cut -d' ' -f 2) 
+    #Debug message.
+    if [ $debug_duc -eq 1 ]
+     then
+      echo $http_resp
+    fi
+
+    #If redirected to idp service sent the credentials.
+    if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"; # [[ $http_resp == "302" ]]
+     then
+      #extract the location of the idp service.
+      urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+      idp_service=$(echo $urls | cut -d' ' -f 2) 
           
-          #location of orp.
-          echo "idp service:\n"
-          echo $urls 
-          echo $idp_service
+      #Location of orp.
+      if [ $debug_duc_1 -eq 1 ]
+       then
+        echo "idp service:\n"
+        echo $urls 
+        echo $idp_service
+      fi
+ 
+      #Create the Http request for the idp web service.
+      if echo "$http_resp" | grep -q "login.htm";
+       then 
+        command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
+       else
+        command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
+      fi
+      #--auth-no-challenge
 
-          #Dependign on the responce body or headers.
-          if echo "$http_resp" | grep -q "login.htm";
-           then 
-            command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c --auth-no-challenge $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
-          else
-           command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c --auth-no-challenge $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
-          fi
-
-          echo -e "executing:\n"
-          echo -e "$command\n"
-
+      #Debug message.
+      if [ $debug_duc_1 -eq 1 ]
+       then
+        echo -e "executing:\n"
+        echo -e "$command\n"
+      fi
           
-          eval $command #|| { failed=1; break; }
+      #Execution of command.
+      eval $command #|| { failed=1; break; }
            
-          http_resp=$(cat res)
-          rm res
+      http_resp=$(cat res)
+      rm res
           
-          if [ $debug_duc -eq 1 ]
-           then
-            echo $http_resp
-          fi  
-      else
-       echo "idp request did not send."
-     fi #if redirected to idp.
+      #Debug message. 
+      if [ $debug_duc -eq 1 ]
+       then
+        echo $http_resp
+      fi  
+    else
+     echo "ERROR http request to idp did not send."
+    fi #if redirected to idp.
   fi #if redirected to orp.
 }
 
 
 download() {
     wget="wget ${insecure:+--no-check-certificate} ${quiet:+-q} ${quiet:--v} -c $PKI_WGET_OPTS"
-    
+        
     while read line
     do
         # read csv here document into proper variables
