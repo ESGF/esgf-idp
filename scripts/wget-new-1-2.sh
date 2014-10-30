@@ -29,16 +29,25 @@ search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pm
 #EOF--dataset.file.url.chksum_type.chksum
 #)"
 
-#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/#Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/#r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#EOF--dataset.file.url.chksum_type.chksum
-#)"
-
 download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
 EOF--dataset.file.url.chksum_type.chksum
 )"
+
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+
+
+
+
+#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#EOF--dataset.file.url.chksum_type.chksum
+#)"
 
 
 
@@ -55,7 +64,7 @@ COOKIE_JAR=$ESG_HOME/cookies
 MYPROXY_GETCERT=$ESG_HOME/getcert.jar
 CERT_EXPIRATION_WARNING=$((60 * 60 * 8))   #Eight hour (in seconds)
 
-WGET_TRUSTSTORE=$ESG_HOME/esg_trusted_certificates
+WGET_TRUSTED_CERTIFICATES=$ESG_HOME/certificates
 
 
 # Configure checking of server SSL certificates.
@@ -251,7 +260,7 @@ get_certificates() {
     else
         #if here everythng went fine. Replace old cert with this ones    
         [[ -d $ESG_CERT_DIR ]] && rm -r $ESG_CERT_DIR || mkdir -p $(dirname $ESG_CERT_DIR)
-        mv $ESG_HOME/esg_trusted_certihttps://mist.badc.rl.ac.uk:8443/esgf-idp/openid/ficates $ESG_CERT_DIR
+        mv $ESG_HOME/esg_trusted_certificates $ESG_CERT_DIR
         touch $ESG_CERT_DIR
         echo "done!" >&2
     fi
@@ -272,9 +281,6 @@ get_truststore() {
     else
         touch $TRUSTSTORE
     fi
-    read -p    "Enter your openid : " openid_c
-read -s -p "Enter password    : " password_c
-https://mist.badc.rl.ac.uk:8443/esgf-idp/openid/
     echo "done!" >&2    
 }
 
@@ -444,18 +450,18 @@ remove_from_cache() {
     unset cached
 }
 
-debug_duc=1
-debug_duc_1=1
+debug_duc=0
+debug_duc_1=0
 download_using_cookies()
 {
-  #Download the certificates for trusted nodes if needed
-  if [ $insecure -ne 1 ]
+  #Download the certificates for trusted nodes if needed. This will be used in wget.
+  if [ -z "$insecure" ]
    then 
     get_certificates
   fi
   
   #Create cookies folder.
-  COOKIES_FOLDER="$ESG_HOME/cookies"
+  COOKIES_FOLDER="$ESG_HOME/wget_cookies"
   if [ ! -d $COOKIES_FOLDER ] 
    then
     mkdir $COOKIES_FOLDER
@@ -466,11 +472,11 @@ download_using_cookies()
   filename="$file"  
 
   #Wget args.
-  if [ $insecure -eq 1 ]
+  if [ -z "$insecure" ] #[ $insecure -eq 1 ]
    then
-    wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
+    wget_args=" --ca-directory=$WGET_TRUSTED_CERTIFICATES --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
    else
-    wget_args=" --ca-directory=$WGET_TRUSTSTORE --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
+    wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt -o res "
   fi 
    
   #Debug message.
@@ -491,21 +497,34 @@ download_using_cookies()
   #Debug message.
   if [ $debug_duc -eq 1 ]
    then
-    echo -e "\nResult is:\n"
+    echo -e "Response is:\n"
     echo $http_resp  
   fi 
-    
   
-  #If redirected to orp service sent the openid provider. 
-  if echo "$http_resp" | grep -q " 302 "; #[[ $http_resp == " 401 " ]] 
+  #Evaluate response.
+  if echo "$http_resp" | grep -q " 302 "  
    then
+    redirected=1
     urls=$(echo $http_resp | egrep -o 'https?://[^ ]+'| cut -d'/' -f 3)
     orp_service=$(echo $urls | cut -d' ' -f 3)
- 
+    if [ -n "$orp_service" ] 
+     then
+      orp_service_found=1
+     else
+      orp_service_found=0
+    fi
+   else
+    redirected=0
+    orp_service_found=0
+  fi 
+  
+  #If redirected to orp service send the openid. 
+  if [[ $redirected -eq 1 ]] && [[ $orp_service_found -eq 1 ]]
+   then
     #Location of orp.
     if [ $debug_duc_1 -eq 1 ]
      then
-      echo -e "orp service:\n"
+      echo -e "Orp service:\n"
       echo $orp_service
     fi
 
@@ -517,7 +536,7 @@ download_using_cookies()
     #Debug message.
     if [ $debug_duc_1 -eq 1 ]
      then
-      echo -e "executing:\n"
+      echo -e "Executing:\n"
       echo -e "$command\n"
     fi
 
@@ -533,51 +552,77 @@ download_using_cookies()
       echo $http_resp
     fi
 
-    #If redirected to idp service sent the credentials.
-    if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"; # [[ $http_resp == "302" ]]
+    #Evaluate response.
+    if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"  
      then
-      #extract the location of the idp service.
+      redirected=1
       urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
       idp_service=$(echo $urls | cut -d' ' -f 2) 
-          
-      #Location of orp.
-      if [ $debug_duc_1 -eq 1 ]
+      if [ -n "$idp_service" ] 
        then
-        echo "idp service:\n"
-        echo $urls 
-        echo $idp_service
+        idp_service_found=1
+      else
+       idp_service_found=0
       fi
- 
-      #Create the Http request for the idp web service.
-      if echo "$http_resp" | grep -q "login.htm";
-       then 
-        command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
-       else
-        command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
-      fi
-      #--auth-no-challenge
+     else
+      redirected=0
+      idp_service_found=0
+    fi
 
-      #Debug message.
-      if [ $debug_duc_1 -eq 1 ]
-       then
-        echo -e "executing:\n"
-        echo -e "$command\n"
-      fi
+   #If redirected to idp service send the credentials.
+   if [[ $redirected -eq 1 ]] && [[ $idp_service_found -eq 1 ]]   
+    then
           
-      #Execution of command.
-      eval $command #|| { failed=1; break; }
-           
-      http_resp=$(cat res)
-      rm res
+     #Location of orp.
+     if [ $debug_duc_1 -eq 1 ]
+      then
+      echo -e "Idp service:\n"
+      echo $urls 
+      echo $idp_service
+     fi
+ 
+     #Create the Http request for the idp web service.
+     if echo "$http_resp" | grep -q "login.htm";
+      then 
+       command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
+      else
+       command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
+     fi
+     #
+
+     #Debug message.
+     if [ $debug_duc_1 -eq 1 ]
+      then
+       echo -e "Executing:\n"
+       echo -e "$command\n"
+     fi
           
-      #Debug message. 
-      if [ $debug_duc -eq 1 ]
-       then
-        echo $http_resp
-      fi  
+     #Execution of command.
+     eval $command #|| { failed=1; break; }
+
+     http_resp=$(cat res)
+     #rm res
+     
+    if echo "$http_resp" | grep -q "text/html" 
+     then 
+      echo -e "*****Wrong patern found!!!!!!!!!!!!!!!!!!" 
+      failed=1;
+      rm $filename  
+    fi 
+
+
+     
+     #Debug message. 
+     if [ $debug_duc_1 -eq 1 ]
+      then
+       echo $http_resp
+     fi 
+ 
     else
-     echo "ERROR http request to idp did not send."
-    fi #if redirected to idp.
+     echo "ERROR : http request to idp service did not send."
+   fi #if redirected to idp.
+   #else
+   # echo "Warning http request to orp service did not send."
   fi #if redirected to orp.
 }
 
@@ -633,6 +678,10 @@ download() {
                 if [[ $skip_security -eq 1 ]] && [[ $use_cks -eq 1 ]]
                  then
                   download_using_cookies $openid_c $password_c $file $url 
+                  if [[ $failed -eq 1 ]]
+                   then
+                    break
+                  fi
                 else
                  $wget -O "$file" $url || { failed=1; break; }  
                 fi                
@@ -754,4 +803,19 @@ unset force
 download
 
 dedup_cache_
+
+#Clean temp data.
+if [[ $skip_security -eq 1 ]] && [[ $use_cks -eq 1 ]]
+ then 
+  if [ -f "j_spring_openid_security_check.*" ] 
+   then
+    rm j_spring_openid_security_check.*
+  fi
+
+  if [ -d $COOKIES_FOLDER ] 
+   then
+    rm -rf $COOKIES_FOLDER
+  fi
+fi
+
 echo "done"
