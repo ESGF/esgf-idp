@@ -45,7 +45,7 @@ search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pm
 
 
 download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' '2d8c05f85cf5559cdbf2743495745a49'
 EOF--dataset.file.url.chksum_type.chksum
 )"
 
@@ -450,8 +450,8 @@ remove_from_cache() {
     unset cached
 }
 
-debug_duc=0
-debug_duc_1=0
+debug_duc=1
+debug_duc_1=1
 download_using_cookies()
 {
   #Download the certificates for trusted nodes if needed. This will be used in wget.
@@ -529,10 +529,76 @@ download_using_cookies()
       echo $orp_service
     fi
 
+    #ok lets see if we need to send the basic http auth
+    if [[ $openid_c == *esgf-idp/openid/ ]]
+     then
+      download_data_open_id
+     else
+      download_data_cl_id
+    fi
+   else
+    echo "Warning : http request to orp service did not send."
+    #failed=1
+  fi
+}
 
-    #-O $filename
-    #Http request for senting openid to the orp web service.
-    command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+#Function for downloading data using the claimed id.
+download_data_cl_id()
+{
+  #Http request for senting openid to the orp web service.
+  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+
+  #Debug message.
+  if [ $debug_duc_1 -eq 1 ]
+   then
+    echo -e "Executing:\n"
+    echo -e "$command\n"
+  fi
+
+  #Execution of command.
+  eval $command #|| { failed=1; break; }
+
+  http_resp=$(cat res)
+  rm res
+
+  #Debug message.
+  if [ $debug_duc -eq 1 ]
+   then
+    echo $http_resp
+  fi
+
+  #Evaluate response.
+  if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login.htm"  
+   then
+    redirected=1
+    urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+    idp_service=$(echo $urls | cut -d' ' -f 2) 
+    if [ -n "$idp_service" ] 
+     then
+      idp_service_found=1
+     else
+      idp_service_found=0
+    fi
+   else
+    redirected=0
+    idp_service_found=0
+  fi
+
+  #If redirected to idp service send the credentials.
+  if [[ $redirected -eq 1 ]] && [[ $idp_service_found -eq 1 ]]   
+   then
+         
+    #Location of orp.
+    if [ $debug_duc_1 -eq 1 ]
+     then
+      echo -e "Idp service:\n"
+      echo $urls 
+      echo $idp_service
+    fi
+ 
+      
+    command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
+       
 
     #Debug message.
     if [ $debug_duc_1 -eq 1 ]
@@ -540,69 +606,12 @@ download_using_cookies()
       echo -e "Executing:\n"
       echo -e "$command\n"
     fi
-
+          
     #Execution of command.
     eval $command #|| { failed=1; break; }
 
     http_resp=$(cat res)
     rm res
-
-    #Debug message.
-    if [ $debug_duc -eq 1 ]
-     then
-      echo $http_resp
-    fi
-
-    #Evaluate response.
-    if echo "$http_resp" | grep -q " 302 " && echo "$http_resp" | grep -q "login"  
-     then
-      redirected=1
-      urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
-      idp_service=$(echo $urls | cut -d' ' -f 2) 
-      if [ -n "$idp_service" ] 
-       then
-        idp_service_found=1
-      else
-       idp_service_found=0
-      fi
-     else
-      redirected=0
-      idp_service_found=0
-    fi
-
-   #If redirected to idp service send the credentials.
-   if [[ $redirected -eq 1 ]] && [[ $idp_service_found -eq 1 ]]   
-    then
-          
-     #Location of orp.
-     if [ $debug_duc_1 -eq 1 ]
-      then
-      echo -e "Idp service:\n"
-      echo $urls 
-      echo $idp_service
-     fi
- 
-     #Create the Http request for the idp web service.
-     if echo "$http_resp" | grep -q "login.htm";
-      then 
-       command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
-      else
-       command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login_ids.htm"
-     fi
-     #
-
-     #Debug message.
-     if [ $debug_duc_1 -eq 1 ]
-      then
-       echo -e "Executing:\n"
-       echo -e "$command\n"
-     fi
-          
-     #Execution of command.
-     eval $command #|| { failed=1; break; }
-
-     http_resp=$(cat res)
-     rm res
      
     if echo "$http_resp" | grep -q "text/html" || echo "$http_resp" | grep -q "403: Forbidden"
      then 
@@ -610,22 +619,48 @@ download_using_cookies()
       rm $filename  
     fi 
 
-
-     
-     #Debug message. 
-     if [ $debug_duc_1 -eq 1 ]
-      then
-       echo $http_resp
-     fi 
+    #Debug message. 
+    if [ $debug_duc_1 -eq 1 ]
+     then
+      echo $http_resp
+    fi 
  
-    else
-     echo "ERROR : http request to idp service did not send."
-     failed=1
-   fi #if redirected to idp.
    else
-    echo "ERROR : http request to orp service did not send."
+    echo "ERROR : http request to idp service did not send."
     failed=1
-  fi #if redirected to orp.
+  fi #if redirected to idp.  
+}
+
+
+
+download_data_open_id()
+{
+  #Http request for senting openid to the orp web service.
+  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+
+  #Debug message.
+  if [ $debug_duc_1 -eq 1 ]
+   then
+    echo -e "Executing:\n"
+    echo -e "$command\n"
+  fi
+
+  #Execution of command.
+  eval $command #|| { failed=1; break; }
+
+  http_resp=$(cat res)
+  rm res
+
+  #Debug message.
+  if [ $debug_duc -eq 1 ]
+   then
+    echo $http_resp
+  fi
+       
+  if echo "$http_resp" | grep -q "text/html" || echo "$http_resp" | grep -q "403: Forbidden"
+   then 
+    failed=1;        
+  fi
 }
 
 
