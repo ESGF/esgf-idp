@@ -35,15 +35,30 @@ public class OpenidLoginController_ids {
 	 */
 	private String view = "/idp/login_ids";
 	private final static String LOGIN_COMMAND = "loginCommand_ids";
-	
 	private final static String CUSTOM_BASIC_HTTP_AUTH_HEADER = "Agent-type";
 	private final static String BASIC_HTTP_AUTH_HEADER_VALUE = "cl";
-		
 	private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
+		
+	/* kltsa 08/08/2014 change for issue 23089 : Handles the initial get request from bash scripts. */
+	private ModelAndView HandleScriptGetReq(HttpServletRequest request, HttpServletResponse response)
+	{
+	  String agent_type = null;
+	  agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
+	  if(agent_type != null)
+	  {	
+	    if(agent_type.contains(BASIC_HTTP_AUTH_HEADER_VALUE))
+	    { 	
+		  response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
+		  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	    }
+	  }
+	  return null; /* Do not change view status. */
+	}
 	
 	
-	private ModelAndView HandleBasicAuth(HttpServletRequest request)
+	/* Handles basic http auth header when send. */
+	private ModelAndView HandleBasicAuth(HttpServletRequest request, HttpServletResponse response)
 	{
 	  final HttpSession session = request.getSession();
 	  String http_basic_auth = null, http_basic_auth_username = null, http_basic_auth_password = null, openid = null;
@@ -81,37 +96,12 @@ public class OpenidLoginController_ids {
 	  {
 	    // set session-scope authentication flag to FALSE
 		session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_AUTHENTICATED, Boolean.FALSE);
-		if (LOG.isDebugEnabled()) LOG.debug("Authentication error");				  
-		return new ModelAndView(view);  
+		if (LOG.isDebugEnabled()) LOG.debug("Authentication error");
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		return null;
 	  }
-	}
-	
-	private ModelAndView HandleScriptGetReq(HttpServletRequest request, HttpServletResponse response)
-	{
-	  // instantiate new form backing object
-	  final OpenidLoginFormBean_ids command = new OpenidLoginFormBean_ids();
-				
-	  // return to view
-	  final ModelAndView mav = new ModelAndView(view);
-	 				
-	  /* kltsa 08/08/2014 change for issue 23089 :Check origin of the request, if from command line
-	   * then return basic http auth.
-	   */
-	  String agent_type = null;
-	  agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
-	  if(agent_type != null)
-	  {	
-	    if(agent_type.contains(BASIC_HTTP_AUTH_HEADER_VALUE))
-	    { 	
-		  response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
-		  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	    }
-	  }
-			
-	  mav.getModel().put(LOGIN_COMMAND, command);
-	  return mav;		
-	}
-			
+	}	
+		
 	
 	/**
 	 * GET method is invoked as redirect from the {@link OpenidServer}.
@@ -122,6 +112,7 @@ public class OpenidLoginController_ids {
 	{
 	  String http_basic_auth = null;
 	  String agent_type = null;
+	  
 	  /* kltsa 08/08/2014 change for issue 23089 :Check if request contains http basic auth header
 	   * and use this ,if exists,in order to authenticate the user.
 	   */
@@ -134,7 +125,7 @@ public class OpenidLoginController_ids {
 	  }
 	  else if(http_basic_auth != null)
 	  {	  
-	    return HandleBasicAuth(request);
+	    return HandleBasicAuth(request, response);
 	  }	
 	  else /* Initial request. */
 	  {
