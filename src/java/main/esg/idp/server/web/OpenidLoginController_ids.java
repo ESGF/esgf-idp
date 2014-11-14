@@ -53,12 +53,12 @@ public class OpenidLoginController_ids {
 		  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	    }
 	  }
-	  return null; /* Do not change view status. */
+	  return null; /* Do not return a view. */
 	}
 	
 	
 	/* Handles basic http auth header when send. */
-	private ModelAndView HandleBasicAuth(HttpServletRequest request, HttpServletResponse response)
+	private ModelAndView HandleScriptBasicAuth(HttpServletRequest request, HttpServletResponse response)
 	{
 	  final HttpSession session = request.getSession();
 	  String http_basic_auth = null, http_basic_auth_username = null, http_basic_auth_password = null, openid = null;
@@ -79,7 +79,7 @@ public class OpenidLoginController_ids {
 	  user_authenticated = idp.authenticate_ids(http_basic_auth_username, http_basic_auth_password);
 	  openid = idp.getOpenid(http_basic_auth_username);		
 		
-	  if(user_authenticated && openid != null) 
+	  if((user_authenticated) && (openid != null)) 
 	  {
 		/* kltsa 03/06/2014 : Stores the openid found in database for this user. */
 		session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
@@ -119,15 +119,15 @@ public class OpenidLoginController_ids {
 	  http_basic_auth = request.getHeader("Authorization");
 	  agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
 	  
-	  if(agent_type != null && http_basic_auth == null)
+	  if((agent_type != null) && (http_basic_auth == null))
 	  {
 		return HandleScriptGetReq(request, response);  
 	  }
 	  else if(http_basic_auth != null)
 	  {	  
-	    return HandleBasicAuth(request, response);
+	    return HandleScriptBasicAuth(request, response);
 	  }	
-	  else /* Initial request. */
+	  else /* default request from html form. */
 	  {
 		// instantiate new form backing object
 		final OpenidLoginFormBean_ids command = new OpenidLoginFormBean_ids();
@@ -169,7 +169,7 @@ public class OpenidLoginController_ids {
 		user_authenticated  = idp.authenticate_ids(username, password);
 		openid = idp.getOpenid(username);		
 		
-		if(user_authenticated && openid != null) 
+		if((user_authenticated) && (openid != null)) 
 		{
 		  			
 		  /* kltsa 03/06/2014 : Stores the openid found in database for this user. */
