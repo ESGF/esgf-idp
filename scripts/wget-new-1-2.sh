@@ -31,23 +31,42 @@ search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pm
 
 #download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
 #'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/#Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
 #EOF--dataset.file.url.chksum_type.chksum
 #)"
 
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/gpp/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
 
+
+#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' '2d8c05f85cf5559cdbf2743495745a49' 
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' '2d8c05f85cf5559cdbf2743495745a49'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' '2d8c05f85cf5559cdbf2743495745a49'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#EOF--dataset.file.url.chksum_type.chksum
+#)"
 
 
 
 download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'sftlf.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/sftlf.nc' 'MD5' '2d8c05f85cf5559cdbf2743495745a49'
+'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
 EOF--dataset.file.url.chksum_type.chksum
 )"
+
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
 
 
 
@@ -152,7 +171,7 @@ debug=0
 clean_work=1
 
 #parse flags
-while getopts ':c:pfF:o:w:isuUndvqhCN' OPT; do
+while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
     case $OPT in
         c) ESG_CREDENTIALS="$OPTARG";;  #<cert> : use this certificate for authentication.
         p) clean_work=0;;               #       : preserve data that failed checksum
@@ -169,6 +188,7 @@ while getopts ':c:pfF:o:w:isuUndvqhCN' OPT; do
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
         C) skip_security=1 && use_cks=1;; #      : Do not use certificates for security but use cookies
+        D) debug_duc=1;;                #        : Produce debug info when downloading data using cookies.                   
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
         \:) echo "Missing parameter for flag '$OPTARG'" >&2 && usage && exit 1;;
@@ -450,11 +470,12 @@ remove_from_cache() {
     unset cached
 }
 
-debug_duc=1
-debug_duc_1=1
+ debug_duc=1
+    debug_duc_l=1
+#Download data from node using cookies and not certificates.
 download_using_cookies()
 {
-  #Download the certificates for trusted nodes if needed. This will be used in wget.
+  #Wget certificates.
   if [ -z "$insecure" ]
    then 
     get_certificates
@@ -480,9 +501,9 @@ download_using_cookies()
   fi 
    
   #Debug message.
-  if [ $debug_duc_1 -eq 1 ]
+  if [ $debug_duc -eq 1 ]
    then
-    echo -e "executing:\n"
+    echo -e "Executing:\n"
     echo -e "wget $wget_args $data\n"
   fi
 
@@ -495,9 +516,9 @@ download_using_cookies()
   rm res  
 
   #Debug message.
-  if [ $debug_duc -eq 1 ]
+  if [ $debug_duc_l -eq 1 ]
    then
-    echo -e "Response is:\n"
+    echo -e "Response:\n"
     echo $http_resp  
   fi 
   
@@ -523,13 +544,13 @@ download_using_cookies()
    then
 
     #Debug message.
-    if [ $debug_duc_1 -eq 1 ]
+    if [ $debug_duc -eq 1 ]
      then
-      echo -e "Orp service:\n"
+      echo -e "Orp service found:\n"
       echo $orp_service
     fi
 
-    #ok lets see if we need to send the basic http auth
+    #Download data using either basic auth or login form
     if [[ $openid_c == *esgf-idp/openid/ ]]
      then
       download_data_open_id
@@ -537,19 +558,22 @@ download_using_cookies()
       download_data_cl_id
     fi
    else
-    echo "Warning : http request to orp service did not send."
-    #failed=1
+    if echo "$http_resp" | grep -q "401 Unauthorized" || echo "$http_resp" | grep -q "403: Forbidden"
+     then 
+      echo "ERROR : http request to orp service did not send."
+      failed=1
+    fi
   fi
 }
 
 #Function for downloading data using the claimed id.
 download_data_cl_id()
 {
-  #Http request for senting openid to the orp web service.
+  #Http request for senting openid to the orp service.
   command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  $wget_args  https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
-  if [ $debug_duc_1 -eq 1 ]
+  if [ $debug_duc -eq 1 ]
    then
     echo -e "Executing:\n"
     echo -e "$command\n"
@@ -562,8 +586,9 @@ download_data_cl_id()
   rm res
 
   #Debug message.
-  if [ $debug_duc -eq 1 ]
+  if [ $debug_duc_l -eq 1 ]
    then
+    echo -e "Response:\n"
     echo $http_resp
   fi
 
@@ -589,41 +614,41 @@ download_data_cl_id()
    then
          
     #Location of orp.
-    if [ $debug_duc_1 -eq 1 ]
+    if [ $debug_duc -eq 1 ]
      then
-      echo -e "Idp service:\n"
-      echo $urls 
+      echo -e "Idp service found:\n"
       echo $idp_service
     fi
  
       
-    command="wget --post-data  \"password=$password_c\" --header=\"Agent-type:cl\" --auth-no-challenge --http-user=$username_c --http-password=$password_c $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
+    command="wget --post-data  \"password=$password_c\" $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
        
 
     #Debug message.
-    if [ $debug_duc_1 -eq 1 ]
+    if [ $debug_duc -eq 1 ]
      then
       echo -e "Executing:\n"
       echo -e "$command\n"
     fi
           
     #Execution of command.
-    eval $command #|| { failed=1; break; }
+    eval $command 
 
     http_resp=$(cat res)
     rm res
-     
-    if echo "$http_resp" | grep -q "text/html" || echo "$http_resp" | grep -q "403: Forbidden"
+          
+    #Debug message. 
+    if [ $debug_duc_l -eq 1 ]
+     then
+      echo -e "Response:\n"
+      echo $http_resp
+    fi  
+          
+    if echo "$http_resp" | grep -q "text/html" ||  echo "$http_resp" | grep -q "403: Forbidden"  
      then 
       failed=1;
       rm $filename  
-    fi 
-
-    #Debug message. 
-    if [ $debug_duc_1 -eq 1 ]
-     then
-      echo $http_resp
-    fi 
+    fi
  
    else
     echo "ERROR : http request to idp service did not send."
@@ -639,27 +664,56 @@ download_data_open_id()
   command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
-  if [ $debug_duc_1 -eq 1 ]
+  if [ $debug_duc -eq 1 ]
    then
     echo -e "Executing:\n"
     echo -e "$command\n"
   fi
 
   #Execution of command.
-  eval $command #|| { failed=1; break; }
+  eval $command 
 
   http_resp=$(cat res)
   rm res
 
   #Debug message.
-  if [ $debug_duc -eq 1 ]
+  if [ $debug_duc_l -eq 1 ]
    then
+    echo -e "Response:\n"
     echo $http_resp
   fi
+  
+  
+  redirects=$(echo $http_resp | egrep -o ' 302 ')
+      
+  #Debug message. 
+  if [ $debug_duc -eq 1 ]
+   then
+    echo -e "\nRedirects found:\n"
+    echo $redirects
+  fi 
+  
+  #Last redirect indicating that file has been reached.
+  file_downloaded=$(echo $redirects | cut -d' ' -f 7) 
+         
+    
+  #Evaluate response.
+  error=0
+  if echo "$http_resp" | grep -q "text/html"  
+   then
+    error=1
+  fi  
+    
+  if [ -z "$file_downloaded" ] 
+   then
+     error=1     
+  fi  
+      
        
-  if echo "$http_resp" | grep -q "text/html" || echo "$http_resp" | grep -q "403: Forbidden"
+  if [ $error -eq 1 ] 
    then 
-    failed=1;        
+    failed=1;
+    rm $filename        
   fi
 }
 
@@ -824,11 +878,21 @@ then
      find_credentials
 else
  if [[ $skip_security -eq 1 ]] && [[ $use_cks -eq 1 ]]
- then    
-    read -p    "Enter your openid : " openid_c
-    read -p    "Enter username (if not supplied within openid) : " username_c
-    read -s -p "Enter password : " password_c
-    echo -e "\n"
+  then 
+ 
+  if [ -z debug_duc -eq ]
+   then
+    debug_duc=1
+    debug_duc_l=1
+   else
+    debug_duc=0
+    debug_duc_l=0
+   fi
+  #Debug information.
+  read -p    "Enter your openid : " openid_c
+  read -p    "Enter username (if not supplied within openid) : " username_c
+  read -s -p "Enter password : " password_c
+  echo -e "\n"
  fi 
 fi
 #do we have old results? Create the file if not
