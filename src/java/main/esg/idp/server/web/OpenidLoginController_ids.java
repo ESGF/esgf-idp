@@ -19,7 +19,7 @@ import org.apache.commons.codec.binary.Base64;
 import esg.idp.server.api.IdentityProvider;
 
 @Controller
-//@RequestMapping("/idp/login.html")
+//@RequestMapping("/idp/login_ids.html")
 public class OpenidLoginController_ids {
 	
 	@Autowired
@@ -40,24 +40,35 @@ public class OpenidLoginController_ids {
 	private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
 		
-	/* kltsa 08/08/2014 change for issue 23089 : Handles the initial get request from bash scripts. */
-	private ModelAndView HandleScriptGetReq(HttpServletRequest request, HttpServletResponse response)
+	/* kltsa 17/11/2014 changes for issue 23089: Signal idp service that user has been authenticated. */
+	ModelAndView SetPositiveSessionAuth(HttpSession session, String openid)
 	{
-	  String agent_type = null;
-	  agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
-	  if(agent_type != null)
-	  {	
-	    if(agent_type.contains(BASIC_HTTP_AUTH_HEADER_VALUE))
-	    { 	
-		  response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
-		  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	    }
-	  }
+	  /* kltsa 03/06/2014 : Stores the openid found in database for this user. */
+	  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
+					
+	  // set session-scope authentication flag to TRUE
+	  session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_AUTHENTICATED, Boolean.TRUE);
+	  if (LOG.isDebugEnabled()) LOG.debug("Authentication succeded");
+			
+	    // redirect to openid server for further processing
+	  final String redirect = serverUrl + "?" + OpenidPars.PARAMETER_STATUS+"="+OpenidPars.PARAMETER_STATUS_VALUE; 
+	  return new ModelAndView( new RedirectView(redirect, true) );
+	}
+	
+	
+	/* kltsa 08/08/2014 change for issue 23089 : Handles the initial get request from bash scripts. */
+	private ModelAndView HandleScriptGetReq(HttpServletResponse response, final String agent_type)
+	{
+	  if(agent_type.equals(BASIC_HTTP_AUTH_HEADER_VALUE))
+	  { 	
+	    response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	  }	  
 	  return null; /* Do not return a view. */
 	}
 	
 	
-	/* Handles basic http auth header when send. */
+	/* Handles basic http auth header when sent. */
 	private ModelAndView HandleScriptBasicAuth(HttpServletRequest request, HttpServletResponse response)
 	{
 	  final HttpSession session = request.getSession();
@@ -81,16 +92,7 @@ public class OpenidLoginController_ids {
 		
 	  if((user_authenticated) && (openid != null)) 
 	  {
-		/* kltsa 03/06/2014 : Stores the openid found in database for this user. */
-		session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
-					
-		// set session-scope authentication flag to TRUE
-		session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_AUTHENTICATED, Boolean.TRUE);
-		if (LOG.isDebugEnabled()) LOG.debug("Authentication succeded");
-			
-	    // redirect to openid server for further processing
-	    final String redirect = serverUrl + "?" + OpenidPars.PARAMETER_STATUS+"="+OpenidPars.PARAMETER_STATUS_VALUE; 
-	    return new ModelAndView( new RedirectView(redirect, true) );        
+		return SetPositiveSessionAuth(session, openid);
 	  } 
 	  else
 	  {
@@ -116,12 +118,12 @@ public class OpenidLoginController_ids {
 	  /* kltsa 08/08/2014 change for issue 23089 :Check if request contains http basic auth header
 	   * and use this ,if exists,in order to authenticate the user.
 	   */
-	  http_basic_auth = request.getHeader("Authorization");
 	  agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
-	  
+	  http_basic_auth = request.getHeader("Authorization");
+	  	  
 	  if((agent_type != null) && (http_basic_auth == null))
 	  {
-		return HandleScriptGetReq(request, response);  
+		return HandleScriptGetReq(response, agent_type);  
 	  }
 	  else if(http_basic_auth != null)
 	  {	  
@@ -171,19 +173,7 @@ public class OpenidLoginController_ids {
 		
 		if((user_authenticated) && (openid != null)) 
 		{
-		  			
-		  /* kltsa 03/06/2014 : Stores the openid found in database for this user. */
-		  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
-						
-			
-		  // set session-scope authentication flag to TRUE
-		  session.setAttribute(OpenidPars.SESSION_ATTRIBUTE_AUTHENTICATED, Boolean.TRUE);
-		  if (LOG.isDebugEnabled()) LOG.debug("Authentication succeded");
-			
-	      // redirect to openid server for further processing
-	      final String redirect = serverUrl + "?" + OpenidPars.PARAMETER_STATUS+"="+OpenidPars.PARAMETER_STATUS_VALUE; 
-	      return new ModelAndView( new RedirectView(redirect, true) );
-        
+		  return SetPositiveSessionAuth(session, openid);        
 		} 
 		else 
 		{
