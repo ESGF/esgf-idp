@@ -497,24 +497,22 @@ download_using_cookies()
   #Try to download the data. 
   command="wget $wget_args $data"
   http_resp=$(eval $command  2>&1) 
-  #eval $command
-
-  #Get the result
-  #http_resp=$(cat res)
-  #rm res  
-
+  
   #Debug message.
   if  ((debug_duc_l))
   then
    echo -e "Response:\n"
-   echo $http_resp  
+   echo "sed$http_resp"  
   fi 
   
+  
+  #Extract orp service from url ?
   #Evaluate response.
-  if ( echo "$http_resp" | grep -q " 302 " )  
+  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  if ( (( "$redirects" == 1 )) && ( echo "$http_resp" | grep -q "/esg-orp/" ) )  
   then
-   urls=$(echo $http_resp | egrep -o 'https?://[^ ]+'| cut -d'/' -f 3)
-   orp_service=$(echo $urls | cut -d' ' -f 3)
+   urls=$(echo "$http_resp" | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+   orp_service=$(echo "$urls" | tr '\n' ' ' | cut -d' ' -f 3)
    if [ -n "$orp_service" ] 
    then
     orp_service_found=1
@@ -526,25 +524,29 @@ download_using_cookies()
   fi
  
   #If redirected to orp service send the openid. 
-  if [[ orp_service_found -eq 1 ]]
+  if (( "$orp_service_found" == 1 ))
   then
 
    #Debug message.
    if  ((debug_duc))
    then
     echo -e "Orp service found:\n"
-    echo $orp_service
+    echo "$orp_service"
    fi
 
    #Download data using either basic auth or login form
-   if [[ $openid_c == *esgf-idp/openid/ ]]
+   if [[ "$openid_c" == *esgf-idp/openid/ ]]
    then
     download_data_open_id
    else
     download_data_cl_id
    fi
-  else
-   if ( ( echo "$http_resp" | grep -q "401 Unauthorized" ) || ( echo "$http_resp" | grep -q "403: Forbidden" ) ||  ( echo "$http_resp" | grep -q "Connection timed out." ) )
+  else  
+   if (   ( echo "$http_resp" | grep -q "401 Unauthorized" ) \
+       || ( echo "$http_resp" | grep -q "403: Forbidden" ) \
+       || ( echo "$http_resp" | grep -q "Connection timed out." ) \
+       || ( echo "$http_resp" | grep -q "no-check-certificate" ) \
+      )
    then 
     echo "ERROR : http request to orp service did not send."
     failed=1
@@ -576,14 +578,16 @@ download_data_cl_id()
   if  ((debug_duc_l))
   then
    echo -e "Response:\n"
-   echo $http_resp
+   echo "$http_resp"
   fi
 
+  #Extract orp service from openid ?
   #Evaluate response.
-  if (  ( echo "$http_resp" | grep -q " 302 " ) && ( echo "$http_resp" | grep -q "login.htm" ) )  
+  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) )  
   then
-   urls=$(echo $http_resp | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
-   idp_service=$(echo $urls | cut -d' ' -f 2) 
+   urls=$(echo "$http_resp" | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+   idp_service=$(echo "$urls"  | tr '\n' ' ' | cut -d' ' -f 2) 
    if [[ -n "$idp_service" ]] 
    then
     idp_service_found=1
@@ -595,14 +599,14 @@ download_data_cl_id()
   fi
 
   #If redirected to idp service send the credentials.
-  if [[ idp_service_found -eq 1 ]]   
+  if (( "$idp_service_found" == 1 ))   
   then
          
    #Location of orp.
    if  ((debug_duc))
    then
     echo -e "Idp service found:\n"
-    echo $idp_service
+    echo "$idp_service"
    fi
  
       
@@ -617,23 +621,24 @@ download_data_cl_id()
    fi
           
    #Execution of command.
-   #eval $command 
    http_resp=$(eval $command  2>&1)
 
-   #http_resp=$(cat res)
-   #rm res
           
    #Debug message. 
    if  ((debug_duc_l))
    then
     echo -e "Response:\n"
-    echo $http_resp
+    echo "$http_resp"
    fi  
-          
-   if ( ( echo "$http_resp" | grep -q "text/html" ) || ( echo "$http_resp" | grep -q "403: Forbidden" ) )  
+    
+   redirects=$(echo "$http_resp" | egrep -c ' 302 ') 
+   if (   (( "$redirects" != 5 )) \
+       || ( echo "$http_resp" | grep -q "text/html" ) \
+       || ( echo "$http_resp" | grep -q "403: Forbidden" ) \
+      )  
    then 
     failed=1;
-    rm $filename  
+    rm "$filename"  
    fi
  
   else
@@ -657,54 +662,31 @@ download_data_open_id()
   fi
 
   #Execution of command.
-  #eval $command 
   http_resp=$(eval $command  2>&1)
-
-  #http_resp=$(cat res)
-  #rm res
 
   #Debug message.
   if  ((debug_duc_l))
   then
    echo -e "Response:\n"
-   echo $http_resp
+   echo "$http_resp"
+  fi
+    
+     
+  #Evaluate response.
+  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  if ( (( "$redirects" != 7 )) || ( echo "$http_resp" | grep -q "text/html" ) )  
+  then
+   failed=1;
+   rm "$filename"
   fi
   
-  
-  redirects=$(echo $http_resp | egrep -o ' 302 ')
-      
-  #Debug message. 
+   #Debug message. 
   if  ((debug_duc))
   then
    echo -e "\nRedirects found:\n"
-   echo $redirects
+   echo "$redirects"
   fi 
   
-  #Last redirect indicating that file has been reached.
-  file_downloaded=$(echo $redirects | cut -d' ' -f 7) 
-         
-    
-  #Evaluate response.
-  if ( echo "$http_resp" | grep -q "text/html" )  
-  then
-   idp_service_found=0
-  else
-   idp_service_found=1
-  fi  
-    
-  if [[ -z "$file_downloaded" ]] 
-  then
-   idp_service_found=0
-  else
-   idp_service_found=1     
-  fi  
-      
-       
-  if [[ $idp_service_found -ne 1 ]] 
-  then 
-   failed=1;
-   rm $filename        
-  fi
 }
 
 
@@ -867,32 +849,40 @@ check_os
 #then
 #     find_credentials
 #else
- if ((use_cks))
-  then 
+if ((use_cks))
+then 
   
-  if ((debug_duc_f))
-   then
-    debug_duc=1
-    debug_duc_l=1
-   fi
+ if ((debug_duc_f))
+ then
+  debug_duc=1
+  debug_duc_l=1
+ fi
    
-  if (( ! insecure))
-   then 
-    get_certificates
-  fi
+ if (( ! insecure))
+ then 
+  get_certificates
+ fi
 
-  #Create cookies folder.
-  COOKIES_FOLDER="$ESG_HOME/wget_cookies"
-  if [[ ! -d $COOKIES_FOLDER ]] 
-   then
-    mkdir $COOKIES_FOLDER
-  fi
+ #Create cookies folder.
+ COOKIES_FOLDER="$ESG_HOME/wget_cookies"
+ if [[ ! -d $COOKIES_FOLDER ]] 
+ then
+  mkdir $COOKIES_FOLDER
+ fi
   
-  read -p    "Enter your openid : " openid_c
-  read -p    "Enter username (if not supplied within openid) : " username_c
+ read -p    "Enter your openid : " openid_c
+  
+ if [[ "$openid_c" == *esgf-idp/openid/ ]]
+ then
+  read -p    "Enter username : " username_c
+  read -s -p "Enter password : " password_c
+  echo -e "\n" 
+ else
   read -s -p "Enter password : " password_c
   echo -e "\n"
  fi 
+  
+fi 
 #fi
 
 
@@ -906,7 +896,7 @@ download
 
 dedup_cache_
 
-#Clean temp data.
+#Clean up temp data.
 if ((use_cks))
 then 
  if [ -f "j_spring_openid_security_check.htm" ] 
