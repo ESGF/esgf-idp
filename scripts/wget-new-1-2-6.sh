@@ -24,10 +24,10 @@ openId=
 search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pmip3.output.UOED.HadCM3.past1000.mon.land.Lmon.r1i1p1.v20130313|esgf-data1.ceda.ac.uk'
 
 #These are the embedded files to be downloaded
-download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-EOF--dataset.file.url.chksum_type.chksum
-)"
+#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+#EOF--dataset.file.url.chksum_type.chksum
+#)"
 
 #download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
 #'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'http://esgf-data1.ceda.ac.uk/thredds/fileServer/esg_dataroot/pmip3/output/UOED/HadCM3/past1000/mon/land/Lmon/r1i1p1/v20130313/evspsblveg/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
@@ -58,11 +58,11 @@ EOF--dataset.file.url.chksum_type.chksum
 
 
 
-#download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
-#'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
-#'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
-#EOF--dataset.file.url.chksum_type.chksum
-#)"
+download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
+'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
+'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
+EOF--dataset.file.url.chksum_type.chksum
+)"
 
 #'evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/evspsblveg_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' 'a373a192f4e4108de42ab4b4a9f699ee'
 #'gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'https://esgf-test1.ceda.ac.uk/thredds/fileServer/esg_dataroot/test/gpp_Lmon_HadCM3_past1000_r1i1p1_085001-185012.nc' 'MD5' '72ce15ef29cdf28ffc897d7242f218f1'
@@ -170,7 +170,7 @@ usage() {
 
 #defaults
 debug=0
-clean_work=1http://www.skywalker.gr/
+clean_work=1
 
 #parse flags
 while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
