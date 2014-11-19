@@ -189,9 +189,9 @@ while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
         d) verbose=1;debug=1;;          #       : display debug information
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
-        C) skip_security=1 && use_cks=1;; #      : Do not use certificates for security but use cookies
+        C) skip_security=1 && use_cks=1;; #       : Do not use certificates for security but use cookies
         D) debug_duc_f=1;;              #       : Produce debug info when downloading data using cookies.                   
-        h) usage && exit 0;;           #       : displays this help
+        h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
         \:) echo "Missing parameter for flag '$OPTARG'" >&2 && usage && exit 1;;
     esac
