@@ -189,7 +189,7 @@ while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
         d) verbose=1;debug=1;;          #       : display debug information
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
-        C) skip_security=1 && use_cks=1;; #       : Do not use certificates for security but use cookies
+        C) skip_security=1 && use_http_sec=1;; #       : Use basic http auth or http post to authenticate with idp service.
         D) debug_duc_f=1;;              #       : Produce debug info when downloading data using cookies.                   
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
@@ -473,7 +473,7 @@ remove_from_cache() {
 }
 
 #Download data from node using cookies and not certificates.
-download_using_cookies()
+download_http_sec()
 {
   #The data to be downloaded.
   data=" $url"
@@ -534,12 +534,12 @@ download_using_cookies()
     echo "$orp_service"
    fi
 
-   #Download data using either basic auth or login form
+   #Download data using either http basic auth or http login form.
    if [[ "$openid_c" == *esgf-idp/openid/ ]]
    then
-    download_data_open_id
+    download_http_sec_open_id
    else
-    download_data_cl_id
+    download_http_sec_cl_id
    fi
   else  
    if (   ( echo "$http_resp" | grep -q "401 Unauthorized" ) \
@@ -555,9 +555,9 @@ download_using_cookies()
 }
 
 #Function for downloading data using the claimed id.
-download_data_cl_id()
+download_http_sec_cl_id()
 {
-  #Http request for senting openid to the orp service.
+  #Http request for sending openid to the orp service.
   command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  $wget_args -O- https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
@@ -649,9 +649,9 @@ download_data_cl_id()
 
 
 
-download_data_open_id()
+download_http_sec_open_id()
 {
-  #Http request for senting openid to the orp web service.
+  #Http request for sending openid to the orp web service.
   command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
@@ -738,9 +738,9 @@ download() {
                 #No status will be stored
                 break
             else
-                if ((use_cks))
+                if ((use_http_sec))
                 then
-                 download_using_cookies $openid_c $password_c $file $url 
+                 download_http_sec $openid_c $password_c $file $url 
                  if ((failed))
                  then
                   break
@@ -849,7 +849,7 @@ check_os
 #then
 #     find_credentials
 #else
-if ((use_cks))
+if ((use_http_sec))
 then 
   
  if ((debug_duc_f))
@@ -897,7 +897,7 @@ download
 dedup_cache_
 
 #Clean up temp data.
-if ((use_cks))
+if ((use_http_sec))
 then 
  if [ -d $COOKIES_FOLDER ] 
  then
