@@ -511,7 +511,7 @@ download_http_sec()
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   if ( (( "$redirects" == 1 )) && ( echo "$http_resp" | grep -q "/esg-orp/" ) )  
   then
-   urls=$(echo "$http_resp" | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+   urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
    orp_service=$(echo "$urls" | tr '\n' ' ' | cut -d' ' -f 3)
    if [ -n "$orp_service" ] 
    then
@@ -586,7 +586,7 @@ download_http_sec_cl_id()
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) )  
   then
-   urls=$(echo "$http_resp" | egrep -o 'https?://[^ ]+' | cut -d'/' -f 3)
+   urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
    idp_service=$(echo "$urls"  | tr '\n' ' ' | cut -d' ' -f 2) 
    if [[ -n "$idp_service" ]] 
    then
@@ -845,10 +845,6 @@ sleep 1
 check_os
 ((!skip_security)) && find_credentials
 
-#if [[ $skip_security -ne 1 ]]
-#then
-#     find_credentials
-#else
 if ((use_http_sec))
 then 
   
@@ -883,7 +879,6 @@ then
  fi 
   
 fi 
-#fi
 
 
 #do we have old results? Create the file if not
