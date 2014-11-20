@@ -41,7 +41,7 @@ public class OpenidLoginController_ids {
 
 		
 	/* kltsa 17/11/2014 changes for issue 23089: Signal idp service that user has been authenticated. */
-	ModelAndView SetPositiveSessionAuth(HttpSession session, String openid)
+	ModelAndView setPositiveSessionAuth(HttpSession session, String openid)
 	{
 	  /* kltsa 03/06/2014 : Stores the openid found in database for this user. */
 	  session.setAttribute(OpenidPars.IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID, openid);
@@ -57,7 +57,7 @@ public class OpenidLoginController_ids {
 	
 	
 	/* kltsa 08/08/2014 change for issue 23089 : Handles the initial get request from bash scripts. */
-	private ModelAndView HandleScriptGetReq(HttpServletResponse response, final String agent_type)
+	private ModelAndView handleScriptGetReq(HttpServletResponse response, final String agent_type)
 	{
 	  if(agent_type.equals(BASIC_HTTP_AUTH_HEADER_VALUE))
 	  { 	
@@ -69,7 +69,7 @@ public class OpenidLoginController_ids {
 	
 	
 	/* Handles basic http auth header when sent. */
-	private ModelAndView HandleScriptBasicAuth(HttpServletRequest request, HttpServletResponse response)
+	private ModelAndView handleScriptBasicAuth(HttpServletRequest request, HttpServletResponse response)
 	{
 	  final HttpSession session = request.getSession();
 	  String http_basic_auth = null, http_basic_auth_username = null, http_basic_auth_password = null, openid = null;
@@ -92,7 +92,7 @@ public class OpenidLoginController_ids {
 		
 	  if((user_authenticated) && (openid != null)) 
 	  {
-		return SetPositiveSessionAuth(session, openid);
+		return setPositiveSessionAuth(session, openid);
 	  } 
 	  else
 	  {
@@ -123,11 +123,11 @@ public class OpenidLoginController_ids {
 	  	  
 	  if((agent_type != null) && (http_basic_auth == null))
 	  {
-		return HandleScriptGetReq(response, agent_type);  
+		return handleScriptGetReq(response, agent_type);  
 	  }
 	  else if(http_basic_auth != null)
 	  {	  
-	    return HandleScriptBasicAuth(request, response);
+	    return handleScriptBasicAuth(request, response);
 	  }	
 	  else /* default request from html form. */
 	  {
@@ -173,7 +173,7 @@ public class OpenidLoginController_ids {
 		
 		if((user_authenticated) && (openid != null)) 
 		{
-		  return SetPositiveSessionAuth(session, openid);        
+		  return setPositiveSessionAuth(session, openid);        
 		} 
 		else 
 		{
