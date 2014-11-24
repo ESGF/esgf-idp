@@ -506,7 +506,7 @@ download_http_sec()
   then
    echo -e "Response:\n"
    echo "$http_resp"  
-   echo "\n Exit status:$cmd_exit_status\n" 
+   echo -e "\n Exit status:$cmd_exit_status\n" 
   fi 
   
   
@@ -574,11 +574,11 @@ download_http_sec_cl_id()
   then
    echo -e "Response:\n"
    echo "$http_resp"
-   echo "\n Exit status:$cmd_exit_status\n"
+   echo -e "\n Exit status:$cmd_exit_status\n"
   fi
 
   #Extract orp service from openid ?
-  #If redirected to idp service send the credentials.
+  #Evaluate response.If redirected to idp service send the credentials.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) && (( cmd_exit_status == 0 )) )  
   then 
@@ -614,9 +614,10 @@ download_http_sec_cl_id()
    then
     echo -e "Response:\n"
     echo "$http_resp"
-    echo "\n Exit status:$cmd_exit_status\n"
+    echo -e "\n Exit status:$cmd_exit_status\n"
    fi  
     
+   #Evaluate response. 
    redirects=$(echo "$http_resp" | egrep -c ' 302 ') 
    if (   (( "$redirects" != 5 )) \
        || ( echo "$http_resp" | grep -q "text/html" ) \
@@ -658,7 +659,7 @@ download_http_sec_open_id()
   then
    echo -e "Response:\n"
    echo "$http_resp"
-   echo "\n Exit status:$cmd_exit_status\n"
+   echo -e "\n Exit status:$cmd_exit_status\n"
   fi
     
      
