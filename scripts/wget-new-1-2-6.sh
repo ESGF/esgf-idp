@@ -498,19 +498,24 @@ download_http_sec()
   #Try to download the data. 
   command="wget $wget_args $data"
   http_resp=$(eval $command  2>&1) 
+  cmd_exit_status="$?"
+    
   
   #Debug message.
   if  ((debug_duc_l))
   then
    echo -e "Response:\n"
-   echo "sed$http_resp"  
+   echo "$http_resp"  
+   echo "\n Exit status:$cmd_exit_status\n" 
   fi 
   
   
   #Extract orp service from url ?
   #Evaluate response.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if ( (( "$redirects" == 1 )) && ( echo "$http_resp" | grep -q "/esg-orp/" ) )  
+  if (    (( "$redirects" == 1 )) && ( echo "$http_resp" | grep -q "/esg-orp/" )  \
+       && (( $cmd_exit_status == 6 )) \
+     )      
   then
    urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
    orp_service=$(echo "$urls" | tr '\n' ' ' | cut -d' ' -f 3)
@@ -534,6 +539,7 @@ download_http_sec()
        || ( echo "$http_resp" | grep -q "403: Forbidden" ) \
        || ( echo "$http_resp" | grep -q "Connection timed out." ) \
        || ( echo "$http_resp" | grep -q "no-check-certificate" ) \
+       || ( (( $cmd_exit_status != 0 )) ) \
       )
    then 
     echo "ERROR : http request to orp service did not send."
@@ -557,6 +563,8 @@ download_http_sec_cl_id()
 
   #Execution of command.
   http_resp=$(eval $command  2>&1)
+  cmd_exit_status="$?"
+  
 
   #http_resp=$(cat res)
   #rm res
@@ -566,12 +574,13 @@ download_http_sec_cl_id()
   then
    echo -e "Response:\n"
    echo "$http_resp"
+   echo "\n Exit status:$cmd_exit_status\n"
   fi
 
   #Extract orp service from openid ?
   #If redirected to idp service send the credentials.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) )  
+  if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) && (( cmd_exit_status == 0 )) )  
   then 
   
    urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
@@ -597,18 +606,22 @@ download_http_sec_cl_id()
           
    #Execution of command.
    http_resp=$(eval $command  2>&1)
-          
+   cmd_exit_status="$?"
+   
+   
    #Debug message. 
    if  ((debug_duc_l))
    then
     echo -e "Response:\n"
     echo "$http_resp"
+    echo "\n Exit status:$cmd_exit_status\n"
    fi  
     
    redirects=$(echo "$http_resp" | egrep -c ' 302 ') 
    if (   (( "$redirects" != 5 )) \
        || ( echo "$http_resp" | grep -q "text/html" ) \
        || ( echo "$http_resp" | grep -q "403: Forbidden" ) \
+       || (( cmd_exit_status != 0 ))
       )  
    then 
     failed=1;
@@ -637,18 +650,21 @@ download_http_sec_open_id()
 
   #Execution of command.
   http_resp=$(eval $command  2>&1)
-
+  cmd_exit_status="$?"
+  
+  
   #Debug message.
   if  ((debug_duc_l))
   then
    echo -e "Response:\n"
    echo "$http_resp"
+   echo "\n Exit status:$cmd_exit_status\n"
   fi
     
      
   #Evaluate response.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if ( (( "$redirects" != 7 )) || ( echo "$http_resp" | grep -q "text/html" ) )  
+  if ( (( "$redirects" != 7 )) || ( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
   then
    failed=1;
    rm "$filename"
