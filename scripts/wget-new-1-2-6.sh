@@ -303,6 +303,7 @@ get_truststore() {
     else
         touch $TRUSTSTORE
     fi
+    
     echo "done!" >&2    
 }
 
@@ -513,19 +514,6 @@ download_http_sec()
   then
    urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
    orp_service=$(echo "$urls" | tr '\n' ' ' | cut -d' ' -f 3)
-   if [ -n "$orp_service" ] 
-   then
-    orp_service_found=1
-   else
-    orp_service_found=0
-   fi
-  else
-   orp_service_found=0
-  fi
- 
-  #If redirected to orp service send the openid. 
-  if (( "$orp_service_found" == 1 ))
-  then
 
    #Debug message.
    if  ((debug_duc))
@@ -568,7 +556,6 @@ download_http_sec_cl_id()
   fi
 
   #Execution of command.
-  #eval $command 
   http_resp=$(eval $command  2>&1)
 
   #http_resp=$(cat res)
@@ -582,25 +569,13 @@ download_http_sec_cl_id()
   fi
 
   #Extract orp service from openid ?
-  #Evaluate response.
+  #If redirected to idp service send the credentials.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) )  
-  then
+  then 
+  
    urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
    idp_service=$(echo "$urls"  | tr '\n' ' ' | cut -d' ' -f 2) 
-   if [[ -n "$idp_service" ]] 
-   then
-    idp_service_found=1
-   else
-    idp_service_found=0
-   fi
-  else
-   idp_service_found=0
-  fi
-
-  #If redirected to idp service send the credentials.
-  if (( "$idp_service_found" == 1 ))   
-  then
          
    #Location of orp.
    if  ((debug_duc))
@@ -622,7 +597,6 @@ download_http_sec_cl_id()
           
    #Execution of command.
    http_resp=$(eval $command  2>&1)
-
           
    #Debug message. 
    if  ((debug_duc_l))
@@ -692,7 +666,7 @@ download_http_sec_open_id()
 
 download() {
     wget="wget ${insecure:+--no-check-certificate} ${quiet:+-q} ${quiet:--v} -c $PKI_WGET_OPTS"
-        
+    
     while read line
     do
         # read csv here document into proper variables
