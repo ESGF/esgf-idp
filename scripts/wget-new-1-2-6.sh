@@ -21,7 +21,7 @@ fi
 version=1.3.2
 CACHE_FILE=.$(basename $0).status
 openId=
-search_url='http://esgf-index1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=pmip3.output.UOED.HadCM3.past1000.mon.land.Lmon.r1i1p1.v20130313|esgf-data1.ceda.ac.uk'
+search_url='http://esgf-test1.ceda.ac.uk/esg-search/wget/?query=*&dataset_id=test.eg1.v2|esgf-test1.ceda.ac.uk'
 
 #These are the embedded files to be downloaded
 #download_files="$(cat <<EOF--dataset.file.url.chksum_type.chksum
@@ -594,7 +594,7 @@ download_http_sec_cl_id()
    fi
  
       
-   command="wget --post-data  \"password=$password_c\" $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
+   command="wget --post-data  password=\"$password_c\" $wget_args -O $filename https://$idp_service/esgf-idp/idp/login.htm"
        
 
    #Debug message.
@@ -640,7 +640,7 @@ download_http_sec_cl_id()
 download_http_sec_open_id()
 {
   #Http request for sending openid to the orp web service.
-  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=$username_c --http-password=$password_c    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=\"$username_c\" --http-password=\"$password_c\"    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
   if  ((debug_duc))
@@ -662,7 +662,6 @@ download_http_sec_open_id()
    echo -e "\n Exit status:$cmd_exit_status\n"
   fi
     
-     
   #Evaluate response.
   redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   if ( (( "$redirects" != 7 )) || ( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
