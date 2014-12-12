@@ -67,8 +67,8 @@ public class OpenidLoginController_ids
    */
   private String view = "/idp/login_ids";
   private final static String LOGIN_COMMAND = "loginCommand_ids";
-  private final static String CUSTOM_BASIC_HTTP_AUTH_HEADER = "Agent-type";
-  private final static String BASIC_HTTP_AUTH_HEADER_VALUE = "cl";
+  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE = "Agent-type";
+  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE_VALUE = "cl";
   private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
 		
@@ -91,7 +91,7 @@ public class OpenidLoginController_ids
   /* kltsa 08/08/2014 change for issue 23089 : Handles the initial get request from bash scripts. */
   private ModelAndView handleScriptGetReq(HttpServletResponse response, final String agent_type)
   {
-   	if(agent_type.equals(BASIC_HTTP_AUTH_HEADER_VALUE))
+   	if(agent_type.equals(CUSTOM_HTTP_HEADER_AGENT_TYPE_VALUE))
 	{ 	
 	  response.setHeader("WWW-Authenticate", "Basic realm=\"ESGF\"");
 	  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -150,7 +150,7 @@ public class OpenidLoginController_ids
 	/* kltsa 08/08/2014 change for issue 23089 :Check if request contains http basic auth header
 	 * and use this ,if exists,in order to authenticate the user.
 	 */
-	agent_type = request.getHeader(CUSTOM_BASIC_HTTP_AUTH_HEADER);
+	agent_type = request.getHeader(CUSTOM_HTTP_HEADER_AGENT_TYPE);
 	http_basic_auth = request.getHeader("Authorization");
 	 	  
 	if((agent_type != null) && (http_basic_auth == null))
