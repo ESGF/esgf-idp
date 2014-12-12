@@ -72,7 +72,7 @@ public class OpenidLoginController_ids
   private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
 		
-  /* kltsa 17/11/2014 changes for issue 23089: Signal idp service that user has been authenticated. */
+  /* kltsa 17/11/2014 changes for issue 23089: Signals idp service that user has been authenticated. */
   ModelAndView setPositiveSessionAuth(HttpSession session, String openid)
   {
 	/* kltsa 03/06/2014 : Stores the openid found in database for this user. */
@@ -192,8 +192,7 @@ public class OpenidLoginController_ids
 	String openid = null;
 	Boolean user_authenticated = false;
 		
-				
-	// user openid is retrieved from form 
+		
 	username =  data.getUsername(); /* a dict could be more useful ? */
 	password =  data.getPassword();	/* user password is bound to the form backing object */	
 		
