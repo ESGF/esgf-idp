@@ -67,8 +67,8 @@ public class OpenidLoginController_ids
    */
   private String view = "/idp/login_ids";
   private final static String LOGIN_COMMAND = "loginCommand_ids";
-  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE = "Agent-type";
-  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE_VALUE = "cl";
+  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE = "esgf-idea-agent-type";
+  private final static String CUSTOM_HTTP_HEADER_AGENT_TYPE_VALUE = "basic_auth";
   private static final Log LOG = LogFactory.getLog(OpenidLoginController_ids.class);
 
 		
