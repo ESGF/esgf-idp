@@ -160,7 +160,7 @@ check_commands() {
 }
 
 usage() {
-    echo "Usage: $(basename $0) [flags]"
+    echo "Usage: $(basename $0) [flags] [openid] [username]"
     echo "Flags is one of:"
     sed -n '/^while getopts/,/^done/  s/^\([^)]*\)[^#]*#\(.*$\)/\1 \2/p' $0
     echo
@@ -173,7 +173,7 @@ debug=0
 clean_work=1
 
 #parse flags
-while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
+while getopts ':c:pfF:o:w:isuUndvqhHD' OPT; do
     case $OPT in
         c) ESG_CREDENTIALS="$OPTARG";;  #<cert> : use this certificate for authentication.
         p) clean_work=0;;               #       : preserve data that failed checksum
@@ -189,7 +189,7 @@ while getopts ':c:pfF:o:w:isuUndvqhCD' OPT; do
         d) verbose=1;debug=1;;          #       : display debug information
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
-        C) skip_security=1 && use_http_sec=1;; #       : Use basic http auth or http post to authenticate with idp service.
+        H) skip_security=1 && use_http_sec=1;; #       : Authenticate with OpenID (username,) and password, without the need for a certificate.
         D) debug_duc_f=1;;              #       : Produce debug info when downloading data using cookies.                   
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
@@ -495,6 +495,15 @@ download_http_sec()
    echo -e "wget $wget_args $data\n"
   fi
 
+  
+  #Debug message.
+  if  ((debug))
+  then
+   echo -e "Executing:\n"
+   echo -e "wget $wget_args $data\n"
+  fi
+
+
   #Try to download the data. 
   command="wget $wget_args $data"
   http_resp=$(eval $command  2>&1) 
@@ -508,12 +517,13 @@ download_http_sec()
    echo "$http_resp"  
    echo -e "\n Exit status:$cmd_exit_status\n" 
   fi 
-  
-  
+ 
+    
   #Extract orp service from url ?
   #Evaluate response.
-  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if (    (( "$redirects" == 1 )) && ( echo "$http_resp" | grep -q "/esg-orp/" )  \
+  #redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  #(( "$redirects" == 1 )) && 
+  if (    ( echo "$http_resp" | grep -q "/esg-orp/" )  \
        && (( $cmd_exit_status == 6 )) \
      )      
   then
@@ -528,11 +538,11 @@ download_http_sec()
    fi
 
    #Download data using either http basic auth or http login form.
-   if [[ "$openid_c" == *esgf-idp/openid/ ]]
+   if [[ "$openid_c" == */openid/ ]]
    then
     download_http_sec_open_id
    else
-    download_http_sec_cl_id
+    decide_openid_service
    fi
   else  
    if (   ( echo "$http_resp" | grep -q "401 Unauthorized" ) \
@@ -544,6 +554,63 @@ download_http_sec()
    then 
     echo "ERROR : http request to orp service did not send."
     failed=1
+   fi
+  fi
+}
+
+
+#Function that decides which implementaion of idp to use.
+decide_openid_service()
+{
+  #find claimed id
+
+  pos=$(echo "$openid_c" | egrep -o '/' | wc -l)
+  username_c=$(echo "$openid_c"  | cut -d'/' -f "$(($pos + 1))")
+  esgf_uri=$(echo "$openid_c" | egrep -o '/esgf-idp/openid/')
+
+  #Debug message.
+  if  ((debug_duc))
+  then
+   echo -e "Username extracted from openid:\n"
+   echo -e "$username_c\n"
+  fi
+
+  host=$(echo "$openid_c"  | cut -d'/' -f 3)
+  #test ceda first.
+
+  if [ -z "$esgf_uri" ]
+  then
+   openid_c="https://""$host""/openid/"
+  else
+   openid_c="https://""$host""/esgf-idp/openid/" 
+  fi
+
+  command="wget "$openid_c" --no-check-certificate -O-"
+  
+  #Debug message.
+  if  ((debug_duc))
+  then
+   echo -e "Executing:\n"
+   echo -e "$command\n"
+  fi
+
+  #Execution of command.
+  http_resp=$(eval $command  2>&1)
+  cmd_exit_status="$?"
+
+  if (    ( echo "$http_resp" | grep -q "[application/xrds+xml]" ) \
+       && ( echo "$http_resp" | grep -q "200 OK" ) \
+       && (( cmd_exit_status == 0 ))
+      )  
+  then
+   download_http_sec_open_id
+  else
+   if [ -z "$esgf_uri" ]
+   then
+    echo "ERROR : http request to orp service did not send."
+    failed=1
+   else
+   download_http_sec_cl_id
    fi
   fi
 }
@@ -561,6 +628,14 @@ download_http_sec_cl_id()
    echo -e "$command\n"
   fi
 
+  #Debug message.
+  if  ((debug))
+  then
+   echo -e "Executing:\n"
+   echo -e "wget $command\n"
+  fi 
+
+
   #Execution of command.
   http_resp=$(eval $command  2>&1)
   cmd_exit_status="$?"
@@ -577,10 +652,12 @@ download_http_sec_cl_id()
    echo -e "\n Exit status:$cmd_exit_status\n"
   fi
 
+ 
   #Extract orp service from openid ?
   #Evaluate response.If redirected to idp service send the credentials.
-  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if ( (( redirects == 2  )) && ( echo "$http_resp" | grep -q "login.htm" ) && (( cmd_exit_status == 0 )) )  
+  #redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  #(( redirects == 2  )) && 
+  if ( ( echo "$http_resp" | grep -q "login.htm" ) && (( cmd_exit_status == 0 )) )  
   then 
   
    urls=$(echo "$http_resp" | egrep -o 'https://[^ ]+' | cut -d'/' -f 3)
@@ -603,6 +680,13 @@ download_http_sec_cl_id()
     echo -e "Executing:\n"
     echo -e "$command\n"
    fi
+
+   #Debug message.
+   if  ((debug))
+   then
+    echo -e "Executing:\n"
+    echo -e "wget $command\n"
+   fi 
           
    #Execution of command.
    http_resp=$(eval $command  2>&1)
@@ -616,11 +700,13 @@ download_http_sec_cl_id()
     echo "$http_resp"
     echo -e "\n Exit status:$cmd_exit_status\n"
    fi  
-    
+   
+   
    #Evaluate response. 
-   redirects=$(echo "$http_resp" | egrep -c ' 302 ') 
-   if (   (( "$redirects" != 5 )) \
-       || ( echo "$http_resp" | grep -q "text/html" ) \
+   #redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+   #(( "$redirects" != 5 )) \ 
+   if (   
+          ( echo "$http_resp" | grep -q "text/html" ) \
        || ( echo "$http_resp" | grep -q "403: Forbidden" ) \
        || (( cmd_exit_status != 0 ))
       )  
@@ -640,7 +726,7 @@ download_http_sec_cl_id()
 download_http_sec_open_id()
 {
   #Http request for sending openid to the orp web service.
-  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\"  --header=\"Agent-type:cl\" --http-user=\"$username_c\" --http-password=\"$password_c\"    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
+  command="wget --post-data \"openid_identifier=$openid_c&rememberOpenid=on\" --header=\"esgf-idea-agent-type:basic_auth\" --http-user=\"$username_c\" --http-password=\"$password_c\"    $wget_args  -O $filename https://$orp_service/esg-orp/j_spring_openid_security_check.htm "
 
   #Debug message.
   if  ((debug_duc))
@@ -648,6 +734,13 @@ download_http_sec_open_id()
    echo -e "Executing:\n"
    echo -e "$command\n"
   fi
+
+  #Debug message.
+  if  ((debug))
+  then
+   echo -e "Executing:\n"
+   echo -e "wget $command\n"
+  fi 
 
   #Execution of command.
   http_resp=$(eval $command  2>&1)
@@ -661,13 +754,15 @@ download_http_sec_open_id()
    echo "$http_resp"
    echo -e "\n Exit status:$cmd_exit_status\n"
   fi
+
     
   #Evaluate response.
-  redirects=$(echo "$http_resp" | egrep -c ' 302 ')
-  if ( (( "$redirects" != 7 )) || ( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
+  #redirects=$(echo "$http_resp" | egrep -c ' 302 ')
+  #(( "$redirects" != 7 )) ||
+  if (( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
   then
    failed=1;
-   rm "$filename"
+   rm "$filename" 
   fi
   
    #Debug message. 
@@ -856,11 +951,22 @@ then
   mkdir $COOKIES_FOLDER
  fi
   
- read -p    "Enter your openid : " openid_c
-  
- if [[ "$openid_c" == *esgf-idp/openid/ ]]
+ if ( (("$#" > 1)) || (("$#" == 1)) ) 
  then
-  read -p    "Enter username : " username_c
+  openid_c=$1
+ else    
+  read -p    "Enter your openid : " openid_c
+ fi
+ 
+ if [[ "$openid_c" == */openid/ ]]
+ then
+  if (("$#" == 2))
+  then
+   username_c=$2
+  else 
+   read -p    "Enter username : " username_c
+  fi  
+  
   read -s -p "Enter password : " password_c
   echo -e "\n" 
  else
