@@ -173,7 +173,7 @@ debug=0
 clean_work=1
 
 #parse flags
-while getopts ':c:pfF:o:w:isuUndvqhHD' OPT; do
+while getopts ':c:pfF:o:w:isuUndvqhHDI:' OPT; do
     case $OPT in
         c) ESG_CREDENTIALS="$OPTARG";;  #<cert> : use this certificate for authentication.
         p) clean_work=0;;               #       : preserve data that failed checksum
@@ -190,7 +190,8 @@ while getopts ':c:pfF:o:w:isuUndvqhHD' OPT; do
         v) verbose=1;;                  #       : be more verbose
         q) quiet=1;;                    #       : be less verbose
         H) skip_security=1 && use_http_sec=1;; #       : Authenticate with OpenID (username,) and password, without the need for a certificate.
-        D) debug_duc_f=1;;              #       : Produce debug info when downloading data using cookies.                   
+        D) debug_duc_f=1;;              #       : Produce debug info when downloading data using cookies.
+        I) username_supplied="$OPTARG";;    #<user_id> : Explicitly set user ID.  By default, the user ID is extracted from the last component of the OpenID URL.  Use this flag to override this behaviour.                   
         h) usage && exit 0;;            #       : displays this help
         \?) echo "Unknown option '$OPTARG'" >&2 && usage && exit 1;;
         \:) echo "Missing parameter for flag '$OPTARG'" >&2 && usage && exit 1;;
@@ -538,7 +539,7 @@ download_http_sec()
    fi
 
    #Download data using either http basic auth or http login form.
-   if [[ "$openid_c" == */openid/ ]]
+   if [[ "$openid_c" == */openid/  || "$openid_c" == */openid ]]
    then
     download_http_sec_open_id
    else
@@ -580,12 +581,12 @@ decide_openid_service()
 
   if [ -z "$esgf_uri" ]
   then
-   openid_c="https://""$host""/openid/"
+   openid_c_tmp="https://""$host""/openid/"
   else
-   openid_c="https://""$host""/esgf-idp/openid/" 
+   openid_c_tmp="https://""$host""/esgf-idp/openid/" 
   fi
 
-  command="wget "$openid_c" --no-check-certificate -O-"
+  command="wget "$openid_c_tmp" --no-check-certificate -O-"
   
   #Debug message.
   if  ((debug_duc))
@@ -603,9 +604,10 @@ decide_openid_service()
        && (( cmd_exit_status == 0 ))
       )  
   then
+   openid_c=$openid_c_tmp
    download_http_sec_open_id
   else
-   if [ -z "$esgf_uri" ]
+   if [[ -z "$esgf_uri" ]]
    then
     echo "ERROR : http request to orp service did not send."
     failed=1
@@ -950,31 +952,38 @@ then
  then
   mkdir $COOKIES_FOLDER
  fi
-  
- if ( (("$#" > 1)) || (("$#" == 1)) ) 
+ 
+ #Read openid.
+ if [[ ! -z "$openId" ]]
+ then
+  openid_c="$openId"
+ elif ( (("$#" > 1)) || (("$#" == 1)) ) 
  then
   openid_c=$1
- else    
+ else
   read -p    "Enter your openid : " openid_c
  fi
  
- if [[ "$openid_c" == */openid/ ]]
+ 
+ 
+
+ #Read username.
+ if [[ ! -z "$username_supplied" ]]
  then
-  if (("$#" == 2))
+  username_c="$username_supplied"
+ elif (("$#" == 2))
   then
    username_c=$2
-  else 
-   read -p    "Enter username : " username_c
-  fi  
-  
-  read -s -p "Enter password : " password_c
-  echo -e "\n" 
- else
-  read -s -p "Enter password : " password_c
-  echo -e "\n"
- fi 
-  
-fi 
+ elif [[ "$openid_c" == */openid/ || "$openid_c" == */openid ]]
+ then
+  read -p    "Enter username : " username_c
+ fi  
+   
+ 
+ #Read password.
+ read -s -p "Enter password : " password_c
+ echo -e "\n" 
+fi  
 
 
 #do we have old results? Create the file if not
