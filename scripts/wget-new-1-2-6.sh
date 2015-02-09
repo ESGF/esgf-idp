@@ -183,7 +183,7 @@ while getopts ':c:pfF:o:w:isuUndvqhHDI:' OPT; do
         I) username_supplied="$OPTARG";;    #<user_id> : Explicitly set user ID.  By default, the user ID is extracted from the last component of the OpenID URL.  Use this flag to override this behaviour.                   
         w) output="$OPTARG";;           #<file> : Write embedded files into a file and exit
         i) insecure=1;;                 #       : set insecure mode, i.e. don't check server certificate
-        s) skip_security=1 && uschba=1;;            #       : completely skip security. It will only work if the accessd data is not secured at all. – works only if the accessed data is unsecured or a certificate exists or cookies are saved (latter applies to -H option only).
+        s) skip_security=1 && uschba_start=1;;            #       : completely skip security. It will only work if the accessd data is not secured at all. – works only if the accessed data is unsecured or a certificate exists or cookies are saved (latter applies to -H option only).
         u) update=1;;                   #       : Issue the search again and see if something has changed.
         U) update_files=1;;             #       : Update files from server overwriting local ones (detect with -u)
         n) dry_run=1;;                  #       : Don't download any files, just report.
@@ -484,10 +484,18 @@ download_http_sec()
   #Wget args.
   if ((insecure)) 
   then
-   wget_args=" --no-check-certificate --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt ${quiet:+-q} ${quiet:--v} " 
+   wget_args=" --no-check-certificate --cookies=on  --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt " 
   else
-   wget_args=" --ca-directory=$WGET_TRUSTED_CERTIFICATES --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt --load-cookies $COOKIES_FOLDER/wcookies.txt ${quiet:+-q} ${quiet:--v} "  
+   wget_args=" --ca-directory=$WGET_TRUSTED_CERTIFICATES --cookies=on --keep-session-cookies --save-cookies $COOKIES_FOLDER/wcookies.txt "  
   fi 
+
+  if ((uschba_start)) || ((uschba))
+  then
+   wget_args=" $wget_args"" --load-cookies $COOKIES_FOLDER/wcookies.txt"    
+  fi
+
+  #use cookies for the next downloads
+  uschba=1;
    
   #Debug message.
   if  ((debug_duc))
@@ -538,6 +546,9 @@ download_http_sec()
     echo "$orp_service"
    fi
 
+   #Use cookies for transaction with orp.
+   wget_args=" $wget_args"" --load-cookies $COOKIES_FOLDER/wcookies.txt"    
+   
    #Download data using either http basic auth or http login form.
    if [[ "$openid_c" == */openid/  || "$openid_c" == */openid ]]
    then
@@ -759,7 +770,7 @@ download_http_sec_open_id()
   #Evaluate response.
   #redirects=$(echo "$http_resp" | egrep -c ' 302 ')
   #(( "$redirects" != 7 )) ||
-  if (( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
+  if ( ( echo "$http_resp" | grep -q "text/html" ) ||  (( $cmd_exit_status != 0 )) )  
   then
    failed=1;
    rm "$filename"
@@ -950,6 +961,8 @@ then
   get_certificates
  fi
 
+ #Cookies folder.
+ COOKIES_FOLDER="$ESG_HOME/wget_cookies"
  
  if (( force ))
  then
@@ -959,27 +972,27 @@ then
   fi
  fi
 
- #Create cookies folder.
- COOKIES_FOLDER="$ESG_HOME/wget_cookies"
+ #Create cookies folder. 
  if [[ ! -d $COOKIES_FOLDER ]] 
  then
   mkdir $COOKIES_FOLDER
  fi
  
- #Read openid.
- if [[ ! -z "$openId" ]]
+ if((! uschba_start))
  then
-  openid_c="$openId"
- elif ( (("$#" > 1)) || (("$#" == 1)) ) 
- then
-  openid_c=$1
- else
-  read -p    "Enter your openid : " openid_c
- fi
- 
- 
- if((!uschba))
- then 
+
+  #Read openid.
+  if [[ ! -z "$openId" ]]
+  then
+   openid_c="$openId"
+  elif ( (("$#" > 1)) || (("$#" == 1)) ) 
+  then
+   openid_c=$1
+  else
+   read -p    "Enter your openid : " openid_c
+  fi
+  
+  
   #Read username.
   if [[ ! -z "$username_supplied" ]]
   then
@@ -995,7 +1008,9 @@ then
   #Read password.
   read -s -p "Enter password : " password_c
   echo -e "\n"
+
  fi #use cookies
+
 fi #use_http_sec 
 
 
