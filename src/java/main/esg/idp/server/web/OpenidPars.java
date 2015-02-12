@@ -71,6 +71,7 @@ public class OpenidPars {
 	 *                     database.
 	 */
 	public final static String ESGF_OP_DEFAULT_IDENTIFIER_URL = "esgf-idp/openid/";
+	public final static String ESGF_OP_DEFAULT_IDENTIFIER_URL_WS = "esgf-idp/openid";
 	public final static String DEFAULT_IDENTIFIER_SELECT_CLAIMED_ID = "identifier_select";
 	public final static String IDENTIFIER_SELECT_STORED_USER_CLAIMED_ID = "user_database_openid";
 	/*public final static String IDENTIFIER_SELECT_LOGIN_FORM_USERNAME_TEXTFIELD_ID = "login_form_username";*/

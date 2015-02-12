@@ -95,7 +95,9 @@ public class YadisServiceImpl implements YadisService {
 	  /* kltsa 18/06/2014: If an OP identifier is supplied then the xrds documents should not 
 	   *                   contain claimed id. 
 	   */
-      if(openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL))
+      if(    openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL)  
+          || openid.endsWith(OpenidPars.ESGF_OP_DEFAULT_IDENTIFIER_URL_WS)
+        )
       {
        	return xml_wcid;  
       }
@@ -164,7 +166,7 @@ public class YadisServiceImpl implements YadisService {
 	  
 	  sb.append("<Service priority=\"0\">")
 	    .append("<Type>http://specs.openid.net/auth/2.0/server</Type>") /*http://specs.openid.net/auth/2.0/signon*/
-		.append("<Type>http://specs.openid.net/auth/2.0</Type>")        /*http://openid.net/signon/1.0*/
+		/*.append("<Type>http://specs.openid.net/auth/2.0</Type>") */   /*http://openid.net/signon/1.0*/
 		/*.append("<Type>http://openid.net/srv/ax/1.0</Type>")*/
 		.append("<URI>").append(idpProviderUrl.toString()).append("</URI>")
 		/*.append("<LocalID>").append(openid).append("</LocalID>")*/ /* kltsa 18/06/2014: Skip the local id tag.*/
