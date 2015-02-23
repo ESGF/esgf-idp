@@ -620,7 +620,11 @@ decide_openid_service()
   else
    if [[ -z "$esgf_uri" ]]
    then
-    echo "ERROR : http request to orp service did not send."
+    echo "ERROR : HTTP request to OpenID Relying Party service failed."
+    if ((debug))
+    then
+     echo "Error response: $http_resp"
+    fi
     failed=1
    else
    download_http_sec_cl_id
