@@ -1,0 +1,8 @@
+03/03/2014
+----------
+
+Use lib folder in order to compile the files. Library is from the contrail ca server.
+
+example:
+
+javac -cp  .:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/lib/servlet-api.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/javax.persistence-2.0.3.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/security-commons-1.0-SNAPSHOT.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/jbcrypt-0.3m.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/federation-db-0.4-SNAPSHOT.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/bcprov-jdk16-146.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/bcmail-jdk16-146.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/commons-lang-2.1.jar:/home/solg9/kleanthis/Dev/apache-tomcat-8.0.0-RC10/webapps/CA_Postgres_test/WEB-INF/lib/httpcore-4.1.4.jar SecurityCommons_esgf.java -Xlint:all 
