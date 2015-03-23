@@ -198,8 +198,10 @@ public class OpenidServer {
 			                                    
 		  // process the authentication request
           final Message message = manager.authResponse(parameterList, openid, userClaimedId, true);
-	      manager.setSignFields(manager.getSignFields().concat(",ns."+ message.getExtensionAlias(message.getExtensions().iterator().next().toString()))); 
-            
+          if ( message.getExtensions().size()>0 ) {
+        	  manager.setSignFields(manager.getSignFields().concat(",ns."+ message.getExtensionAlias(message.getExtensions().iterator().next().toString()))); 
+          }
+        	  
           // purge parameter list from session so user can log in with another browser/openid
           session.removeAttribute(OpenidPars.SESSION_ATTRIBUTE_PARAMETERLIST);
             
