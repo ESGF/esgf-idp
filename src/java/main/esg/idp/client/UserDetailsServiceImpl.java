@@ -27,7 +27,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+/* import org.springframework.security.core.authority.GrantedAuthorityImpl; kltsa 24/06/2015 : GrantedAuthorityImpl(DEFAULT_ROLE) is considered deprecated. */
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -57,10 +58,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		final boolean credentialsNonExpired = true;
 		final boolean accountNonLocked = true;
 		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add( new GrantedAuthorityImpl(DEFAULT_ROLE) );
+		authorities.add( new  SimpleGrantedAuthority(DEFAULT_ROLE) ); /* kltsa 24/06/2015 : GrantedAuthorityImpl(DEFAULT_ROLE) is considered deprecated. */
 		if (users.containsKey(userName)) {
 			for (final String authority : users.get(userName)) {
-				authorities.add( new GrantedAuthorityImpl(authority) );
+				authorities.add( new SimpleGrantedAuthority(authority) ); /* GrantedAuthorityImpl(authority) */
 			}
 		}
 		return new User(userName, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
