@@ -88,6 +88,7 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="commons-io" name="commons-io" rev="2.4"/>
     <dependency org="commons-lang" name="commons-lang" rev="2.5"/>
 
+    <!-- kltsa 30/06/2015: New verion of spring and tiles. -->
     <dependency org="org.springframework" name="spring-core" rev="4.1.6.RELEASE" transitive="false" />
     <dependency org="org.springframework" name="spring-web" rev="4.1.6.RELEASE" transitive="false" />
     <dependency org="org.springframework" name="spring-webmvc" rev="4.1.6.RELEASE" transitive="false" />
@@ -110,8 +111,7 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="*->default" />
     <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" conf="*->default" />
     <dependency org="org.apache.tiles" name="tiles-compat" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="*->default" /> 
-    
+    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="*->default" />     
     <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="*->default" />
    
     
