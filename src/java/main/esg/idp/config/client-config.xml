@@ -50,6 +50,10 @@
 		-->		
 		<security:logout />
     	
+      <!--  kltsa 7/07/2015 -->	
+	 <security:csrf disabled="true"/>
+    
+    	
 	</security:http>
 	
 	

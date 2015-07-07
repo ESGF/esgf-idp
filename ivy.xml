@@ -107,12 +107,12 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.springframework.security" name="spring-security-taglibs" rev="4.0.1.RELEASE" transitive="false"/>
     <dependency org="org.springframework.security" name="spring-security-web" rev="4.0.1.RELEASE" transitive="false"/>
 
-    <dependency org="org.apache.tiles" name="tiles-core" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-compat" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="*->default" />     
-    <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-core" rev="2.2.2" transitive="false" />
+    <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" transitive="false" />
+    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" transitive="false" />
+    <dependency org="org.apache.tiles" name="tiles-compat" rev="2.2.2" transitive="false" />
+    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" transitive="false" />     
+    <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" transitive="false" />
    
     
 
