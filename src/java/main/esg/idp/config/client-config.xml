@@ -50,8 +50,8 @@
 		-->		
 		<security:logout  logout-success-url="/" logout-url="/j_spring_security_logout" invalidate-session="true"/>
     	
-      <!--  kltsa 7/07/2015 -->	
-	 <security:csrf disabled="true"/>
+        <!--  kltsa 7/07/2015 -->	
+	    <security:csrf disabled="true"/>
     
     	
 	</security:http>
