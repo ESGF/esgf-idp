@@ -48,7 +48,7 @@
 		     logout-success-url="/"
 		     invalidate-session="true" - this also effectively logs out the user from the Openid Server, not just the Openid Client
 		-->		
-		<security:logout />
+		<security:logout  logout-success-url="/" logout-url="/j_spring_security_logout" invalidate-session="true"/>
     	
       <!--  kltsa 7/07/2015 -->	
 	 <security:csrf disabled="true"/>
