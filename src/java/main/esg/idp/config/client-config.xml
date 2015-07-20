@@ -5,9 +5,9 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:security="http://www.springframework.org/schema/security"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
-                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
 	<!-- Autodetect Spring beans -->
  	<context:component-scan base-package="esg.idp.client"/>
@@ -48,7 +48,11 @@
 		     logout-success-url="/"
 		     invalidate-session="true" - this also effectively logs out the user from the Openid Server, not just the Openid Client
 		-->		
-		<security:logout />
+		<security:logout  logout-success-url="/" logout-url="/j_spring_security_logout" invalidate-session="true"/>
+    	
+        <!--  kltsa 7/07/2015 -->	
+	    <security:csrf disabled="true"/>
+    
     	
 	</security:http>
 	
