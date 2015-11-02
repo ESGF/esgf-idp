@@ -252,4 +252,5 @@ fetch_static_idp_file() {
     checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
     (( $? > 1 )) && [FAIL] && return 2
     [OK]
+}
 
