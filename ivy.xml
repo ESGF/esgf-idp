@@ -103,7 +103,9 @@ Note: Check Maven for propery dependency parameter values @
 
     <dependency org="org.springframework.security" name="spring-security-config" rev="4.0.3.RELEASE" conf="default->default" />
     <dependency org="org.springframework.security" name="spring-security-core" rev="4.0.3.RELEASE" conf="default->default" />
-    <dependency org="org.springframework.security" name="spring-security-openid" rev="4.0.3.RELEASE" conf="default->default" />
+    <dependency org="org.springframework.security" name="spring-security-openid" rev="4.0.3.RELEASE" conf="default->default">
+      <exclude org="org.openid4java" />
+    </dependency>
     <dependency org="org.springframework.security" name="spring-security-taglibs" rev="4.0.3.RELEASE" conf="default->default" />
     <dependency org="org.springframework.security" name="spring-security-web" rev="4.0.3.RELEASE" conf="default->default" />
 
@@ -135,7 +137,6 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="xerces" name="xercesImpl" rev="2.9.1" />
     
     <dependency org="net.sf.retrotranslator" name="retrotranslator-runtime" rev="1.2.7"/>
-    
     
     <dependency org="org.openid4java" name="openid4java" rev="0.9.6"/>
     <!-- deprecated, but needed by openid4java library -->
