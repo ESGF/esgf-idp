@@ -64,6 +64,7 @@ public class OpenidCookieFilter implements Filter {
 			final Cookie cookie = new Cookie(OpenidPars.OPENID_COOKIE_NAME, openid);
 			if (StringUtils.hasText(rememberme) && rememberme.equals("on")) {
 				cookie.setMaxAge(OpenidPars.OPENID_COOKIE_LIFETIME);
+				cookie.setSecure(true);
 				if (LOG.isDebugEnabled()) LOG.debug("Set cookie name="+cookie.getName()+" value="+cookie.getValue());
 			} else {
 				cookie.setMaxAge(0);
