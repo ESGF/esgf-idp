@@ -61,7 +61,9 @@ public class OpenidCookieFilter implements Filter {
 		
 		// remember openid identity
 		if (StringUtils.hasText(openid)) {
-			final Cookie cookie = new Cookie(OpenidPars.OPENID_COOKIE_NAME, openid);
+			// sanitize openid of potentially malicious characters before setting the cookie
+			String _openid = openid.replaceAll("[><&%\"'(){}]", "_");
+			final Cookie cookie = new Cookie(OpenidPars.OPENID_COOKIE_NAME, _openid);
 			if (StringUtils.hasText(rememberme) && rememberme.equals("on")) {
 				cookie.setMaxAge(OpenidPars.OPENID_COOKIE_LIFETIME);
 				cookie.setSecure(true);
