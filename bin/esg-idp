@@ -241,16 +241,3 @@ clean_idp_webapp_subsystem() {
     fi 
     return 0
 }
-
-#--------------------------------------
-# Misc utility functions
-#--------------------------------------
-fetch_static_idp_file() {
-    local fetch_file=esgf_idp_static.xml
-    local force=1
-    local make_backup=1
-    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
-    (( $? > 1 )) && [FAIL] && return 2
-    [OK]
-}
-
