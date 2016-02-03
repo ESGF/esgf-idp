@@ -55,3 +55,6 @@ Changed Yadis configuration to use property: "idp.security.attribute.service.end
 
 2.4.0
 -- Added RESTful controller for requesting MyProxy certificate
+
+2.7.1
+-- Moving --fetch-static-idp-file to orp so data only nodes can have this switch installed
