@@ -32,7 +32,7 @@ import esg.idp.yadis.api.YadisService;
 /**
  * Controller for OpenID Yadis discovery:
  * this controller processes all requests sent to the Gateway Yadis servlet,
- * and returns the Gateway OpenID provider endpoint embedded within an XML document.
+ * and returns the OpenID provider endpoint embedded within an XML document.
  *
  */
 @Controller

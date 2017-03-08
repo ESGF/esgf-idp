@@ -29,6 +29,8 @@
 	
 	<!-- additional endpoints discovered by Yadis service -->
 	<util:map id="yadisEndpoints">
+        <entry key="urn:esg:security:oauth:endpoint:authorize" value="https://${short.lived.certificate.server}/oauth/authorize"/>
+        <entry key="urn:esg:security:oauth:endpoint:access" value="https://${short.lived.certificate.server}/oauth/access_token"/>
     	<entry key="urn:esg:security:myproxy-service" value="socket://${myproxy.endpoint}:${myproxy.port}"/>
     	<entry key="urn:esg:security:attribute-service" value="${idp.security.attribute.service.endpoint}"/>
 	</util:map>
