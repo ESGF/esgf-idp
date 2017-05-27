@@ -10,7 +10,6 @@ import esg.common.util.ESGFProperties;
 import esg.idp.server.api.Identity;
 import esg.idp.server.api.IdentityProvider;
 import esg.node.security.UserInfo;
-import esg.node.security.UserInfoCredentialedDAO;
 import esg.node.security.UserInfoDAO;
 
 /**
@@ -24,13 +23,13 @@ public class IdentityProviderDAOImpl implements IdentityProvider {
 	/**
 	 * Database access class
 	 */
-	private UserInfoCredentialedDAO userInfoDAO = null;
+	private UserInfoDAO userInfoDAO = null;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 	
 	@Autowired
 	public IdentityProviderDAOImpl(final @Qualifier("esgfProperties") ESGFProperties props) {
-	    userInfoDAO = new UserInfoCredentialedDAO("rootAdmin", props.getAdminPassword(), props);
+	    userInfoDAO = new UserInfoDAO(props);
 	}
 
 	@Override
