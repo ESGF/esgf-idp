@@ -89,10 +89,6 @@
 	<classpathentry kind="lib" path="lib/fetched/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.9.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-accesslog-client-0.7.23.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-common-0.7.23.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-connector-0.7.23.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-filters-0.7.23.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.15.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.15.jar"/>
@@ -107,5 +103,9 @@
 	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.2.9.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-web-4.2.9.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-accesslog-client-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-common-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-connector-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-node-manager-filters-1.0.0.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
